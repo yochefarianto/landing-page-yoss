@@ -46,22 +46,17 @@
             overflow-x: hidden;
         }
 
-        /* Custom Scrollbar */
+        /* Hide scrollbar globally */
         ::-webkit-scrollbar {
-            width: 8px;
+            display: none;
         }
 
-        ::-webkit-scrollbar-track {
-            background: #050201;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #ff3300;
-            border-radius: 0px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #cc2900;
+        html,
+        body {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
         }
 
         /* Artsy Noise Overlay */
@@ -134,22 +129,26 @@
             background: radial-gradient(circle, transparent 55%, rgba(0, 0, 0, 0.5) 100%);
         }
 
-        /* Custom Scrollbar for Horizontal Portfolio Slider */
-        .custom-scrollbar::-webkit-scrollbar {
-            height: 6px;
+        /* Hide scrollbars for Firefox / IE on horizontal list & sliders */
+        .custom-scrollbar,
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
         }
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #050201;
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #ff3300;
-            border-radius: 10px;
+        /* Portfolio Descriptions always visible & auto-scroll friendly */
+        #portfolio .group .absolute.bottom-0 {
+            transform: translateY(0) !important;
         }
 
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #cc2900;
+        #portfolio .group p.opacity-0 {
+            opacity: 1 !important;
         }
     </style>
 </head>
@@ -170,16 +169,55 @@
                 </div>
                 <!-- Desktop Menu -->
                 <div class="hidden md:block z-10">
-                    <div class="ml-10 flex items-baseline space-x-8">
+                    <div class="ml-10 flex items-center space-x-8">
                         <a href="#about"
-                            class="hover:text-brand-500 transition-colors px-3 py-2 text-sm font-medium tracking-wide uppercase">Tentang</a>
+                            class="hover:text-brand-500 transition-colors px-3 py-2 text-sm font-medium tracking-wide uppercase">
+                            <span class="lang-id">Tentang</span>
+                            <span class="lang-en hidden">About</span>
+                        </a>
                         <a href="#portfolio"
-                            class="hover:text-brand-500 transition-colors px-3 py-2 text-sm font-medium tracking-wide uppercase">Portofolio</a>
+                            class="hover:text-brand-500 transition-colors px-3 py-2 text-sm font-medium tracking-wide uppercase">
+                            <span class="lang-id">Portofolio</span>
+                            <span class="lang-en hidden">Portfolio</span>
+                        </a>
                         <a href="#reviews"
-                            class="hover:text-brand-500 transition-colors px-3 py-2 text-sm font-medium tracking-wide uppercase">Ulasan</a>
-                        <a href="#ratecard"
-                            class="bg-brand-600 hover:bg-brand-500 text-white px-5 py-2 rounded-none text-sm font-display tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(255,51,0,0.3)] border border-brand-400">Rate
-                            Card</a>
+                            class="hover:text-brand-500 transition-colors px-3 py-2 text-sm font-medium tracking-wide uppercase">
+                            <span class="lang-id">Ulasan</span>
+                            <span class="lang-en hidden">Reviews</span>
+                        </a>
+
+                        <!-- Dropdown Kolaborasi -->
+                        <div class="relative group inline-block text-left">
+                            <button
+                                class="flex items-center gap-1.5 bg-brand-600 hover:bg-brand-500 text-white px-5 py-2 rounded-none text-sm font-display tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(255,51,0,0.3)] border border-brand-400 focus:outline-none">
+                                <span class="lang-id">Kolaborasi</span>
+                                <span class="lang-en hidden">Collab</span>
+                                <i
+                                    class="fas fa-chevron-down text-[10px] transition-transform duration-300 group-hover:rotate-180"></i>
+                            </button>
+                            <div
+                                class="absolute right-0 w-48 mt-2 origin-top-right bg-[#050201]/95 backdrop-blur-md border border-brand-900/80 rounded-none shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 divide-y divide-brand-900/40">
+                                <div class="py-1">
+                                    <a href="#ratecard"
+                                        class="block px-4 py-3 text-xs text-brand-100 hover:bg-brand-900/30 hover:text-brand-500 transition-colors uppercase tracking-wider font-display font-semibold font-semibold">Rate
+                                        Card</a>
+                                    <a href="#visit-event"
+                                        class="block px-4 py-3 text-xs text-brand-100 hover:bg-brand-900/30 hover:text-brand-500 transition-colors uppercase tracking-wider font-display font-semibold font-semibold">Visit
+                                        Event</a>
+                                    <a href="#speaker"
+                                        class="block px-4 py-3 text-xs text-brand-100 hover:bg-brand-900/30 hover:text-brand-500 transition-colors uppercase tracking-wider font-display font-semibold font-semibold">Speaker</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Language Switcher Desktop -->
+                        <div
+                            class="flex items-center border border-brand-900/50 bg-[#0d0705]/60 p-0.5 ml-2 font-display text-[10px]">
+                            <button id="btn-lang-id" onclick="changeLanguage('id')"
+                                class="px-2 py-1 transition-colors uppercase tracking-wider font-bold text-brand-500 bg-brand-900/45 border border-brand-500/20 focus:outline-none">ID</button>
+                            <button id="btn-lang-en" onclick="changeLanguage('en')"
+                                class="px-2 py-1 transition-colors uppercase tracking-wider font-bold text-brand-100/50 hover:text-white focus:outline-none">EN</button>
+                        </div>
                     </div>
                 </div>
                 <!-- Mobile Menu Button -->
@@ -195,14 +233,56 @@
         <div id="mobile-menu" class="hidden md:hidden glass border-t border-brand-900/50">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
                 <a href="#about"
-                    class="block hover:bg-brand-900/50 rounded-none px-3 py-2 text-base font-medium uppercase">Tentang</a>
+                    class="block hover:bg-brand-900/50 rounded-none px-3 py-2 text-base font-medium uppercase">
+                    <span class="lang-id">Tentang</span>
+                    <span class="lang-en hidden">About</span>
+                </a>
                 <a href="#portfolio"
-                    class="block hover:bg-brand-900/50 rounded-none px-3 py-2 text-base font-medium uppercase">Portofolio</a>
+                    class="block hover:bg-brand-900/50 rounded-none px-3 py-2 text-base font-medium uppercase">
+                    <span class="lang-id">Portofolio</span>
+                    <span class="lang-en hidden">Portfolio</span>
+                </a>
                 <a href="#reviews"
-                    class="block hover:bg-brand-900/50 rounded-none px-3 py-2 text-base font-medium uppercase">Ulasan</a>
-                <a href="#ratecard"
-                    class="block bg-brand-600 text-white rounded-none px-3 py-2 text-base font-display tracking-widest uppercase mt-4">Rate
-                    Card</a>
+                    class="block hover:bg-brand-900/50 rounded-none px-3 py-2 text-base font-medium uppercase">
+                    <span class="lang-id">Ulasan</span>
+                    <span class="lang-en hidden">Reviews</span>
+                </a>
+
+                <!-- Accordion Kolaborasi Mobile -->
+                <div class="relative mt-4">
+                    <button type="button" id="mobile-collab-button"
+                        class="w-full flex items-center justify-center gap-2 bg-brand-600 text-white rounded-none px-3 py-2 text-base font-display tracking-widest uppercase focus:outline-none">
+                        <span class="lang-id">Kolaborasi</span>
+                        <span class="lang-en hidden">Collab</span>
+                        <i class="fas fa-chevron-down text-xs transition-transform duration-300"
+                            id="mobile-collab-icon"></i>
+                    </button>
+                    <div id="mobile-collab-menu"
+                        class="hidden bg-[#0d0705]/60 border border-brand-900/40 mt-1 flex flex-col divide-y divide-brand-900/30">
+                        <a href="#ratecard"
+                            class="hover:bg-brand-900/50 rounded-none px-3 py-3 text-sm uppercase text-brand-100 font-display font-bold">Rate
+                            Card</a>
+                        <a href="#visit-event"
+                            class="hover:bg-brand-900/50 rounded-none px-3 py-3 text-sm uppercase text-brand-100 font-display font-bold">Visit
+                            Event</a>
+                        <a href="#speaker"
+                            class="hover:bg-brand-900/50 rounded-none px-3 py-3 text-sm uppercase text-brand-100 font-display font-bold">Speaker</a>
+                    </div>
+                </div>
+
+                <!-- Language Switcher Mobile -->
+                <div class="flex justify-center items-center gap-3 py-4 border-t border-brand-900/30 mt-6">
+                    <span class="text-xs font-display tracking-widest text-brand-100/50 uppercase lang-id">Pilih
+                        Bahasa:</span>
+                    <span
+                        class="text-xs font-display tracking-widest text-brand-100/50 uppercase lang-en hidden">Language:</span>
+                    <div class="flex border border-brand-900/50 bg-[#0d0705]/60 p-0.5 font-display text-xs">
+                        <button id="mobile-btn-lang-id" onclick="changeLanguage('id')"
+                            class="px-3 py-1.5 uppercase font-bold text-brand-500 bg-brand-900/45 border border-brand-500/20 focus:outline-none">ID</button>
+                        <button id="mobile-btn-lang-en" onclick="changeLanguage('en')"
+                            class="px-3 py-1.5 uppercase font-bold text-brand-100/50 hover:text-white focus:outline-none">EN</button>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
@@ -236,25 +316,33 @@
             <div class="fade-up" style="transition-delay: 200ms;">
                 <h1
                     class="font-display text-5xl md:text-8xl font-bold leading-none mb-4 tracking-tighter text-white drop-shadow-2xl uppercase mix-blend-screen">
-                    <span class="text-brand-100/90 text-2xl md:text-4xl block mb-2 tracking-widest font-normal">Halo,
-                        Gue</span>
+                    <span class="text-brand-100/90 text-2xl md:text-4xl block mb-2 tracking-widest font-normal">
+                        <span class="lang-id">Halo, Gue</span>
+                        <span class="lang-en hidden">Hi, I'm</span>
+                    </span>
                     <span
                         class="text-transparent bg-clip-text bg-gradient-to-b from-white via-brand-100 to-brand-500">Yochef
                         Arianto</span>
                 </h1>
                 <p
                     class="text-base md:text-xl text-brand-100/60 mb-10 max-w-xl mx-auto font-light tracking-wide leading-relaxed">
-                    Kreator TECH yang fokus ke impact, <i class="text-brand-300">storytelling</i>, dan... <br
-                        class="hidden md:block"> <span class="italic text-brand-400/80">part-time peternak ayam.</span>
+                    <span class="lang-id">Kreator TECH yang fokus ke impact, <i class="text-brand-300">storytelling</i>,
+                        dan... <br class="hidden md:block"> <span class="italic text-brand-400/80">part-time peternak
+                            ayam.</span></span>
+                    <span class="lang-en hidden">A TECH creator focused on impact, <i
+                            class="text-brand-300">storytelling</i>, and... <br class="hidden md:block"> <span
+                            class="italic text-brand-400/80">part-time chicken farmer.</span></span>
                 </p>
-                <div class="flex flex-col sm:flex-row gap-5 justify-center">
+                <div class="flex flex-col sm:flex-row gap-5 justify-center font-display font-semibold">
                     <a href="#portfolio"
-                        class="bg-brand-600 hover:bg-brand-500 text-white px-10 py-4 font-display tracking-widest text-sm uppercase transition-all shadow-[0_0_20px_rgba(255,51,0,0.3)] hover:shadow-[0_0_40px_rgba(255,51,0,0.6)] border border-brand-400 flex items-center justify-center">
-                        Jelajahi Karya
+                        class="bg-brand-600 hover:bg-brand-500 text-white px-10 py-4 tracking-widest text-sm uppercase transition-all shadow-[0_0_20px_rgba(255,51,0,0.3)] hover:shadow-[0_0_40px_rgba(255,51,0,0.6)] border border-brand-400 flex items-center justify-center">
+                        <span class="lang-id">Jelajahi Karya</span>
+                        <span class="lang-en hidden">Explore Work</span>
                     </a>
                     <a href="#contact"
-                        class="px-10 py-4 font-display tracking-widest text-sm uppercase transition-all border border-slate-600 hover:border-brand-300 hover:bg-white/5 text-slate-300 hover:text-white flex items-center justify-center">
-                        Kolaborasi
+                        class="px-10 py-4 tracking-widest text-sm uppercase transition-all border border-slate-600 hover:border-brand-300 hover:bg-white/5 text-slate-300 hover:text-white flex items-center justify-center">
+                        <span class="lang-id">Kolaborasi</span>
+                        <span class="lang-en hidden">Collaborate</span>
                     </a>
                 </div>
             </div>
@@ -267,12 +355,18 @@
         <div class="max-w-4xl mx-auto px-4">
             <div class="text-center mb-10 fade-up">
                 <span
-                    class="text-brand-500 text-xs font-display tracking-widest uppercase mb-2 inline-block border border-brand-500 px-3 py-1">Easter
-                    Egg Interaktif</span>
+                    class="text-brand-500 text-xs font-display tracking-widest uppercase mb-2 inline-block border border-brand-500 px-3 py-1">
+                    <span class="lang-id">Easter Egg Interaktif</span>
+                    <span class="lang-en hidden">Interactive Easter Egg</span>
+                </span>
                 <h2 class="font-display text-4xl md:text-5xl font-bold tracking-tight uppercase text-white">Flappy
                     Chicken Arcade</h2>
-                <p class="text-brand-100/50 font-light max-w-xl mx-auto mt-4">Pecahkan rekor skor tertinggi untuk
-                    membantu Yochef mengurus ayam-ayamnya di halaman belakang!</p>
+                <p class="text-brand-100/50 font-light max-w-xl mx-auto mt-4">
+                    <span class="lang-id">Pecahkan rekor skor tertinggi untuk membantu Yochef mengurus ayam-ayamnya di
+                        halaman belakang!</span>
+                    <span class="lang-en hidden">Break the highest score record to help Yochef take care of his chickens
+                        in the backyard!</span>
+                </p>
             </div>
 
             <!-- Arcade Machine Wrapper -->
@@ -300,17 +394,30 @@
                 <!-- Arcade Controls -->
                 <div class="mt-6 flex flex-col items-center gap-3">
                     <div class="flex justify-between items-center w-full px-4">
-                        <div class="flex flex-col">
-                            <span class="text-[10px] text-slate-500 uppercase font-mono">Kontrol</span>
-                            <span class="text-xs text-white font-mono"><kbd
-                                    class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] border border-slate-700">Space</kbd>
-                                atau <kbd
-                                    class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] border border-slate-700">Klik</kbd>
-                                untuk Lompat</span>
+                        <div class="flex flex-col font-mono">
+                            <span class="text-[10px] text-slate-500 uppercase">
+                                <span class="lang-id">Kontrol</span>
+                                <span class="lang-en hidden">Controls</span>
+                            </span>
+                            <span class="text-xs text-white">
+                                <span class="lang-id"><kbd
+                                        class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] border border-slate-700">Space</kbd>
+                                    atau <kbd
+                                        class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] border border-slate-700">Klik</kbd>
+                                    untuk Lompat</span>
+                                <span class="lang-en hidden"><kbd
+                                        class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] border border-slate-700">Space</kbd>
+                                    or <kbd
+                                        class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] border border-slate-700">Click</kbd>
+                                    to Jump</span>
+                            </span>
                         </div>
-                        <div class="flex flex-col text-right">
-                            <span class="text-[10px] text-slate-500 uppercase font-mono">Rekor Yoss</span>
-                            <span id="highScoreText" class="text-xs font-bold font-mono text-brand-400">346</span>
+                        <div class="flex flex-col text-right font-mono">
+                            <span class="text-[10px] text-slate-500 uppercase">
+                                <span class="lang-id">Rekor Yoss</span>
+                                <span class="lang-en hidden">Yoss' Record</span>
+                            </span>
+                            <span id="highScoreText" class="text-xs font-bold text-brand-400">346</span>
                         </div>
                     </div>
 
@@ -324,12 +431,16 @@
                                     class="w-4 h-4 rounded-full bg-brand-500 shadow-[0_0_8px_rgba(255,51,0,0.8)] absolute animate-pulse">
                                 </div>
                             </div>
-                            <span class="text-[10px] text-slate-400 uppercase font-mono">Tap Layar</span>
+                            <span class="text-[10px] text-slate-400 uppercase font-mono">
+                                <span class="lang-id">Tap Layar</span>
+                                <span class="lang-en hidden">Tap Screen</span>
+                            </span>
                         </div>
 
                         <button id="jumpButton"
                             class="px-6 py-2.5 bg-brand-600 hover:bg-brand-500 active:scale-95 text-white font-display tracking-widest text-xs uppercase transition-all shadow-[0_0_15px_rgba(255,51,0,0.3)] border border-brand-400 font-bold">
-                            LOMPAT!
+                            <span class="lang-id">LOMPAT!</span>
+                            <span class="lang-en hidden">JUMP!</span>
                         </button>
                     </div>
                 </div>
@@ -358,8 +469,10 @@
         </div>
 
         <div class="max-w-6xl mx-auto px-4 text-center fade-up relative z-10">
-            <p class="text-brand-100/40 text-xs md:text-sm font-display tracking-[0.3em] uppercase mb-8">Pernah
-                Berkolaborasi Dengan</p>
+            <p class="text-brand-100/40 text-xs md:text-sm font-display tracking-[0.3em] uppercase mb-8">
+                <span class="lang-id">Pernah Berkolaborasi Dengan</span>
+                <span class="lang-en hidden">Collaborated With</span>
+            </p>
 
             <!-- CARA MENGGANTI LOGO:
                  Ubah atribut src="..." di bawah ini dengan lokasi file logo asli Anda (misalnya logo PNG/SVG transparan).
@@ -384,7 +497,7 @@
                 <div
                     class="bg-white/90 hover:bg-white border border-brand-900/10 hover:border-brand-500/50 px-5 py-3 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,51,0,0.3)] flex items-center justify-center w-36 h-16 md:w-44 md:h-20 cursor-pointer">
                     <img src="Smartfren-Logo.wine.png" alt="Smartfren"
-                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500 scale-[1.35]">
+                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500 scale-[1.65]">
                 </div>
 
                 <!-- MyRepublic -->
@@ -413,14 +526,14 @@
                 <div
                     class="bg-white/90 hover:bg-white border border-brand-900/10 hover:border-brand-500/50 px-5 py-3 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,51,0,0.3)] flex items-center justify-center w-36 h-16 md:w-44 md:h-20 cursor-pointer">
                     <img src="logo-icon-new-dola.png" alt="Dola"
-                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500">
+                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500 scale-[1.45]">
                 </div>
 
                 <!-- Cakrawala -->
                 <div
                     class="bg-white/90 hover:bg-white border border-brand-900/10 hover:border-brand-500/50 px-5 py-3 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,51,0,0.3)] flex items-center justify-center w-36 h-16 md:w-44 md:h-20 cursor-pointer">
                     <img src="logo-cakrawala.jpg" alt="Cakrawala"
-                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500">
+                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500 scale-[1.35]">
                 </div>
 
                 <!-- Big Logo -->
@@ -450,41 +563,104 @@
                     <img src="unnamed-2.png" alt="Partner Logo C"
                         class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500">
                 </div>
+
+                <!-- Acer Predator -->
+                <div
+                    class="bg-white/90 hover:bg-white border border-brand-900/10 hover:border-brand-500/50 px-5 py-3 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,51,0,0.3)] flex items-center justify-center w-36 h-16 md:w-44 md:h-20 cursor-pointer">
+                    <img src="Acer-Predator-Logo.png" alt="Acer Predator"
+                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500">
+                </div>
+
+                <!-- Blibli -->
+                <div
+                    class="bg-white/90 hover:bg-white border border-brand-900/10 hover:border-brand-500/50 px-5 py-3 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,51,0,0.3)] flex items-center justify-center w-36 h-16 md:w-44 md:h-20 cursor-pointer">
+                    <img src="blibli-com-logo-png_seeklogo-431694.png" alt="Blibli"
+                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500 scale-[1.4]">
+                </div>
+
+                <!-- GoPay -->
+                <div
+                    class="bg-white/90 hover:bg-white border border-brand-900/10 hover:border-brand-500/50 px-5 py-3 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,51,0,0.3)] flex items-center justify-center w-36 h-16 md:w-44 md:h-20 cursor-pointer">
+                    <img src="Gopay_logo.svg.png" alt="GoPay"
+                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500">
+                </div>
+
+                <!-- KAI -->
+                <div
+                    class="bg-white/90 hover:bg-white border border-brand-900/10 hover:border-brand-500/50 px-5 py-3 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,51,0,0.3)] flex items-center justify-center w-36 h-16 md:w-44 md:h-20 cursor-pointer">
+                    <img src="Logo_PT_Kereta_Api_Indonesia_(Persero)_2020.svg.png" alt="KAI"
+                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500">
+                </div>
+
+                <!-- TikTok Music -->
+                <div
+                    class="bg-white/90 hover:bg-white border border-brand-900/10 hover:border-brand-500/50 px-5 py-3 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,51,0,0.3)] flex items-center justify-center w-36 h-16 md:w-44 md:h-20 cursor-pointer">
+                    <img src="TikTok_Music_Logo.svg.png" alt="TikTok Music"
+                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500">
+                </div>
+
+                <!-- Partner Logo D -->
+                <div
+                    class="bg-white/90 hover:bg-white border border-brand-900/10 hover:border-brand-500/50 px-5 py-3 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,51,0,0.3)] flex items-center justify-center w-36 h-16 md:w-44 md:h-20 cursor-pointer">
+                    <img src="4d92358e-069d-4d28-90f3-f0b93d25e4ce.webp" alt="Partner Logo D"
+                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500">
+                </div>
+
+                <!-- Partner Logo E -->
+                <div
+                    class="bg-white/90 hover:bg-white border border-brand-900/10 hover:border-brand-500/50 px-5 py-3 rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,51,0,0.3)] flex items-center justify-center w-36 h-16 md:w-44 md:h-20 cursor-pointer">
+                    <img src="logo-black.webp" alt="Partner Logo E"
+                        class="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-500">
+                </div>
             </div>
 
             <!-- Tambahan Tulisan di Bawah Logo -->
             <p
                 class="text-lg md:text-xl font-bold text-brand-100/80 tracking-wide mt-12 hover:text-brand-400 transition-all duration-300 transform hover:scale-105 inline-block cursor-pointer">
-                Dan masih banyak lagi🫨
+                DAN MASIH BANYAK LAGI🫨
             </p>
         </div>
     </section>
 
     <section id="about" class="py-20 relative z-20 md:mt-10">
         <div class="max-w-4xl mx-auto px-4 text-center fade-up">
-            <h2 class="font-display text-4xl md:text-5xl font-bold mb-6 tracking-tight uppercase text-white">Sedikit
-                Tentang Gue</h2>
+            <h2 class="font-display text-4xl md:text-5xl font-bold mb-6 tracking-tight uppercase text-white">
+                <span class="lang-id">Sedikit Tentang Gue</span>
+                <span class="lang-en hidden">A Bit About Me</span>
+            </h2>
             <div class="w-20 h-1 bg-brand-500 mx-auto mb-16"></div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <!-- Stats -->
                 <div class="p-6 glass border-brand-500/20 hover:border-brand-500/50 transition-colors">
                     <h3 class="font-display text-4xl font-bold text-white mb-2">522K+</h3>
-                    <p class="text-xs text-brand-100/50 uppercase tracking-wider">Pengikut di Semua Platform</p>
+                    <p class="text-xs text-brand-100/50 uppercase tracking-wider">
+                        <span class="lang-id">Pengikut di Semua Platform</span>
+                        <span class="lang-en hidden">Followers Across Platforms</span>
+                    </p>
                 </div>
                 <div class="p-6 glass border-brand-500/20 hover:border-brand-500/50 transition-colors">
                     <h3
                         class="font-display text-4xl md:text-5xl font-bold text-brand-500 drop-shadow-[0_0_10px_rgba(255,51,0,0.8)] mb-2">
                         187M+</h3>
-                    <p class="text-xs text-brand-500 font-bold uppercase tracking-wider">Total Tayangan</p>
+                    <p class="text-xs text-brand-500 font-bold uppercase tracking-wider">
+                        <span class="lang-id">Total Tayangan</span>
+                        <span class="lang-en hidden">Total Views</span>
+                    </p>
                 </div>
                 <div class="p-6 glass border-brand-500/20 hover:border-brand-500/50 transition-colors">
                     <h3 class="font-display text-4xl font-bold text-white mb-2">69+</h3>
-                    <p class="text-xs text-brand-100/50 uppercase tracking-wider">Brand Klien</p>
+                    <p class="text-xs text-brand-100/50 uppercase tracking-wider">
+                        <span class="lang-id">Brand Klien</span>
+                        <span class="lang-en hidden">Brand Clients</span>
+                    </p>
                 </div>
                 <div class="p-6 glass border-brand-500/20 hover:border-brand-500/50 transition-colors">
                     <h3 class="font-display text-4xl font-bold text-white mb-2">3+</h3>
-                    <p class="text-xs text-brand-100/50 uppercase tracking-wider">Tahun Pengalaman</p>
+                    <p class="text-xs text-brand-100/50 uppercase tracking-wider">
+                        <span class="lang-id">Tahun Pengalaman</span>
+                        <span class="lang-en hidden">Years Experience</span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -506,7 +682,7 @@
                  lalu ganti tautan di bagian src="..." video, judul, kategori, dan jumlah tayangannya. 
                  Item baru otomatis akan sejajar ke kanan dan bisa di-scroll ke samping!
             -->
-            <div class="flex overflow-x-auto gap-8 pb-6 snap-x snap-mandatory custom-scrollbar">
+            <div id="portfolio-container" class="flex overflow-x-auto gap-8 pb-6 custom-scrollbar">
                 <!-- Portfolio Item 1 -->
                 <div
                     class="w-[300px] md:w-[360px] flex-shrink-0 snap-start group relative overflow-hidden cursor-pointer fade-up border border-brand-900 hover:border-brand-500 transition-colors duration-500">
@@ -522,8 +698,10 @@
                     <div
                         class="absolute top-6 right-6 bg-[#050201]/80 backdrop-blur-md border border-brand-500 px-3 py-2 flex items-center gap-2 z-20 shadow-[0_0_20px_rgba(255,51,0,0.4)]">
                         <i class="fas fa-eye text-brand-500"></i>
-                        <span class="text-white font-display font-bold tracking-wider text-sm uppercase">40.4M
-                            tayangan</span>
+                        <span class="text-white font-display font-bold tracking-wider text-sm uppercase">
+                            <span class="lang-id">40.4M TAYANGAN</span>
+                            <span class="lang-en hidden">40.4M VIEWS</span>
+                        </span>
                     </div>
 
                     <div
@@ -531,10 +709,15 @@
                         <span
                             class="text-brand-500 text-xs font-display tracking-widest uppercase mb-3 inline-block border border-brand-500 px-3 py-1 bg-black">tech
                             hacks</span>
-                        <h3 class="font-display text-2xl font-bold mb-2 text-white">Kupas Masalah Tech Harian</h3>
+                        <h3 class="font-display text-2xl font-bold mb-2 text-white">
+                            <span class="lang-id">Kupas Masalah Tech Harian</span>
+                            <span class="lang-en hidden">Deconstruct Daily Tech Problems</span>
+                        </h3>
                         <p
                             class="text-brand-100/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            Edukasi solutif, pemicu aksi audiens.</p>
+                            <span class="lang-id">Edukasi solutif, pemicu aksi audiens.</span>
+                            <span class="lang-en hidden">Solutive education, triggering audience action.</span>
+                        </p>
                     </div>
                 </div>
 
@@ -552,7 +735,10 @@
                     <div
                         class="absolute top-6 right-6 bg-[#050201]/80 backdrop-blur-md border border-brand-500 px-3 py-2 flex items-center gap-2 z-20 shadow-[0_0_20px_rgba(255,51,0,0.4)]">
                         <i class="fas fa-eye text-brand-500"></i>
-                        <span class="text-white font-display font-bold tracking-wider text-sm">8.7M TAYANGAN</span>
+                        <span class="text-white font-display font-bold tracking-wider text-sm">
+                            <span class="lang-id">8.7M TAYANGAN</span>
+                            <span class="lang-en hidden">8.7M VIEWS</span>
+                        </span>
                     </div>
 
                     <div
@@ -560,10 +746,15 @@
                         <span
                             class="text-brand-300 text-xs font-display tracking-widest uppercase mb-3 inline-block border border-brand-300 px-3 py-1 bg-black">WINDOWS
                             HACKS</span>
-                        <h3 class="font-display text-2xl font-bold mb-2 text-white">Maksimalkan laptop Windows</h3>
+                        <h3 class="font-display text-2xl font-bold mb-2 text-white">
+                            <span class="lang-id">Maksimalkan laptop Windows</span>
+                            <span class="lang-en hidden">Maximize your Windows Laptop</span>
+                        </h3>
                         <p
                             class="text-brand-100/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            Trik praktis, dongkrak produktivitas harian.</p>
+                            <span class="lang-id">Trik praktis, dongkrak produktivitas harian.</span>
+                            <span class="lang-en hidden">Practical tricks to boost daily productivity.</span>
+                        </p>
                     </div>
                 </div>
 
@@ -581,17 +772,28 @@
                     <div
                         class="absolute top-6 right-6 bg-[#050201]/80 backdrop-blur-md border border-brand-500 px-3 py-2 flex items-center gap-2 z-20 shadow-[0_0_20px_rgba(255,51,0,0.4)]">
                         <i class="fas fa-eye text-brand-500"></i>
-                        <span class="text-white font-display font-bold tracking-wider text-sm">3.9M TAYANGAN</span>
+                        <span class="text-white font-display font-bold tracking-wider text-sm">
+                            <span class="lang-id">3.9M TAYANGAN</span>
+                            <span class="lang-en hidden">3.9M VIEWS</span>
+                        </span>
                     </div>
 
                     <div
                         class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                         <span
-                            class="text-brand-400 text-xs font-display tracking-widest uppercase mb-3 inline-block border border-brand-400 px-3 py-1 bg-black">PRODUKTIVITAS</span>
-                        <h3 class="font-display text-2xl font-bold mb-2 text-white">Trik Cepat Ngerangkum Video</h3>
+                            class="text-brand-400 text-xs font-display tracking-widest uppercase mb-3 inline-block border border-brand-400 px-3 py-1 bg-black">
+                            <span class="lang-id">PRODUKTIVITAS</span>
+                            <span class="lang-en hidden">PRODUCTIVITY</span>
+                        </span>
+                        <h3 class="font-display text-2xl font-bold mb-2 text-white">
+                            <span class="lang-id">Trik Cepat Ngerangkum Video</span>
+                            <span class="lang-en hidden">Quick Video Summarization Trick</span>
+                        </h3>
                         <p
                             class="text-brand-100/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            Ubah fitur jadi kebutuhan nyata.</p>
+                            <span class="lang-id">Ubah fitur jadi kebutuhan nyata.</span>
+                            <span class="lang-en hidden">Turn features into a real necessity.</span>
+                        </p>
                     </div>
                 </div>
 
@@ -609,18 +811,26 @@
                     <div
                         class="absolute top-6 right-6 bg-[#050201]/80 backdrop-blur-md border border-brand-500 px-3 py-2 flex items-center gap-2 z-20 shadow-[0_0_20px_rgba(255,51,0,0.45)]">
                         <i class="fas fa-eye text-brand-500"></i>
-                        <span class="text-white font-display font-bold tracking-wider text-sm">11.7M TAYANGAN</span>
+                        <span class="text-white font-display font-bold tracking-wider text-sm">
+                            <span class="lang-id">11.7M TAYANGAN</span>
+                            <span class="lang-en hidden">11.7M VIEWS</span>
+                        </span>
                     </div>
 
                     <div
                         class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                         <span
                             class="text-brand-500 text-xs font-display tracking-widest uppercase mb-3 inline-block border border-brand-500 px-3 py-1 bg-black">TECH
-                            hacks</span>
-                        <h3 class="font-display text-2xl font-bold mb-2 text-white">Rahasia Foto Hilang Masih Ada</h3>
+                            HACKS</span>
+                        <h3 class="font-display text-2xl font-bold mb-2 text-white">
+                            <span class="lang-id">Rahasia Foto Hilang Masih Ada</span>
+                            <span class="lang-en hidden">Secret: Deleted Photos Still Exist</span>
+                        </h3>
                         <p
                             class="text-brand-100/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            Konten penasaran, raup shares masif.</p>
+                            <span class="lang-id">Konten penasaran, raup shares masif.</span>
+                            <span class="lang-en hidden">Curiosity-driven content, triggering massive shares.</span>
+                        </p>
                     </div>
                 </div>
 
@@ -638,19 +848,26 @@
                     <div
                         class="absolute top-6 right-6 bg-[#050201]/80 backdrop-blur-md border border-brand-500 px-3 py-2 flex items-center gap-2 z-20 shadow-[0_0_20px_rgba(255,51,0,0.4)]">
                         <i class="fas fa-eye text-brand-500"></i>
-                        <span class="text-white font-display font-bold tracking-wider text-sm"> 4M TAYANGAN</span>
+                        <span class="text-white font-display font-bold tracking-wider text-sm">
+                            <span class="lang-id">4M TAYANGAN</span>
+                            <span class="lang-en hidden">4M VIEWS</span>
+                        </span>
                     </div>
 
                     <div
                         class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                         <span
                             class="text-brand-300 text-xs font-display tracking-widest uppercase mb-3 inline-block border border-brand-300 px-3 py-1 bg-black">ANDROID
-                            HACKS
-                        </span>
-                        <h3 class="font-display text-2xl font-bold mb-2 text-white">Amankan HP Lo Dari Pencuri</h3>
+                            HACKS</span>
+                        <h3 class="font-display text-2xl font-bold mb-2 text-white">
+                            <span class="lang-id">Amankan HP Lo Dari Pencuri</span>
+                            <span class="lang-en hidden">Secure Your Phone from Thieves</span>
+                        </h3>
                         <p
                             class="text-brand-100/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            Tips penting, penonton auto-save konten.</p>
+                            <span class="lang-id">Tips penting, penonton auto-save konten.</span>
+                            <span class="lang-en hidden">Crucial tips that drive high bookmarks/auto-saves.</span>
+                        </p>
                     </div>
                 </div>
 
@@ -668,7 +885,10 @@
                     <div
                         class="absolute top-6 right-6 bg-[#050201]/80 backdrop-blur-md border border-brand-500 px-3 py-2 flex items-center gap-2 z-20 shadow-[0_0_20px_rgba(255,51,0,0.4)]">
                         <i class="fas fa-eye text-brand-500"></i>
-                        <span class="text-white font-display font-bold tracking-wider text-sm">5M TAYANGAN</span>
+                        <span class="text-white font-display font-bold tracking-wider text-sm">
+                            <span class="lang-id">5M TAYANGAN</span>
+                            <span class="lang-en hidden">5M VIEWS</span>
+                        </span>
                     </div>
 
                     <div
@@ -676,10 +896,15 @@
                         <span
                             class="text-brand-300 text-xs font-display tracking-widest uppercase mb-3 inline-block border border-brand-300 px-3 py-1 bg-black">AI
                             REVIEW</span>
-                        <h3 class="font-display text-2xl font-bold mb-2 text-white">Hidupkan Foto Jadul Pakai AI</h3>
+                        <h3 class="font-display text-2xl font-bold mb-2 text-white">
+                            <span class="lang-id">Hidupkan Foto Jadul Pakai AI</span>
+                            <span class="lang-en hidden">Animate Old Photos with AI</span>
+                        </h3>
                         <p
                             class="text-brand-100/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            Sentuh emosi, dongkrak shares organik.</p>
+                            <span class="lang-id">Sentuh emosi, dongkrak shares organik.</span>
+                            <span class="lang-en hidden">Touch emotions to boost organic shares.</span>
+                        </p>
                     </div>
                 </div>
 
@@ -697,19 +922,28 @@
                     <div
                         class="absolute top-6 right-6 bg-[#050201]/80 backdrop-blur-md border border-brand-500 px-3 py-2 flex items-center gap-2 z-20 shadow-[0_0_20px_rgba(255,51,0,0.4)]">
                         <i class="fas fa-eye text-brand-500"></i>
-                        <span class="text-white font-display font-bold tracking-wider text-sm">4.6M TAYANGAN</span>
+                        <span class="text-white font-display font-bold tracking-wider text-sm">
+                            <span class="lang-id">4.6M TAYANGAN</span>
+                            <span class="lang-en hidden">4.6M VIEWS</span>
+                        </span>
                     </div>
 
                     <div
                         class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                         <span
-                            class="text-brand-300 text-xs font-display tracking-widest uppercase mb-3 inline-block border border-brand-300 px-3 py-1 bg-black">PRODUCT
-                            REVIEW</span>
-                        <h3 class="font-display text-2xl font-bold mb-2 text-white">Rekomendasi Website Akses Premium
-                            Murah</h3>
+                            class="text-brand-300 text-xs font-display tracking-widest uppercase mb-3 inline-block border border-brand-300 px-3 py-1 bg-black">
+                            <span class="lang-id">ULASAN PRODUK</span>
+                            <span class="lang-en hidden">PRODUCT REVIEW</span>
+                        </span>
+                        <h3 class="font-display text-2xl font-bold mb-2 text-white">
+                            <span class="lang-id">Rekomendasi Website Akses Premium Murah</span>
+                            <span class="lang-en hidden">Cheap Premium Website Access Recommendation</span>
+                        </h3>
                         <p
                             class="text-brand-100/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            Edukasi hemat, dongkrak konversi penjualan.</p>
+                            <span class="lang-id">Edukasi hemat, dongkrak konversi penjualan.</span>
+                            <span class="lang-en hidden">Budget-friendly education, boosting sales conversion.</span>
+                        </p>
                     </div>
                 </div>
 
@@ -727,7 +961,10 @@
                     <div
                         class="absolute top-6 right-6 bg-[#050201]/80 backdrop-blur-md border border-brand-500 px-3 py-2 flex items-center gap-2 z-20 shadow-[0_0_20px_rgba(255,51,0,0.4)]">
                         <i class="fas fa-eye text-brand-500"></i>
-                        <span class="text-white font-display font-bold tracking-wider text-sm">5M TAYANGAN</span>
+                        <span class="text-white font-display font-bold tracking-wider text-sm">
+                            <span class="lang-id">5M TAYANGAN</span>
+                            <span class="lang-en hidden">5M VIEWS</span>
+                        </span>
                     </div>
 
                     <div
@@ -735,11 +972,15 @@
                         <span
                             class="text-brand-400 text-xs font-display tracking-widest uppercase mb-3 inline-block border border-brand-400 px-3 py-1 bg-black">TECH
                             TRICKS</span>
-                        <h3 class="font-display text-2xl font-bold mb-2 text-white">Kode Rahasia Nonton Film Netflix
+                        <h3 class="font-display text-2xl font-bold mb-2 text-white">
+                            <span class="lang-id">Kode Rahasia Nonton Film Netflix</span>
+                            <span class="lang-en hidden">Secret Codes to Watch Netflix Movies</span>
                         </h3>
                         <p
                             class="text-brand-100/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            Bongkar fitur, tahan atensi penonton.</p>
+                            <span class="lang-id">Bongkar fitur, tahan atensi penonton.</span>
+                            <span class="lang-en hidden">Break down features to retain viewer attention.</span>
+                        </p>
                     </div>
                 </div>
 
@@ -757,20 +998,134 @@
                     <div
                         class="absolute top-6 right-6 bg-[#050201]/80 backdrop-blur-md border border-brand-500 px-3 py-2 flex items-center gap-2 z-20 shadow-[0_0_20px_rgba(255,51,0,0.4)]">
                         <i class="fas fa-eye text-brand-500"></i>
-                        <span class="text-white font-display font-bold tracking-wider text-sm">3.2M TAYANGAN</span>
+                        <span class="text-white font-display font-bold tracking-wider text-sm">
+                            <span class="lang-id">3.2M TAYANGAN</span>
+                            <span class="lang-en hidden">3.2M VIEWS</span>
+                        </span>
                     </div>
 
                     <div
                         class="absolute bottom-0 left-0 p-8 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                         <span
                             class="text-brand-500 text-xs font-display tracking-widest uppercase mb-3 inline-block border border-brand-500 px-3 py-1 bg-black">WINDOWS
-                            TRICKS
-                        </span>
-                        <h3 class="font-display text-2xl font-bold mb-2 text-white">Trik Rahasia Bersihin Komputer Lemot
+                            TRICKS</span>
+                        <h3 class="font-display text-2xl font-bold mb-2 text-white">
+                            <span class="lang-id">Trik Rahasia Bersihin Komputer Lemot</span>
+                            <span class="lang-en hidden">Secret Trick to Clean Slow Computers</span>
                         </h3>
                         <p
                             class="text-brand-100/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                            Tips fungsional, pemicu save tinggi.</p>
+                            <span class="lang-id">Tips fungsional, pemicu save tinggi.</span>
+                            <span class="lang-en hidden">Functional tips driving high saves.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Speaker Portfolio -->
+    <section id="speaker-portfolio" class="py-24 px-4 bg-[#0a0402] border-t border-brand-900/30">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tight uppercase text-white">
+                    <span class="lang-id">Dokumentasi Event & Seminar</span>
+                    <span class="lang-en hidden">Event & Seminar Portfolio</span>
+                </h2>
+                <div class="w-20 h-1 bg-brand-500 mx-auto mb-6"></div>
+                <p class="text-brand-100/50 font-light max-w-xl mx-auto">
+                    <span class="lang-id">Rekam jejak gue sebagai pembicara, dan mentor.
+                    </span>
+                    <span class="lang-en hidden">My track record as a speaker,and tech mentor.
+                    </span>
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Speaker Porto Item 1 - Event Online -->
+                <div
+                    class="glass overflow-hidden border border-brand-900 hover:border-brand-500 transition-all duration-300 group fade-up">
+                    <div class="relative overflow-hidden aspect-[3/4]">
+                        <!-- Single Video Element (Autoplay, Loop, Muted) -->
+                        <video muted loop playsinline autoplay
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 filter grayscale-[25%] group-hover:grayscale-0">
+                            <source src="ScreenRecording_06-19-2026 22-54-06_1.mov" type="video/quicktime">
+                            <source src="ScreenRecording_06-19-2026 22-54-06_1.mov" type="video/mp4">
+                        </video>
+                        <div
+                            class="absolute top-4 left-4 bg-brand-600 text-white font-display text-[10px] font-bold tracking-widest px-3 py-1.5 uppercase z-10">
+                            <span class="lang-id">WEBINAR</span>
+                            <span class="lang-en hidden">WEBINAR</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-lg font-bold text-white mb-2">
+                            <span class="lang-id">Fundamental AI & Content Creation</span>
+                            <span class="lang-en hidden">Fundamental AI & Content Creation</span>
+                        </h3>
+                        <p class="text-brand-100/60 text-xs leading-relaxed">
+                            <span class="lang-id">Membagikan konsep dasar AI dan cara praktis mengintegrasikannya dalam
+                                proses pembuatan konten kreatif secara daring lewat webinar dan sesi live
+                                interaktif.</span>
+                            <span class="lang-en hidden">Sharing fundamental AI concepts and practical ways to integrate
+                                it into creative content creation online via interactive webinars and live
+                                sessions.</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Speaker Porto Item 2 - Event Offline -->
+                <div class="glass overflow-hidden border border-brand-900 hover:border-brand-500 transition-all duration-300 group fade-up"
+                    style="transition-delay: 100ms;">
+                    <div class="relative overflow-hidden aspect-[3/4]">
+                        <!-- Horizontal image slider -->
+                        <div class="event-photo-slider flex overflow-x-auto snap-x snap-mandatory h-full w-full no-scrollbar"
+                            style="scrollbar-width: none; -ms-overflow-style: none;">
+                            <div class="w-full h-full flex-shrink-0 snap-start">
+                                <img src="IMG_1557.jpg" alt="Hands-on Tech Workshop (Offline) - 1"
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 filter grayscale-[25%] group-hover:grayscale-0">
+                            </div>
+                            <div class="w-full h-full flex-shrink-0 snap-start">
+                                <img src="IMG_1558.jpg" alt="Hands-on Tech Workshop (Offline) - 2"
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 filter grayscale-[25%] group-hover:grayscale-0">
+                            </div>
+                            <div class="w-full h-full flex-shrink-0 snap-start">
+                                <img src="IMG_1559.jpg" alt="Hands-on Tech Workshop (Offline) - 3"
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 filter grayscale-[25%] group-hover:grayscale-0">
+                            </div>
+                            <div class="w-full h-full flex-shrink-0 snap-start">
+                                <video muted loop playsinline autoplay
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 filter grayscale-[25%] group-hover:grayscale-0">
+                                    <source src="ScreenRecording_06-19-2026 22-53-15_1.mov" type="video/quicktime">
+                                    <source src="ScreenRecording_06-19-2026 22-53-15_1.mov" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                        <div
+                            class="absolute top-4 left-4 bg-brand-600 text-white font-display text-[10px] font-bold tracking-widest px-3 py-1.5 uppercase z-10">
+                            <span class="lang-id">WORKSHOP</span>
+                            <span class="lang-en hidden">WORKSHOP</span>
+                        </div>
+                        <!-- Navigation dots indicator inside the card -->
+                        <div
+                            class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-1.5 z-10 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-full">
+                            <span class="dot w-3 h-1.5 rounded-full bg-brand-500 transition-all duration-300"></span>
+                            <span class="dot w-1.5 h-1.5 rounded-full bg-white/40 transition-all duration-300"></span>
+                            <span class="dot w-1.5 h-1.5 rounded-full bg-white/40 transition-all duration-300"></span>
+                            <span class="dot w-1.5 h-1.5 rounded-full bg-white/40 transition-all duration-300"></span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-lg font-bold text-white mb-2">
+                            <span class="lang-id">Hands-on AI & Productivity Workshop At KAI</span>
+                            <span class="lang-en hidden">Hands-on AI & Productivity Workshop At KAI</span>
+                        </h3>
+                        <p class="text-brand-100/60 text-xs leading-relaxed">
+                            <span class="lang-id">Sesi interaktif tatap muka mendampingi audiens secara langsung
+                                menggunakan tools kecerdasan buatan untuk mengotomatisasi pekerjaan sehari-hari.</span>
+                            <span class="lang-en hidden">A face-to-face interactive session directly guiding the
+                                audience in utilizing AI tools to automate daily work processes.</span>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -780,8 +1135,10 @@
     <section id="reviews" class="py-24 bg-[#0a0402] border-y border-brand-900/30 px-4">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-16 fade-up">
-                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tight uppercase text-white">Apa
-                    Kata Mereka?</h2>
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tight uppercase text-white">
+                    <span class="lang-id">Apa Kata Mereka?</span>
+                    <span class="lang-en hidden">What They Say</span>
+                </h2>
                 <div class="w-20 h-1 bg-brand-500 mx-auto"></div>
             </div>
 
@@ -794,7 +1151,14 @@
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
                             class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="text-brand-100/80 mb-6 italic leading-relaxed">"Gokil sih, ulasan hapenya detail banget tapi tetep asyik ditonton. Retention rate-nya tinggi, engagement naik, dan pelayanan komunikasinya responsif banget. Top notch!"</p>
+                    <p class="text-brand-100/80 mb-6 italic leading-relaxed">
+                        <span class="lang-id">"Gokil sih, ulasan hapenya detail banget tapi tetep asyik ditonton.
+                            Retention rate-nya tinggi, engagement naik, dan pelayanan komunikasinya responsif banget.
+                            Top notch!"</span>
+                        <span class="lang-en hidden">"Insane! His phone reviews are detailed yet super fun to watch.
+                            High retention rate, increased engagement, and very responsive communication. Top
+                            notch!"</span>
+                    </p>
                     <div class="flex items-center gap-4 mt-auto">
                         <div
                             class="w-12 h-12 bg-[#050201] flex items-center justify-center text-brand-500 font-display font-bold border border-brand-500/30">
@@ -802,7 +1166,7 @@
                         <div>
                             <h4 class="text-white font-display font-bold tracking-wide">Motorola</h4>
                             <p class="text-brand-100/40 text-[10px] uppercase tracking-widest mt-1"> Phone
-                                 Brand</p>
+                                Brand</p>
                         </div>
                     </div>
                 </div>
@@ -815,7 +1179,14 @@
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
                             class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="text-brand-100/80 mb-6 italic leading-relaxed">"Kerja bareng bro satu ini gak pernah ribet. Kreatif banget bikin analogi laptop kita jadi gampang dipahami awam. Performa kontennya mantap, delivery-nya super cepet!"</p>
+                    <p class="text-brand-100/80 mb-6 italic leading-relaxed">
+                        <span class="lang-id">"Kerja bareng bro satu ini gak pernah ribet. Kreatif banget bikin analogi
+                            laptop kita jadi gampang dipahami awam. Performa kontennya mantap, delivery-nya super
+                            cepet!"</span>
+                        <span class="lang-en hidden">"Working with him is never complicated. He's so creative at making
+                            analogies that make our laptops easy for laypeople to understand. Content performance is
+                            great, delivery is super fast!"</span>
+                    </p>
                     <div class="flex items-center gap-4 mt-auto">
                         <div
                             class="w-12 h-12 bg-[#050201] flex items-center justify-center text-brand-500 font-display font-bold border border-brand-500/30">
@@ -836,7 +1207,14 @@
                         <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
                             class="fas fa-star"></i><i class="fas fa-star"></i>
                     </div>
-                    <p class="text-brand-100/80 mb-6 italic leading-relaxed">"Gak cuma jago bikin skrip yang nge-hook, tapi profesionalitas kerjanya juara. Konversi bagus, minim revisi, dan komunikasinya bener-bener suportif. Highly recommended!"</p>
+                    <p class="text-brand-100/80 mb-6 italic leading-relaxed">
+                        <span class="lang-id">"Gak cuma jago bikin skrip yang nge-hook, tapi profesionalitas kerjanya
+                            juara. Konversi bagus, minim revisi, dan komunikasinya bener-bener suportif. Highly
+                            recommended!"</span>
+                        <span class="lang-en hidden">"Not only is he great at writing hooky scripts, his professionalism
+                            is top tier. Good conversions, minimal revisions, and supportively communicative. Highly
+                            recommended!"</span>
+                    </p>
                     <div class="flex items-center gap-4 mt-auto">
                         <div
                             class="w-12 h-12 bg-[#050201] flex items-center justify-center text-brand-500 font-display font-bold border border-brand-500/30">
@@ -848,754 +1226,970 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section id="ratecard" class="py-24 px-4 bg-[#050201]">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16 fade-up">
-                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tight uppercase text-white">Layanan
-                    Kolaborasi</h2>
-                <div class="w-20 h-1 bg-brand-500 mx-auto"></div>
-                <p class="text-brand-100/50 font-light mt-6 max-w-xl mx-auto">Pilih jenis layanan kolaborasi yang sesuai
-                    dengan kebutuhan campaign kamuu.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
-
-                <!-- Package 1: Instagram Story -->
-                <div
-                    class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex flex-col">
-                    <h3 class="font-display text-2xl font-bold mb-2 text-white">Instagram Story</h3>
-                    <p class="text-brand-100/50 text-sm mb-8">Interaksi langsung dengan fitur interaktif & link.</p>
-                    <ul class="space-y-4 text-brand-100/80 text-sm flex-grow">
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> 1-3 Slides
-                            Story (Tergantung brief)</li>
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Stiker
-                            Interaktif & Direct Link</li>
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Tayang aktif
-                            selama 24 jam penuh</li>
-                    </ul>
-                </div>
-
-                <!-- Package 2: TikTok -->
-                <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex flex-col"
-                    style="transition-delay: 100ms;">
-                    <h3 class="font-display text-2xl font-bold mb-2 text-white">Single Post TikTok</h3>
-                    <p class="text-brand-100/50 text-sm mb-8">Fokus untuk FYP & audiens vertikal.</p>
-                    <ul class="space-y-4 text-brand-100/80 text-sm flex-grow">
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> 1x Video
-                            Khusus TikTok</li>
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Konsep &
-                            Script dari Gue</li>
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> 1x Revisi
-                            minor (editing)</li>
-                    </ul>
-                </div>
-
-                <!-- Package 3: IG Reels -->
-                <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex flex-col"
-                    style="transition-delay: 150ms;">
-                    <h3 class="font-display text-2xl font-bold mb-2 text-white">Single Post IG Reels</h3>
-                    <p class="text-brand-100/50 text-sm mb-8">Estetika tinggi untuk konversi brand.</p>
-                    <ul class="space-y-4 text-brand-100/80 text-sm flex-grow">
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> 1x Video
-                            Khusus IG Reels</li>
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Konsep &
-                            Script dari Gue</li>
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> 1x Revisi
-                            minor (editing)</li>
-                    </ul>
-                </div>
-
-                <!-- Package 4: Mirroring -->
-                <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex flex-col"
-                    style="transition-delay: 200ms;">
-                    <h3 class="font-display text-2xl font-bold mb-2 text-white">Mirroring</h3>
-                    <p class="text-brand-100/50 text-sm mb-8">Upload ke platform sebelah (Cross-post).</p>
-                    <ul class="space-y-4 text-brand-100/80 text-sm flex-grow">
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Video yang
-                            sama (tanpa edit ulang)</li>
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Lebih hemat
-                            budget</li>
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Reach lebih
-                           luas</li>
-                    </ul>
-                </div>
-
-                <!-- Package 5: Custom -->
-                <div class="bg-[#120402] p-8 border border-brand-500 relative transform hover:-translate-y-2 transition-transform duration-300 shadow-[0_0_30px_rgba(255,51,0,0.15)] fade-up flex flex-col"
-                    style="transition-delay: 300ms;">
-                    <div
-                        class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-brand-500 text-white px-6 py-1 text-xs font-display tracking-widest uppercase">
-                        Fleksibel
+            <section id="ratecard" class="py-24 px-4 bg-[#050201]">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16 fade-up">
+                        <h2
+                            class="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tight uppercase text-white">
+                            <span class="lang-id">Layanan Kolaborasi</span>
+                            <span class="lang-en hidden">Collaboration Services</span>
+                        </h2>
+                        <div class="w-20 h-1 bg-brand-500 mx-auto"></div>
+                        <p class="text-brand-100/50 font-light mt-6 max-w-xl mx-auto">
+                            <span class="lang-id">Pilih jenis layanan kolaborasi yang sesuai dengan kebutuhan campaign
+                                kamuu.</span>
+                            <span class="lang-en hidden">Choose the type of collaboration service that suits your
+                                campaign needs.</span>
+                        </p>
                     </div>
-                    <h3 class="font-display text-2xl font-bold mb-2 text-white">Custom Project</h3>
-                    <p class="text-brand-300 text-sm mb-8">Disesuaikan dengan brief spesifik campaign.</p>
-                    <ul class="space-y-4 text-white text-sm flex-grow">
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Jumlah video
-                            fleksibel</li>
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Integrasi IG
-                            Story dengan Link</li>
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Opsi Usage
-                            Rights (Digital Ads)</li>
-                    </ul>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
+
+                        <!-- Package 1: Instagram Story -->
+                        <div
+                            class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex flex-col">
+                            <h3 class="font-display text-2xl font-bold mb-2 text-white">Instagram Story</h3>
+                            <p class="text-brand-100/50 text-sm mb-8">
+                                <span class="lang-id">Interaksi langsung dengan fitur interaktif & link.</span>
+                                <span class="lang-en hidden">Direct interaction with interactive features &
+                                    links.</span>
+                            </p>
+                            <ul class="space-y-4 text-brand-100/80 text-sm flex-grow">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">1-3 Slides Story (Tergantung brief)</span>
+                                    <span class="lang-en hidden">1-3 Story Slides (Depending on brief)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Stiker Interaktif & Direct Link</span>
+                                    <span class="lang-en hidden">Interactive Stickers & Direct Link</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Tayang aktif selama 24 jam penuh</span>
+                                    <span class="lang-en hidden">Active live for a full 24 hours</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Package 2: TikTok -->
+                        <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex flex-col"
+                            style="transition-delay: 100ms;">
+                            <h3 class="font-display text-2xl font-bold mb-2 text-white">Single Post TikTok</h3>
+                            <p class="text-brand-100/50 text-sm mb-8">
+                                <span class="lang-id">Fokus untuk FYP & audiens vertikal.</span>
+                                <span class="lang-en hidden">Focus for FYP & vertical audience.</span>
+                            </p>
+                            <ul class="space-y-4 text-brand-100/80 text-sm flex-grow">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">1x Video Khusus TikTok</span>
+                                    <span class="lang-en hidden">1x TikTok-Exclusive Video</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Konsep & Script dari Gue</span>
+                                    <span class="lang-en hidden">Concept & Script by Me</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">1x Revisi minor (editing)</span>
+                                    <span class="lang-en hidden">1x Minor revision (editing)</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Package 3: IG Reels -->
+                        <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex flex-col"
+                            style="transition-delay: 150ms;">
+                            <h3 class="font-display text-2xl font-bold mb-2 text-white">Single Post IG Reels</h3>
+                            <p class="text-brand-100/50 text-sm mb-8">
+                                <span class="lang-id">Estetika tinggi untuk konversi brand.</span>
+                                <span class="lang-en hidden">High aesthetics for brand conversion.</span>
+                            </p>
+                            <ul class="space-y-4 text-brand-100/80 text-sm flex-grow">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">1x Video Khusus IG Reels</span>
+                                    <span class="lang-en hidden">1x IG Reels-Exclusive Video</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Konsep & Script dari Gue</span>
+                                    <span class="lang-en hidden">Concept & Script by Me</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">1x Revisi minor (editing)</span>
+                                    <span class="lang-en hidden">1x Minor revision (editing)</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Package 4: Mirroring -->
+                        <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex flex-col"
+                            style="transition-delay: 200ms;">
+                            <h3 class="font-display text-2xl font-bold mb-2 text-white">Mirroring</h3>
+                            <p class="text-brand-100/50 text-sm mb-8">
+                                <span class="lang-id">Upload ke platform sebelah (Cross-post).</span>
+                                <span class="lang-en hidden">Cross-post to the other platform.</span>
+                            </p>
+                            <ul class="space-y-4 text-brand-100/80 text-sm flex-grow">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Video yang sama (tanpa edit ulang)</span>
+                                    <span class="lang-en hidden">Same video (without re-editing)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Lebih hemat budget</span>
+                                    <span class="lang-en hidden">More budget-friendly</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Reach lebih luas</span>
+                                    <span class="lang-en hidden">Broader reach</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Package 5: Custom -->
+                        <div class="bg-[#120402] p-8 border border-brand-500 relative transform hover:-translate-y-2 transition-transform duration-300 shadow-[0_0_30px_rgba(255,51,0,0.15)] fade-up flex flex-col"
+                            style="transition-delay: 300ms;">
+                            <div
+                                class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-brand-500 text-white px-6 py-1 text-xs font-display tracking-widest uppercase">
+                                <span class="lang-id">Fleksibel</span>
+                                <span class="lang-en hidden">Flexible</span>
+                            </div>
+                            <h3 class="font-display text-2xl font-bold mb-2 text-white">Custom Project</h3>
+                            <p class="text-brand-300 text-sm mb-8">
+                                <span class="lang-id">Disesuaikan dengan brief spesifik campaign.</span>
+                                <span class="lang-en hidden">Tailored to specific campaign briefs.</span>
+                            </p>
+                            <ul class="space-y-4 text-white text-sm flex-grow">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Jumlah video fleksibel</span>
+                                    <span class="lang-en hidden">Flexible number of videos</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Integrasi IG Story dengan Link</span>
+                                    <span class="lang-en hidden">IG Story integration with Links</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Opsi Usage Rights (Digital Ads)</span>
+                                    <span class="lang-en hidden">Usage Rights options (Digital Ads)</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Package 6: Brand Ambassador -->
+                        <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex flex-col"
+                            style="transition-delay: 400ms;">
+                            <h3 class="font-display text-2xl font-bold mb-2 text-white">Brand Ambassador</h3>
+                            <p class="text-brand-100/50 text-sm mb-8">
+                                <span class="lang-id">Kerjasama eksklusif jangka panjang.</span>
+                                <span class="lang-en hidden">Exclusive long-term partnership.</span>
+                            </p>
+                            <ul class="space-y-4 text-brand-100/80 text-sm flex-grow">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Kontrak 3 - 6 Bulan</span>
+                                    <span class="lang-en hidden">3 - 6 Month Contract</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Jadwal posting rutin & terencana</span>
+                                    <span class="lang-en hidden">Regular & planned posting schedule</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-brand-500 mt-1 mr-3"></i>
+                                    <span class="lang-id">Hadir di event offline brand</span>
+                                    <span class="lang-en hidden">Attend brand's offline events</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Visit Event -->
+            <section id="visit-event" class="py-24 px-4 bg-[#0a0402] border-y border-brand-900/30">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16 fade-up">
+                        <h2
+                            class="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tight uppercase text-white">
+                            Visit Event</h2>
+                        <div class="w-20 h-1 bg-brand-500 mx-auto"></div>
+                        <p class="text-brand-100/50 font-light mt-6 max-w-xl mx-auto">
+                            <span class="lang-id">Hadir dan meramaikan event offline brand kamu dengan publikasi
+                                kreatif, interaktif, dan berdampak luas.</span>
+                            <span class="lang-en hidden">Attending and hyping up your brand's offline events with
+                                creative, interactive, and high-impact coverage.</span>
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Feature 1 -->
+                        <div
+                            class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex flex-col">
+                            <div
+                                class="w-12 h-12 bg-brand-900/30 flex items-center justify-center text-brand-500 border border-brand-500/30 mb-6 text-xl">
+                                <i class="fas fa-bullhorn"></i>
+                            </div>
+                            <h3 class="font-display text-2xl font-bold mb-3 text-white">Pre-Event Hype</h3>
+                            <p class="text-brand-100/60 text-sm leading-relaxed">
+                                <span class="lang-id">Membangun antusiasme audiens sebelum event dimulai lewat konten
+                                    teaser interaktif dan ajakan untuk berkunjung.</span>
+                                <span class="lang-en hidden">Building audience hype before the event starts through
+                                    interactive teaser content and calls to visit.</span>
+                            </p>
+                        </div>
+
+                        <!-- Feature 2 -->
+                        <div class="glass p-8 border border-brand-500 relative transform hover:-translate-y-2 transition-transform duration-300 shadow-[0_0_30px_rgba(255,51,0,0.15)] fade-up flex flex-col"
+                            style="transition-delay: 100ms;">
+                            <div
+                                class="w-12 h-12 bg-brand-500 flex items-center justify-center text-white mb-6 text-xl">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <h3 class="font-display text-2xl font-bold mb-3 text-white">On-Site Coverage</h3>
+                            <p class="text-brand-100/80 text-sm leading-relaxed">
+                                <span class="lang-id">Liputan langsung di lokasi event melalui Instagram Stories, Reels,
+                                    atau TikTok secara real-time untuk menjangkau audiens digital secara masif.</span>
+                                <span class="lang-en hidden">Live coverage at the event location via Instagram Stories,
+                                    Reels, or TikTok in real-time to reach a massive digital audience.</span>
+                            </p>
+                        </div>
+
+                        <!-- Feature 3 -->
+                        <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex flex-col"
+                            style="transition-delay: 200ms;">
+                            <div
+                                class="w-12 h-12 bg-brand-900/30 flex items-center justify-center text-brand-500 border border-brand-500/30 mb-6 text-xl">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <h3 class="font-display text-2xl font-bold mb-3 text-white">Post-Event Recap</h3>
+                            <p class="text-brand-100/60 text-sm leading-relaxed">
+                                <span class="lang-id">Video kompilasi recap event dengan gaya editing dinamis dan
+                                    penyampaian yang khas untuk menjaga buzz event tetap tinggi pasca-acara.</span>
+                                <span class="lang-en hidden">Recap compilation video of the event with dynamic editing
+                                    and signature delivery to keep event buzz high post-event.</span>
+                            </p>
+                        </div>
+                    </div>
+
+
+                </div>
+            </section>
+
+            <!-- Section: Speaker / Talkshow -->
+            <section id="speaker" class="py-24 px-4 bg-[#050201]">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-16 fade-up">
+                        <h2
+                            class="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tight uppercase text-white">
+                            Speaker & Talkshow</h2>
+                        <div class="w-20 h-1 bg-brand-500 mx-auto"></div>
+                        <p class="text-brand-100/50 font-light mt-6 max-w-xl mx-auto">
+                            <span class="lang-id">Membawa energi, wawasan mendalam, dan inspirasi praktis sebagai
+                                pembicara, moderator, atau guest star di acara Anda.</span>
+                            <span class="lang-en hidden">Bringing energy, deep insights, and practical inspiration as a
+                                speaker, moderator, or guest star at your event.</span>
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <!-- Topic 1: Fundamental AI -->
+                        <div
+                            class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex gap-6">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 bg-brand-900/30 flex items-center justify-center text-brand-500 border border-brand-500/30 text-xl">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-display text-xl font-bold mb-2 text-white">Fundamental AI</h3>
+                                <p class="text-brand-100/60 text-sm leading-relaxed">
+                                    <span class="lang-id">Membahas konsep dasar kecerdasan buatan, bagaimana AI bekerja,
+                                        dan cara memanfaatkannya secara etis di dunia profesional.</span>
+                                    <span class="lang-en hidden">Discussing the core concepts of artificial
+                                        intelligence, how AI works, and how to utilize it ethically in the professional
+                                        world.</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Topic 2: Visual Creative Content Creation -->
+                        <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex gap-6"
+                            style="transition-delay: 100ms;">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 bg-brand-900/30 flex items-center justify-center text-brand-500 border border-brand-500/30 text-xl">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-display text-xl font-bold mb-2 text-white">Visual Creative Content
+                                    Creation</h3>
+                                <p class="text-brand-100/60 text-sm leading-relaxed">
+                                    <span class="lang-id">Trik merancang aset visual yang memukau, komposisi warna yang
+                                        menjual, dan seni menciptakan konten kreatif yang memikat mata.</span>
+                                    <span class="lang-en hidden">Tricks to design stunning visual assets, color
+                                        compositions that sell, and the art of creating eye-catching creative
+                                        content.</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Topic 3: Hands on AI Workshop -->
+                        <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex gap-6"
+                            style="transition-delay: 150ms;">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 bg-brand-900/30 flex items-center justify-center text-brand-500 border border-brand-500/30 text-xl">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-display text-xl font-bold mb-2 text-white">Hands-on AI Workshop</h3>
+                                <p class="text-brand-100/60 text-sm leading-relaxed">
+                                    <span class="lang-id">Sesi praktik langsung menggunakan tools AI populer untuk
+                                        mempercepat workflow kerja, produktivitas, dan kreasi konten secara
+                                        instan.</span>
+                                    <span class="lang-en hidden">A direct practical session using popular AI tools to
+                                        instantly accelerate workflow, productivity, and content creation.</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Topic 4: AI for Social Media Planning -->
+                        <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex gap-6"
+                            style="transition-delay: 200ms;">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 bg-brand-900/30 flex items-center justify-center text-brand-500 border border-brand-500/30 text-xl">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-display text-xl font-bold mb-2 text-white">AI for Social Media Planning
+                                </h3>
+                                <p class="text-brand-100/60 text-sm leading-relaxed">
+                                    <span class="lang-id">Memanfaatkan AI untuk riset tren, merancang content plan
+                                        bulanan, menulis naskah/skrip, dan mengoptimalkan distribusi konten secara
+                                        terjadwal.</span>
+                                    <span class="lang-en hidden">Leveraging AI for trend research, designing monthly
+                                        content plans, writing scripts, and optimizing scheduled content
+                                        distribution.</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Topic 5: How to be Viral on Social Media -->
+                        <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex gap-6 md:col-span-2 max-w-xl mx-auto w-full"
+                            style="transition-delay: 250ms;">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 bg-brand-900/30 flex items-center justify-center text-brand-500 border border-brand-500/30 text-xl">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-display text-xl font-bold mb-2 text-white">How to be Viral on Social
+                                    Media</h3>
+                                <p class="text-brand-100/60 text-sm leading-relaxed">
+                                    <span class="lang-id">Bongkar rahasia algoritma, teknik merancang hook 3 detik
+                                        pertama, dan strategi bercerita (storytelling) yang memicu share organik
+                                        tinggi.</span>
+                                    <span class="lang-en hidden">Unlocking algorithm secrets, techniques for designing
+                                        the first 3-second hook, and storytelling strategies that trigger high organic
+                                        shares.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <footer id="contact" class="bg-[#050201] border-t border-brand-900/40 pt-24 pb-12 relative overflow-hidden">
+                <!-- Footer Cinematic Glow -->
+                <div
+                    class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-[800px] h-[300px] bg-brand-500/10 blur-[100px] rounded-full pointer-events-none">
                 </div>
 
-                <!-- Package 6: Brand Ambassador -->
-                <div class="glass p-8 border border-brand-900 hover:border-brand-500 transition-all duration-300 fade-up flex flex-col"
-                    style="transition-delay: 400ms;">
-                    <h3 class="font-display text-2xl font-bold mb-2 text-white">Brand Ambassador</h3>
-                    <p class="text-brand-100/50 text-sm mb-8">Kerjasama eksklusif jangka panjang.</p>
-                    <ul class="space-y-4 text-brand-100/80 text-sm flex-grow">
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Kontrak 3 - 6
-                            Bulan</li>
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Jadwal
-                            posting rutin & terencana</li>
-                        <li class="flex items-start"><i class="fas fa-check text-brand-500 mt-1 mr-3"></i> Hadir di
-                            event offline brand</li>
-                    </ul>
+                <div class="max-w-4xl mx-auto px-4 text-center fade-up relative z-10">
+
+
+                    <div class="mb-12 space-y-3">
+                        <p
+                            class="text-4xl md:text-6xl font-extrabold font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-brand-500 to-yellow-300 animate-pulse uppercase select-none drop-shadow-[0_5px_15px_rgba(255,51,0,0.4)]">
+                            <span class="lang-id">⚡🔥 HUBUNGI GUE SEKARANG!!! 🔥⚡</span>
+                            <span class="lang-en hidden">⚡🔥 CONTACT ME NOW!!! 🔥⚡</span>
+                        </p>
+                        <p
+                            class="text-brand-300 text-sm md:text-base tracking-widest font-black uppercase flex items-center justify-center gap-2 animate-bounce">
+                            <span class="lang-id">👉 KITA BIKIN COLAB YANG PECAH BARENG! 🚀💥</span>
+                            <span class="lang-en hidden">👉 LET'S MAKE KILLER COLAB TOGETHER! 🚀💥</span>
+                        </p>
+                    </div>
+
+                    <div
+                        class="flex flex-col sm:flex-row justify-center items-center gap-10 sm:gap-8 mb-20 font-display">
+                        <!-- WhatsApp Column -->
+                        <div class="flex flex-col items-center gap-3 w-full sm:w-auto">
+                            <span class="text-3xl text-yellow-400 animate-bounce flex flex-col items-center">
+                                <i class="fas fa-arrow-down drop-shadow-[0_0_8px_rgba(255,51,0,0.8)]"></i>
+                                <span
+                                    class="text-[10px] font-black tracking-widest text-brand-300 uppercase mt-1 lang-id">KLIK
+                                    DI SINI GUYS!</span>
+                                <span
+                                    class="text-[10px] font-black tracking-widest text-brand-300 uppercase mt-1 lang-en hidden">CLICK
+                                    HERE GUYS!</span>
+                            </span>
+                            <a href="https://wa.me/6282132631083?text=Halo%20Yochef%20Arianto%2C%20gue%20tertarik%20buat%20kolaborasi%20bikin%20konten%20nih.%20Bisa%20diskusi%20detail%20%26%20ratecard%20lebih%20lanjut%3F"
+                                target="_blank"
+                                class="bg-brand-600 hover:bg-brand-500 text-white px-10 py-5 tracking-widest text-sm uppercase transition-all shadow-[0_0_30px_rgba(255,51,0,0.4)] flex items-center justify-center gap-3 w-full sm:w-64 lang-id">
+                                <i class="fab fa-whatsapp text-xl"></i> WhatsApp
+                            </a>
+                            <a href="https://wa.me/6282132631083?text=Hello%20Yochef%20Arianto%2C%20I%27m%20interested%20in%20collaborating%20to%20create%20content.%20Can%20we%20discuss%20the%20details%20%26%20ratecard%20further%3F"
+                                target="_blank"
+                                class="bg-brand-600 hover:bg-brand-500 text-white px-10 py-5 tracking-widest text-sm uppercase transition-all shadow-[0_0_30px_rgba(255,51,0,0.4)] flex items-center justify-center gap-3 w-full sm:w-64 lang-en hidden">
+                                <i class="fab fa-whatsapp text-xl"></i> WhatsApp
+                            </a>
+                        </div>
+                        <!-- Email Column -->
+                        <div class="flex flex-col items-center gap-3 w-full sm:w-auto">
+                            <span class="text-3xl text-yellow-400 animate-bounce flex flex-col items-center">
+                                <i class="fas fa-arrow-down drop-shadow-[0_0_8px_rgba(255,51,0,0.8)]"></i>
+                                <span
+                                    class="text-[10px] font-black tracking-widest text-brand-300 uppercase mt-1 lang-id">ATAU
+                                    EMAIL GUE!</span>
+                                <span
+                                    class="text-[10px] font-black tracking-widest text-brand-300 uppercase mt-1 lang-en hidden">OR
+                                    EMAIL ME!</span>
+                            </span>
+                            <a href="mailto:ariantoyochef12@gmail.com?subject=Kolaborasi%20Konten%20-%20%5BNama%20Brand%5D&body=Halo%20Yochef%20Arianto%2C%0A%0AGue%20tertarik%20buat%20kolaborasi%20bikin%20konten%20bareng%20lo.%20Berikut%20detail%20singkat%20campaign%20kami%3A%0A-%20Nama%20Brand%3A%20%0A-%20Jenis%20Layanan%3A%20%0A-%20Timeline%2FEstimasi%3A%20%0A%0ABisa%20tolong%20kirimkan%20info%20detail%20%26%20ratecard%20terbaru%3F%20Terima%20kasih%21"
+                                class="border border-brand-500 hover:bg-brand-900/30 text-white px-10 py-5 tracking-widest text-sm uppercase transition-all flex items-center justify-center gap-3 w-full sm:w-64 lang-id">
+                                <i class="fas fa-envelope text-xl"></i> Email
+                            </a>
+                            <a href="mailto:ariantoyochef12@gmail.com?subject=Content%20Collaboration%20-%20%5BBrand%20Name%5D&body=Hello%20Yochef%20Arianto%2C%0A%0AI%20am%20interested%20in%20collaborating%20to%20create%20content%20with%20you.%20Here%20are%20our%20brief%20campaign%20details%3A%0A-%20Brand%20Name%3A%20%0A-%20Service%20Type%3A%20%0A-%20Timeline%2FEstimate%3A%20%0A%0ACould%20you%20please%20send%20information%20about%20your%20details%20%26%20latest%20ratecard%3F%20Thank%20you%21"
+                                class="border border-brand-500 hover:bg-brand-900/30 text-white px-10 py-5 tracking-widest text-sm uppercase transition-all flex items-center justify-center gap-3 w-full sm:w-64 lang-en hidden">
+                                <i class="fas fa-envelope text-xl"></i> Email
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center space-x-6 mb-12">
+                        <a href="https://www.instagram.com/yoschf?igsh=aXNhYTkzMGFtaWRs&utm_source=qr" target="_blank"
+                            class="text-brand-100/40 hover:text-brand-400 transition-all text-2xl transform hover:scale-110"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@yoschff?_r=1&_t=ZS-97JU0XUTOOC" target="_blank"
+                            class="text-brand-100/40 hover:text-brand-400 transition-all text-2xl transform hover:scale-110"><i
+                                class="fab fa-tiktok"></i></a>
+                        <a href="https://www.youtube.com/@yossarianto" target="_blank"
+                            class="text-brand-100/40 hover:text-brand-400 transition-all text-2xl transform hover:scale-110"><i
+                                class="fab fa-youtube"></i></a>
+                    </div>
+
+                    <p class="text-brand-100/30 text-sm font-display tracking-widest uppercase">
+                        &copy; 2026 Yochef Arianto.
+                    </p>
                 </div>
+            </footer>
 
-            </div>
-        </div>
-    </section>
+            <script>
+                // Animasi fade-up saat di-scroll
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.1
+                };
 
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
 
+                document.querySelectorAll('.fade-up').forEach((elem) => {
+                    observer.observe(elem);
+                });
 
-    <footer id="contact" class="bg-[#050201] border-t border-brand-900/40 pt-24 pb-12 relative overflow-hidden">
-        <!-- Footer Cinematic Glow -->
-        <div
-            class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-[800px] h-[300px] bg-brand-500/10 blur-[100px] rounded-full pointer-events-none">
-        </div>
+                // Efek blur/warna pada navbar saat di-scroll
+                const navbar = document.getElementById('navbar');
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        navbar.classList.add('shadow-lg', 'bg-[#050201]/95');
+                        navbar.classList.remove('glass');
+                    } else {
+                        navbar.classList.remove('shadow-lg', 'bg-[#050201]/95');
+                        navbar.classList.add('glass');
+                    }
+                });
 
-        <div class="max-w-4xl mx-auto px-4 text-center fade-up relative z-10">
-            <h2 class="font-display text-5xl md:text-7xl font-bold mb-6 tracking-tighter text-white uppercase">Mulai
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-brand-300">Berkarya</span>
-            </h2>
+                // Mobile menu toggle
+                const btn = document.getElementById('mobile-menu-button');
+                const menu = document.getElementById('mobile-menu');
 
-            <div class="mb-12 space-y-3">
-                <p
-                    class="text-4xl md:text-6xl font-extrabold font-display tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-brand-500 to-yellow-300 animate-pulse uppercase select-none drop-shadow-[0_5px_15px_rgba(255,51,0,0.4)]">
-                    ⚡🔥 HUBUNGI GUE SEKARANG!!! 🔥⚡
-                </p>
-                <p
-                    class="text-brand-300 text-sm md:text-base tracking-widest font-black uppercase flex items-center justify-center gap-2 animate-bounce">
-                    👉 KITA BIKIN KONTEN PECAH BARENG! 🚀💥
-                </p>
-            </div>
+                btn.addEventListener('click', () => {
+                    menu.classList.toggle('hidden');
+                });
 
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-10 sm:gap-8 mb-20">
-                <!-- WhatsApp Column -->
-                <div class="flex flex-col items-center gap-3 w-full sm:w-auto">
-                    <span class="text-3xl text-yellow-400 animate-bounce flex flex-col items-center">
-                        <i class="fas fa-arrow-down drop-shadow-[0_0_8px_rgba(255,51,0,0.8)]"></i>
-                        <span class="text-[10px] font-black tracking-widest text-brand-300 uppercase mt-1">KLIK DI SINI
-                            GUYS!</span>
-                    </span>
-                    <a href="https://wa.me/6285319165111?text=Halo%20Yochef%20Arianto%2C%20gue%20tertarik%20buat%20kolaborasi%20bikin%20konten%20nih.%20Bisa%20diskusi%20detail%20%26%20ratecard%20lebih%20lanjut%3F"
-                        target="_blank"
-                        class="bg-brand-600 hover:bg-brand-500 text-white px-10 py-5 font-display tracking-widest text-sm uppercase transition-all shadow-[0_0_30px_rgba(255,51,0,0.4)] flex items-center justify-center gap-3 w-full sm:w-64">
-                        <i class="fab fa-whatsapp text-xl"></i> WhatsApp
-                    </a>
-                </div>
-                <!-- Email Column -->
-                <div class="flex flex-col items-center gap-3 w-full sm:w-auto">
-                    <span class="text-3xl text-yellow-400 animate-bounce flex flex-col items-center">
-                        <i class="fas fa-arrow-down drop-shadow-[0_0_8px_rgba(255,51,0,0.8)]"></i>
-                        <span class="text-[10px] font-black tracking-widest text-brand-300 uppercase mt-1">ATAU EMAIL
-                            GUE!</span>
-                    </span>
-                    <a href="mailto:ariantoyochef12@gmail.com?subject=Kolaborasi%20Konten%20-%20%5BNama%20Brand%5D&body=Halo%20Yochef%20Arianto%2C%0A%0AGue%20tertarik%20buat%20kolaborasi%20bikin%20konten%20bareng%20lo.%20Berikut%20detail%20singkat%20campaign%20kami%3A%0A-%20Nama%20Brand%3A%20%0A-%20Jenis%20Layanan%3A%20%0A-%20Timeline%2FEstimasi%3A%20%0A%0ABisa%20tolong%20kirimkan%20info%20detail%20%26%20ratecard%20terbaru%3F%20Terima%20kasih%21"
-                        class="border border-brand-500 hover:bg-brand-900/30 text-white px-10 py-5 font-display tracking-widest text-sm uppercase transition-all flex items-center justify-center gap-3 w-full sm:w-64">
-                        <i class="fas fa-envelope text-xl"></i> Email
-                    </a>
-                </div>
-            </div>
+                // Mobile collab accordion toggle
+                const mobileCollabBtn = document.getElementById('mobile-collab-button');
+                const mobileCollabMenu = document.getElementById('mobile-collab-menu');
+                const mobileCollabIcon = document.getElementById('mobile-collab-icon');
 
-            <div class="flex justify-center space-x-6 mb-12">
-                <a href="https://www.instagram.com/yoschf?igsh=aXNhYTkzMGFtaWRs&utm_source=qr" target="_blank"
-                    class="text-brand-100/40 hover:text-brand-400 transition-all text-2xl transform hover:scale-110"><i
-                        class="fab fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@yoschff?_r=1&_t=ZS-97JU0XUTOOC" target="_blank"
-                    class="text-brand-100/40 hover:text-brand-400 transition-all text-2xl transform hover:scale-110"><i
-                        class="fab fa-tiktok"></i></a>
-                <a href="https://www.youtube.com/@yossarianto" target="_blank"
-                    class="text-brand-100/40 hover:text-brand-400 transition-all text-2xl transform hover:scale-110"><i
-                        class="fab fa-youtube"></i></a>
-            </div>
+                mobileCollabBtn.addEventListener('click', () => {
+                    mobileCollabMenu.classList.toggle('hidden');
+                    mobileCollabIcon.classList.toggle('rotate-180');
+                });
 
-            <p class="text-brand-100/30 text-sm font-display tracking-widest uppercase">
-                &copy; 2026 Yochef Arianto.
-            </p>
-        </div>
-    </footer>
+                // Auto close mobile menu when clicking any link inside it
+                const mobileMenuLinks = menu.querySelectorAll('a');
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        menu.classList.add('hidden');
+                        mobileCollabMenu.classList.add('hidden');
+                        mobileCollabIcon.classList.remove('rotate-180');
+                    });
+                });
 
-    <script>
-        // Animasi fade-up saat di-scroll
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
+                // Language switching logic
+                window.changeLanguage = function (lang) {
+                    localStorage.setItem('preferred-language', lang);
 
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
+                    // Toggle active classes on buttons
+                    const desktopBtnId = document.getElementById('btn-lang-id');
+                    const desktopBtnEn = document.getElementById('btn-lang-en');
+                    const mobileBtnId = document.getElementById('mobile-btn-lang-id');
+                    const mobileBtnEn = document.getElementById('mobile-btn-lang-en');
 
-        document.querySelectorAll('.fade-up').forEach((elem) => {
-            observer.observe(elem);
-        });
+                    if (lang === 'en') {
+                        // Desktop buttons styling
+                        if (desktopBtnId && desktopBtnEn) {
+                            desktopBtnId.classList.remove('text-brand-500', 'bg-brand-900/45', 'border-brand-500/20');
+                            desktopBtnId.classList.add('text-brand-100/50', 'hover:text-white');
+                            desktopBtnEn.classList.add('text-brand-500', 'bg-brand-900/45', 'border-brand-500/20');
+                            desktopBtnEn.classList.remove('text-brand-100/50', 'hover:text-white');
+                        }
 
-        // Efek blur/warna pada navbar saat di-scroll
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('shadow-lg', 'bg-[#050201]/95');
-                navbar.classList.remove('glass');
-            } else {
-                navbar.classList.remove('shadow-lg', 'bg-[#050201]/95');
-                navbar.classList.add('glass');
-            }
-        });
+                        // Mobile buttons styling
+                        if (mobileBtnId && mobileBtnEn) {
+                            mobileBtnId.classList.remove('text-brand-500', 'bg-brand-900/45', 'border-brand-500/20');
+                            mobileBtnId.classList.add('text-brand-100/50', 'hover:text-white');
+                            mobileBtnEn.classList.add('text-brand-500', 'bg-brand-900/45', 'border-brand-500/20');
+                            mobileBtnEn.classList.remove('text-brand-100/50', 'hover:text-white');
+                        }
 
-        // Mobile menu toggle
-        const btn = document.getElementById('mobile-menu-button');
-        const menu = document.getElementById('mobile-menu');
+                        // Show EN, Hide ID
+                        document.querySelectorAll('.lang-id').forEach(el => el.classList.add('hidden'));
+                        document.querySelectorAll('.lang-en').forEach(el => el.classList.remove('hidden'));
+                    } else {
+                        // Desktop buttons styling
+                        if (desktopBtnId && desktopBtnEn) {
+                            desktopBtnId.classList.add('text-brand-500', 'bg-brand-900/45', 'border-brand-500/20');
+                            desktopBtnId.classList.remove('text-brand-100/50', 'hover:text-white');
+                            desktopBtnEn.classList.remove('text-brand-500', 'bg-brand-900/45', 'border-brand-500/20');
+                            desktopBtnEn.classList.add('text-brand-100/50', 'hover:text-white');
+                        }
 
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
+                        // Mobile buttons styling
+                        if (mobileBtnId && mobileBtnEn) {
+                            mobileBtnId.classList.add('text-brand-500', 'bg-brand-900/45', 'border-brand-500/20');
+                            mobileBtnId.classList.remove('text-brand-100/50', 'hover:text-white');
+                            mobileBtnEn.classList.remove('text-brand-500', 'bg-brand-900/45', 'border-brand-500/20');
+                            mobileBtnEn.classList.add('text-brand-100/50', 'hover:text-white');
+                        }
 
-        // ==========================================
-        // FLAPPY CHICKEN GAME ENGINE
-        // ==========================================
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const jumpBtn = document.getElementById('jumpButton');
-        const highScoreValText = document.getElementById('highScoreText');
-
-        // Setup audio synth context (lazy initialization)
-        let audioCtx;
-        function getAudioContext() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            return audioCtx;
-        }
-
-        function playSynthSound(type) {
-            try {
-                const ac = getAudioContext();
-                if (!ac) return;
-                const osc = ac.createOscillator();
-                const gain = ac.createGain();
-                osc.connect(gain);
-                gain.connect(ac.destination);
-
-                if (type === 'jump') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(150, ac.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(380, ac.currentTime + 0.12);
-                    gain.gain.setValueAtTime(0.08, ac.currentTime);
-                    gain.gain.linearRampToValueAtTime(0.001, ac.currentTime + 0.12);
-                    osc.start();
-                    osc.stop(ac.currentTime + 0.12);
-                } else if (type === 'score') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(523.25, ac.currentTime); // C5
-                    osc.frequency.setValueAtTime(659.25, ac.currentTime + 0.08); // E5
-                    gain.gain.setValueAtTime(0.06, ac.currentTime);
-                    gain.gain.linearRampToValueAtTime(0.001, ac.currentTime + 0.2);
-                    osc.start();
-                    osc.stop(ac.currentTime + 0.2);
-                } else if (type === 'hit') {
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(200, ac.currentTime);
-                    osc.frequency.linearRampToValueAtTime(40, ac.currentTime + 0.35);
-                    gain.gain.setValueAtTime(0.12, ac.currentTime);
-                    gain.gain.linearRampToValueAtTime(0.001, ac.currentTime + 0.35);
-                    osc.start();
-                    osc.stop(ac.currentTime + 0.35);
-                }
-            } catch (e) {
-                console.log("Audio not supported or blocked: ", e);
-            }
-        }
-
-        // Game Settings
-        let gameState = 'START'; // START, PLAYING, GAMEOVER
-        let score = 0;
-        let highScore = parseInt(localStorage.getItem('flappyChickenHighScore') || '0');
-        let attempts = parseInt(localStorage.getItem('flappyChickenAttempts') ?? '3');
-        highScoreValText.textContent = "346";
-        let winCode = '';
-
-        function generateWinCode() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let code = '';
-            for (let i = 0; i < 5; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return code;
-        }
-
-        // Cooldown & Hatching Config
-        const COOLDOWN_MS = 30 * 60 * 1000; // 30 menit cooldown
-
-        // Reset sisa kesempatan ke 3 jika cooldown sudah selesai atau datanya tidak valid
-        if (attempts <= 0 && !localStorage.getItem('yochefEggHatchedTimestamp')) {
-            attempts = 3;
-            localStorage.setItem('flappyChickenAttempts', '3');
-        }
-
-        function isCooldownActive() {
-            const timestamp = localStorage.getItem('yochefEggHatchedTimestamp');
-            if (!timestamp) return false;
-
-            const elapsed = Date.now() - parseInt(timestamp, 10);
-            if (elapsed < COOLDOWN_MS) {
-                return true;
-            } else {
-                // Cooldown habis! Reset status
-                localStorage.removeItem('yochefEggHatchedTimestamp');
-                localStorage.removeItem('yochefEggHatched');
-                attempts = 3;
-                localStorage.setItem('flappyChickenAttempts', '3');
-
-                // Kembalikan visual telur
-                setTimeout(() => {
-                    setupEggState();
-                }, 50);
-
-                // Kembalikan game state
-                resetGame();
-                gameState = 'START';
-                return false;
-            }
-        }
-
-        function isEggHatched() {
-            if (isCooldownActive()) return true;
-            return localStorage.getItem('yochefEggHatched') === 'true';
-        }
-
-        function setupEggState() {
-            const eggContent = document.getElementById('egg-content');
-            const easterEgg = document.getElementById('egg-easter-egg');
-            const gameSection = document.getElementById('arcade-game');
-
-            if (!eggContent || !easterEgg) return;
-
-            if (isEggHatched()) {
-                eggContent.textContent = '🐣';
-                easterEgg.classList.remove('glowing-egg');
-                eggContent.classList.remove('wobbling-egg-content');
-                eggContent.classList.add('hatched-chick-pulse');
-                if (gameSection) {
-                    gameSection.classList.remove('hidden');
-                }
-            } else {
-                eggContent.textContent = '🥚';
-                easterEgg.classList.add('glowing-egg');
-                eggContent.classList.add('wobbling-egg-content');
-                eggContent.classList.remove('hatched-chick-pulse');
-                if (gameSection) {
-                    gameSection.classList.add('hidden');
-                }
-            }
-        }
-
-        const chicken = {
-            x: 80,
-            y: 200,
-            radius: 14,
-            velocity: 0,
-            gravity: 0.24,
-            jump: -5.0
-        };
-
-        let pipes = [];
-        let pipeGap = 135;
-        let pipeWidth = 55;
-        let pipeSpeed = 2.0;
-        let frameCount = 0;
-
-        function resetGame() {
-            chicken.y = 200;
-            chicken.velocity = 0;
-            pipes = [];
-            score = 0;
-            frameCount = 0;
-            winCode = '';
-        }
-
-        function spawnPipe() {
-            const minHeight = 60;
-            const maxHeight = canvas.height - pipeGap - minHeight;
-            const topHeight = Math.floor(Math.random() * (maxHeight - minHeight + 1)) + minHeight;
-
-            pipes.push({
-                x: canvas.width,
-                topHeight: topHeight,
-                bottomHeight: canvas.height - topHeight - pipeGap,
-                passed: false
-            });
-        }
-
-        function checkCollision() {
-            if (chicken.y - chicken.radius < 0 || chicken.y + chicken.radius > canvas.height) {
-                return true;
-            }
-
-            for (let i = 0; i < pipes.length; i++) {
-                const pipe = pipes[i];
-                const cx = chicken.x;
-                const cy = chicken.y;
-                const r = chicken.radius;
-
-                if (cx + r > pipe.x && cx - r < pipe.x + pipeWidth) {
-                    if (cy - r < pipe.topHeight || cy + r > canvas.height - pipe.bottomHeight) {
-                        return true;
+                        // Show ID, Hide EN
+                        document.querySelectorAll('.lang-id').forEach(el => el.classList.remove('hidden'));
+                        document.querySelectorAll('.lang-en').forEach(el => el.classList.add('hidden'));
                     }
                 }
-            }
-            return false;
-        }
 
-        function triggerJump() {
-            if (isCooldownActive()) return; // Blokir aksi saat cooldown aktif
+                // Initialize preferred language
+                const savedLang = localStorage.getItem('preferred-language') || 'id';
+                window.changeLanguage(savedLang);
 
-            if (gameState === 'START') {
-                if (attempts <= 0) return; // Locked out
-                gameState = 'PLAYING';
-                playSynthSound('jump');
-            } else if (gameState === 'PLAYING') {
-                chicken.velocity = chicken.jump;
-                playSynthSound('jump');
-            } else if (gameState === 'GAMEOVER') {
-                if (attempts <= 0) return; // Locked out
-                resetGame();
-                gameState = 'PLAYING';
-                playSynthSound('jump');
-            }
-        }
+                // ==========================================
+                // FLAPPY CHICKEN GAME ENGINE
+                // ==========================================
+                const canvas = document.getElementById('gameCanvas');
+                const ctx = canvas.getContext('2d');
+                const jumpBtn = document.getElementById('jumpButton');
+                const highScoreValText = document.getElementById('highScoreText');
 
-        // Controls
-        canvas.addEventListener('click', (e) => {
-            e.preventDefault();
-            triggerJump();
-        });
-
-        jumpBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            triggerJump();
-        });
-
-        window.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                const rect = canvas.getBoundingClientRect();
-                const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
-                if (isVisible) {
-                    e.preventDefault();
-                    triggerJump();
+                // Setup audio synth context (lazy initialization)
+                let audioCtx;
+                function getAudioContext() {
+                    if (!audioCtx) {
+                        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    if (audioCtx.state === 'suspended') {
+                        audioCtx.resume();
+                    }
+                    return audioCtx;
                 }
-            }
-        });
 
-        // Game Loop
-        function update() {
-            if (gameState === 'PLAYING') {
-                frameCount++;
+                function playSynthSound(type) {
+                    try {
+                        const ac = getAudioContext();
+                        if (!ac) return;
+                        const osc = ac.createOscillator();
+                        const gain = ac.createGain();
+                        osc.connect(gain);
+                        gain.connect(ac.destination);
 
-                chicken.velocity += chicken.gravity;
-                chicken.y += chicken.velocity;
+                        if (type === 'jump') {
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(150, ac.currentTime);
+                            osc.frequency.exponentialRampToValueAtTime(380, ac.currentTime + 0.12);
+                            gain.gain.setValueAtTime(0.08, ac.currentTime);
+                            gain.gain.linearRampToValueAtTime(0.001, ac.currentTime + 0.12);
+                            osc.start();
+                            osc.stop(ac.currentTime + 0.12);
+                        } else if (type === 'score') {
+                            osc.type = 'triangle';
+                            osc.frequency.setValueAtTime(523.25, ac.currentTime); // C5
+                            osc.frequency.setValueAtTime(659.25, ac.currentTime + 0.08); // E5
+                            gain.gain.setValueAtTime(0.06, ac.currentTime);
+                            gain.gain.linearRampToValueAtTime(0.001, ac.currentTime + 0.2);
+                            osc.start();
+                            osc.stop(ac.currentTime + 0.2);
+                        } else if (type === 'hit') {
+                            osc.type = 'sawtooth';
+                            osc.frequency.setValueAtTime(200, ac.currentTime);
+                            osc.frequency.linearRampToValueAtTime(40, ac.currentTime + 0.35);
+                            gain.gain.setValueAtTime(0.12, ac.currentTime);
+                            gain.gain.linearRampToValueAtTime(0.001, ac.currentTime + 0.35);
+                            osc.start();
+                            osc.stop(ac.currentTime + 0.35);
+                        }
+                    } catch (e) {
+                        console.log("Audio not supported or blocked: ", e);
+                    }
+                }
 
-                for (let i = pipes.length - 1; i >= 0; i--) {
-                    pipes[i].x -= pipeSpeed;
+                // Game Settings
+                let gameState = 'START'; // START, PLAYING, GAMEOVER
+                let score = 0;
+                let highScore = parseInt(localStorage.getItem('flappyChickenHighScore') || '0');
+                let attempts = parseInt(localStorage.getItem('flappyChickenAttempts') ?? '3');
+                highScoreValText.textContent = "346";
+                let winCode = '';
 
-                    if (!pipes[i].passed && pipes[i].x + pipeWidth < chicken.x) {
-                        pipes[i].passed = true;
-                        score++;
-                        playSynthSound('score');
-                        if (score > highScore) {
-                            highScore = score;
-                            localStorage.setItem('flappyChickenHighScore', highScore);
+                function generateWinCode() {
+                    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                    let code = '';
+                    for (let i = 0; i < 5; i++) {
+                        code += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    return code;
+                }
+
+                // Cooldown & Hatching Config
+                const COOLDOWN_MS = 30 * 60 * 1000; // 30 menit cooldown
+
+                // Reset sisa kesempatan ke 3 jika cooldown sudah selesai atau datanya tidak valid
+                if (attempts <= 0 && !localStorage.getItem('yochefEggHatchedTimestamp')) {
+                    attempts = 3;
+                    localStorage.setItem('flappyChickenAttempts', '3');
+                }
+
+                function isCooldownActive() {
+                    const timestamp = localStorage.getItem('yochefEggHatchedTimestamp');
+                    if (!timestamp) return false;
+
+                    const elapsed = Date.now() - parseInt(timestamp, 10);
+                    if (elapsed < COOLDOWN_MS) {
+                        return true;
+                    } else {
+                        // Cooldown habis! Reset status
+                        localStorage.removeItem('yochefEggHatchedTimestamp');
+                        localStorage.removeItem('yochefEggHatched');
+                        attempts = 3;
+                        localStorage.setItem('flappyChickenAttempts', '3');
+
+                        // Kembalikan visual telur
+                        setTimeout(() => {
+                            setupEggState();
+                        }, 50);
+
+                        // Kembalikan game state
+                        resetGame();
+                        gameState = 'START';
+                        return false;
+                    }
+                }
+
+                function isEggHatched() {
+                    if (isCooldownActive()) return true;
+                    return localStorage.getItem('yochefEggHatched') === 'true';
+                }
+
+                function setupEggState() {
+                    const eggContent = document.getElementById('egg-content');
+                    const easterEgg = document.getElementById('egg-easter-egg');
+                    const gameSection = document.getElementById('arcade-game');
+
+                    if (!eggContent || !easterEgg) return;
+
+                    if (isEggHatched()) {
+                        eggContent.textContent = '🐣';
+                        easterEgg.classList.remove('glowing-egg');
+                        eggContent.classList.remove('wobbling-egg-content');
+                        eggContent.classList.add('hatched-chick-pulse');
+                        if (gameSection) {
+                            gameSection.classList.remove('hidden');
+                        }
+                    } else {
+                        eggContent.textContent = '🥚';
+                        easterEgg.classList.add('glowing-egg');
+                        eggContent.classList.add('wobbling-egg-content');
+                        eggContent.classList.remove('hatched-chick-pulse');
+                        if (gameSection) {
+                            gameSection.classList.add('hidden');
                         }
                     }
+                }
 
-                    if (pipes[i].x + pipeWidth < 0) {
-                        pipes.splice(i, 1);
+                const chicken = {
+                    x: 80,
+                    y: 200,
+                    radius: 14,
+                    velocity: 0,
+                    gravity: 0.24,
+                    jump: -5.0
+                };
+
+                let pipes = [];
+                let pipeGap = 135;
+                let pipeWidth = 55;
+                let pipeSpeed = 2.0;
+                let frameCount = 0;
+
+                function resetGame() {
+                    chicken.y = 200;
+                    chicken.velocity = 0;
+                    pipes = [];
+                    score = 0;
+                    frameCount = 0;
+                    winCode = '';
+                }
+
+                function spawnPipe() {
+                    const minHeight = 60;
+                    const maxHeight = canvas.height - pipeGap - minHeight;
+                    const topHeight = Math.floor(Math.random() * (maxHeight - minHeight + 1)) + minHeight;
+
+                    pipes.push({
+                        x: canvas.width,
+                        topHeight: topHeight,
+                        bottomHeight: canvas.height - topHeight - pipeGap,
+                        passed: false
+                    });
+                }
+
+                function checkCollision() {
+                    if (chicken.y - chicken.radius < 0 || chicken.y + chicken.radius > canvas.height) {
+                        return true;
+                    }
+
+                    for (let i = 0; i < pipes.length; i++) {
+                        const pipe = pipes[i];
+                        const cx = chicken.x;
+                        const cy = chicken.y;
+                        const r = chicken.radius;
+
+                        if (cx + r > pipe.x && cx - r < pipe.x + pipeWidth) {
+                            if (cy - r < pipe.topHeight || cy + r > canvas.height - pipe.bottomHeight) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+
+                function triggerJump() {
+                    if (isCooldownActive()) return; // Blokir aksi saat cooldown aktif
+
+                    if (gameState === 'START') {
+                        if (attempts <= 0) return; // Locked out
+                        gameState = 'PLAYING';
+                        playSynthSound('jump');
+                    } else if (gameState === 'PLAYING') {
+                        chicken.velocity = chicken.jump;
+                        playSynthSound('jump');
+                    } else if (gameState === 'GAMEOVER') {
+                        if (attempts <= 0) return; // Locked out
+                        resetGame();
+                        gameState = 'PLAYING';
+                        playSynthSound('jump');
                     }
                 }
 
-                if (frameCount % 120 === 0) {
-                    spawnPipe();
-                }
+                // Controls
+                canvas.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    triggerJump();
+                });
 
-                if (checkCollision()) {
-                    gameState = 'GAMEOVER';
-                    playSynthSound('hit');
+                jumpBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    triggerJump();
+                });
 
-                    // Generate verification code if Yoss's record is beaten
-                    if (score >= 346) {
-                        winCode = generateWinCode();
-                    } else {
-                        winCode = '';
+                window.addEventListener('keydown', (e) => {
+                    if (e.code === 'Space') {
+                        const rect = canvas.getBoundingClientRect();
+                        const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+                        if (isVisible) {
+                            e.preventDefault();
+                            triggerJump();
+                        }
                     }
+                });
 
-                    // Decrement attempts on crash
-                    attempts = Math.max(0, attempts - 1);
-                    localStorage.setItem('flappyChickenAttempts', attempts);
+                // Game Loop
+                function update() {
+                    if (gameState === 'PLAYING') {
+                        frameCount++;
 
-                    // Auto scroll to "Sedikit Tentang Gue" section after 1.5 seconds of game over (ONLY on 3rd loss / when attempts run out)
-                    if (attempts === 0) {
-                        localStorage.setItem('yochefEggHatchedTimestamp', Date.now().toString());
-                        setupEggState(); // Update visual state of egg to child chick in cooldown state
+                        chicken.velocity += chicken.gravity;
+                        chicken.y += chicken.velocity;
 
-                        setTimeout(() => {
-                            if (gameState === 'GAMEOVER') {
-                                const aboutSection = document.getElementById('about');
-                                if (aboutSection) {
-                                    aboutSection.scrollIntoView({ behavior: 'smooth' });
+                        for (let i = pipes.length - 1; i >= 0; i--) {
+                            pipes[i].x -= pipeSpeed;
+
+                            if (!pipes[i].passed && pipes[i].x + pipeWidth < chicken.x) {
+                                pipes[i].passed = true;
+                                score++;
+                                playSynthSound('score');
+                                if (score > highScore) {
+                                    highScore = score;
+                                    localStorage.setItem('flappyChickenHighScore', highScore);
                                 }
                             }
-                        }, 1500);
+
+                            if (pipes[i].x + pipeWidth < 0) {
+                                pipes.splice(i, 1);
+                            }
+                        }
+
+                        if (frameCount % 120 === 0) {
+                            spawnPipe();
+                        }
+
+                        if (checkCollision()) {
+                            gameState = 'GAMEOVER';
+                            playSynthSound('hit');
+
+                            // Generate verification code if Yoss's record is beaten
+                            if (score >= 346) {
+                                winCode = generateWinCode();
+                            } else {
+                                winCode = '';
+                            }
+
+                            // Decrement attempts on crash
+                            attempts = Math.max(0, attempts - 1);
+                            localStorage.setItem('flappyChickenAttempts', attempts);
+
+                            // Auto scroll to "Sedikit Tentang Gue" section after 1.5 seconds of game over (ONLY on 3rd loss / when attempts run out)
+                            if (attempts === 0) {
+                                localStorage.setItem('yochefEggHatchedTimestamp', Date.now().toString());
+                                setupEggState(); // Update visual state of egg to child chick in cooldown state
+
+                                setTimeout(() => {
+                                    if (gameState === 'GAMEOVER') {
+                                        const aboutSection = document.getElementById('about');
+                                        if (aboutSection) {
+                                            aboutSection.scrollIntoView({ behavior: 'smooth' });
+                                        }
+                                    }
+                                }, 1500);
+                            }
+                        }
                     }
                 }
-            }
-        }
 
-        function draw() {
-            // Create linear gradient (orange at top, black at bottom)
-            let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, '#cc3300');    // Brand orange/red at the top
-            gradient.addColorStop(0.35, '#3d0f00');  // Transition to dark orange-brown
-            gradient.addColorStop(1, '#050201');     // Black/dark base at the bottom
+                function draw() {
+                    // Create linear gradient (orange at top, black at bottom)
+                    let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                    gradient.addColorStop(0, '#cc3300');    // Brand orange/red at the top
+                    gradient.addColorStop(0.35, '#3d0f00');  // Transition to dark orange-brown
+                    gradient.addColorStop(1, '#050201');     // Black/dark base at the bottom
 
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Draw grid lines
-            ctx.strokeStyle = 'rgba(255, 51, 0, 0.03)';
-            ctx.lineWidth = 1;
-            for (let i = 0; i < canvas.width; i += 20) {
-                ctx.beginPath();
-                ctx.moveTo(i, 0);
-                ctx.lineTo(i, canvas.height);
-                ctx.stroke();
-            }
-            for (let j = 0; j < canvas.height; j += 20) {
-                ctx.beginPath();
-                ctx.moveTo(0, j);
-                ctx.lineTo(canvas.width, j);
-                ctx.stroke();
-            }
-
-            // Draw Pipes
-            pipes.forEach(pipe => {
-                ctx.shadowColor = 'rgba(255, 51, 0, 0.4)';
-                ctx.shadowBlur = 10;
-
-                ctx.fillStyle = '#1f0d07';
-                ctx.strokeStyle = '#ff3300';
-                ctx.lineWidth = 2.5;
-
-                ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
-                ctx.strokeRect(pipe.x, -5, pipeWidth, pipe.topHeight + 5);
-
-                ctx.fillRect(pipe.x, canvas.height - pipe.bottomHeight, pipeWidth, pipe.bottomHeight);
-                ctx.strokeRect(pipe.x, canvas.height - pipe.bottomHeight, pipeWidth, pipe.bottomHeight + 5);
-
-                ctx.shadowBlur = 0;
-            });
-
-            // Draw Chicken (Emoji)
-            ctx.save();
-            ctx.translate(chicken.x, chicken.y);
-            let angle = Math.min(Math.max(chicken.velocity * 0.07, -0.4), 0.7);
-            ctx.rotate(angle);
-            ctx.font = "32px Inter";
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText("🐔", 0, 0);
-            ctx.restore();
-
-            // Overlay Screens
-            if (isCooldownActive()) {
-                ctx.fillStyle = 'rgba(5, 2, 1, 0.92)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ctx.textAlign = 'center';
-
-                ctx.fillStyle = '#ff3300';
-                ctx.font = 'bold 20px "Syne", sans-serif';
-                ctx.fillText("KABINET RETRO DIKUNCI", canvas.width / 2, canvas.height / 2 - 80);
-
-                ctx.font = '52px Inter';
-                let bounce = Math.sin(Date.now() * 0.003) * 5;
-                ctx.fillText("🐣💤", canvas.width / 2, canvas.height / 2 - 15 + bounce);
-
-                ctx.fillStyle = '#ffffff';
-                ctx.font = '13px "Inter", sans-serif';
-                ctx.fillText("Ayam sedang tidur setelah lelah terbang...", canvas.width / 2, canvas.height / 2 + 45);
-
-                const timestamp = parseInt(localStorage.getItem('yochefEggHatchedTimestamp') || '0', 10);
-                const remainingMs = COOLDOWN_MS - (Date.now() - timestamp);
-                let timeText = "00:00";
-                if (remainingMs > 0) {
-                    const totalSec = Math.floor(remainingMs / 1000);
-                    const mins = Math.floor(totalSec / 60);
-                    const secs = totalSec % 60;
-                    timeText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-                }
-
-                ctx.fillStyle = '#ffcc00';
-                ctx.font = 'bold 24px "Courier New", monospace';
-                ctx.fillText(`COOLDOWN: ${timeText}`, canvas.width / 2, canvas.height / 2 + 85);
-
-                ctx.fillStyle = '#888888';
-                ctx.font = 'bold 11px "Syne", sans-serif';
-                ctx.fillText("TUNGGU SAMPAI SELESAI UNTUK MAIN LAGI", canvas.width / 2, canvas.height / 2 + 130);
-            } else if (gameState === 'START') {
-                ctx.fillStyle = 'rgba(5, 2, 1, 0.85)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ctx.textAlign = 'center';
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 24px "Syne", sans-serif';
-                ctx.fillText("FLAPPY CHICKEN", canvas.width / 2, canvas.height / 2 - 40);
-
-                ctx.fillStyle = '#ff6600';
-                ctx.font = '12px "Inter", sans-serif';
-                ctx.fillText("Lompati rintangan kamera & wajan!", canvas.width / 2, canvas.height / 2);
-
-                // Show sisa kesempatan
-                ctx.fillStyle = '#ff3300';
-                ctx.font = 'bold 12px "Inter", sans-serif';
-                ctx.fillText(`Sisa Kesempatan: ${attempts} / 3`, canvas.width / 2, canvas.height / 2 + 30);
-
-                if (attempts <= 0) {
-                    ctx.fillStyle = '#ff3300';
-                    ctx.font = 'bold 12px "Syne", sans-serif';
-                    ctx.fillText("KESEMPATAN HABIS! HUBUNGI YOCHEF 🐔", canvas.width / 2, canvas.height / 2 + 60);
-                } else {
-                    ctx.fillStyle = '#ffffff';
-                    ctx.font = 'bold 14px "Syne", sans-serif';
-                    ctx.fillText("TEKAN SPACE / TAP LAYAR UNTUK MULAI", canvas.width / 2, canvas.height / 2 + 60);
-                }
-            } else if (gameState === 'GAMEOVER') {
-                ctx.fillStyle = 'rgba(5, 2, 1, 0.9)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ctx.textAlign = 'center';
-                ctx.fillStyle = '#ff3300';
-                ctx.font = 'bold 36px "Syne", sans-serif';
-                ctx.fillText("GAME OVER", canvas.width / 2, 100);
-
-                ctx.fillStyle = '#ffffff';
-                ctx.font = '14px "Inter", sans-serif';
-                ctx.fillText(`Skor Kamu: ${score}`, canvas.width / 2, 150);
-                ctx.fillText(`Rekor Yoss: 346`, canvas.width / 2, 175);
-
-                ctx.font = '11px "Inter", sans-serif';
-                ctx.fillStyle = '#aaaaaa';
-                ctx.fillText(`Sisa Kesempatan: ${attempts} / 3`, canvas.width / 2, 205);
-
-                if (score >= 346) {
-                    ctx.fillStyle = '#00ff66';
-                    ctx.font = 'bold 13px "Inter", sans-serif';
-                    ctx.fillText("🎉 ANJAY! LU BERHASIL KALAHIN REKOR GW! 🎉", canvas.width / 2, 245);
-                    
-                    ctx.fillStyle = '#ffcc00';
-                    ctx.font = 'bold 44px "Courier New", monospace';
-                    ctx.fillText(winCode, canvas.width / 2, 305);
-                    
-                    ctx.fillStyle = '#ffffff';
-                    ctx.font = 'bold 11px "Inter", sans-serif';
-                    ctx.fillText("SCREENSHOT KODE DI ATAS & KIRIM KE ADMIN GUE!", canvas.width / 2, 345);
-                } else {
-                    ctx.fillStyle = '#ff3300';
-                    ctx.font = 'bold 13px "Inter", sans-serif';
-                    ctx.fillText("Wlee... Belum bisa kalahin Yoss! 😜", canvas.width / 2, 260);
-                }
-
-                if (attempts > 0) {
-                    ctx.fillStyle = '#ffffff';
-                    ctx.font = 'bold 12px "Syne", sans-serif';
-                    ctx.fillText("TEKAN SPACE / TAP LAYAR UNTUK MAIN LAGI", canvas.width / 2, 420);
-                } else {
-                    ctx.fillStyle = '#888888';
-                    ctx.font = 'bold 12px "Syne", sans-serif';
-                    ctx.fillText("KESEMPATAN HABIS! COBA LAGI LAIN KALI", canvas.width / 2, 420);
-                }
-            } else if (gameState === 'PLAYING') {
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 28px "Syne", sans-serif';
-                ctx.textAlign = 'left';
-                ctx.fillText(score, 25, 45);
-            }
-        }
-
-        function gameLoop() {
-            update();
-            draw();
-            requestAnimationFrame(gameLoop);
-        }
-
-        gameLoop();
-
-        // ==========================================
-        // GLOWING EGG EASTER EGG LOGIC
-        // ==========================================
-        document.addEventListener('DOMContentLoaded', () => {
-            const easterEgg = document.getElementById('egg-easter-egg');
-            const eggContent = document.getElementById('egg-content');
-            const gameSection = document.getElementById('arcade-game');
-
-            // Inisialisasi status telur saat halaman dimuat
-            setupEggState();
-
-            // Periksa status berkala setiap 1 detik (agar timer dinamis tetap konsisten)
-            setInterval(() => {
-                isCooldownActive(); // Ini otomatis me-reset jika cooldown habis
-                setupEggState();
-            }, 1000);
-
-            if (easterEgg && eggContent) {
-                // Efek Hover
-                easterEgg.addEventListener('mouseenter', () => {
-                    if (!isEggHatched()) {
-                        eggContent.textContent = '🐔';
-                        eggContent.classList.add('scale-125');
+                    // Draw grid lines
+                    ctx.strokeStyle = 'rgba(255, 51, 0, 0.03)';
+                    ctx.lineWidth = 1;
+                    for (let i = 0; i < canvas.width; i += 20) {
+                        ctx.beginPath();
+                        ctx.moveTo(i, 0);
+                        ctx.lineTo(i, canvas.height);
+                        ctx.stroke();
                     }
-                });
-
-                easterEgg.addEventListener('mouseleave', () => {
-                    if (!isEggHatched()) {
-                        eggContent.textContent = '🥚';
-                        eggContent.classList.remove('scale-125');
+                    for (let j = 0; j < canvas.height; j += 20) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, j);
+                        ctx.lineTo(canvas.width, j);
+                        ctx.stroke();
                     }
-                });
 
-                // Efek Klik
-                easterEgg.addEventListener('click', () => {
+                    // Draw Pipes
+                    pipes.forEach(pipe => {
+                        ctx.shadowColor = 'rgba(255, 51, 0, 0.4)';
+                        ctx.shadowBlur = 10;
+
+                        ctx.fillStyle = '#1f0d07';
+                        ctx.strokeStyle = '#ff3300';
+                        ctx.lineWidth = 2.5;
+
+                        ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
+                        ctx.strokeRect(pipe.x, -5, pipeWidth, pipe.topHeight + 5);
+
+                        ctx.fillRect(pipe.x, canvas.height - pipe.bottomHeight, pipeWidth, pipe.bottomHeight);
+                        ctx.strokeRect(pipe.x, canvas.height - pipe.bottomHeight, pipeWidth, pipe.bottomHeight + 5);
+
+                        ctx.shadowBlur = 0;
+                    });
+
+                    // Draw Chicken (Emoji)
+                    ctx.save();
+                    ctx.translate(chicken.x, chicken.y);
+                    let angle = Math.min(Math.max(chicken.velocity * 0.07, -0.4), 0.7);
+                    ctx.rotate(angle);
+                    ctx.font = "32px Inter";
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText("🐔", 0, 0);
+                    ctx.restore();
+
+                    // Overlay Screens
                     if (isCooldownActive()) {
-                        // Play sound lembut
-                        playSynthSound('jump');
+                        ctx.fillStyle = 'rgba(5, 2, 1, 0.92)';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                        // Hitung sisa waktu
+                        ctx.textAlign = 'center';
+
+                        ctx.fillStyle = '#ff3300';
+                        ctx.font = 'bold 20px "Syne", sans-serif';
+                        ctx.fillText("KABINET RETRO DIKUNCI", canvas.width / 2, canvas.height / 2 - 80);
+
+                        ctx.font = '52px Inter';
+                        let bounce = Math.sin(Date.now() * 0.003) * 5;
+                        ctx.fillText("🐣💤", canvas.width / 2, canvas.height / 2 - 15 + bounce);
+
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = '13px "Inter", sans-serif';
+                        ctx.fillText("Ayam sedang tidur setelah lelah terbang...", canvas.width / 2, canvas.height / 2 + 45);
+
                         const timestamp = parseInt(localStorage.getItem('yochefEggHatchedTimestamp') || '0', 10);
                         const remainingMs = COOLDOWN_MS - (Date.now() - timestamp);
-
                         let timeText = "00:00";
                         if (remainingMs > 0) {
                             const totalSec = Math.floor(remainingMs / 1000);
@@ -1604,206 +2198,444 @@
                             timeText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
                         }
 
-                        // Tampilkan toast pemberitahuan cooldown
-                        const toast = document.createElement('div');
-                        toast.className = 'fixed top-24 left-1/2 -translate-x-1/2 glass border border-brand-300 text-white font-display tracking-widest text-xs uppercase px-6 py-3 z-50 shadow-[0_0_30px_rgba(255,102,0,0.3)] rounded text-center max-w-md';
-                        toast.innerHTML = `🐣 RETRO ARCADE SEDANG COOLDOWN! SILAKAN TUNGGU: ${timeText} SEBELUM BISA DIMAINKAN KEMBALI. 💤`;
-                        document.body.appendChild(toast);
+                        ctx.fillStyle = '#ffcc00';
+                        ctx.font = 'bold 24px "Courier New", monospace';
+                        ctx.fillText(`COOLDOWN: ${timeText}`, canvas.width / 2, canvas.height / 2 + 85);
 
-                        setTimeout(() => {
-                            toast.classList.add('transition-all', 'duration-500', 'opacity-0');
-                            setTimeout(() => toast.remove(), 500);
-                        }, 2500);
+                        ctx.fillStyle = '#888888';
+                        ctx.font = 'bold 11px "Syne", sans-serif';
+                        ctx.fillText("TUNGGU SAMPAI SELESAI UNTUK MAIN LAGI", canvas.width / 2, canvas.height / 2 + 130);
+                    } else if (gameState === 'START') {
+                        ctx.fillStyle = 'rgba(5, 2, 1, 0.85)';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                        // Gulir ke game
-                        if (gameSection) {
-                            gameSection.classList.remove('hidden');
-                            gameSection.scrollIntoView({ behavior: 'smooth' });
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = 'bold 24px "Syne", sans-serif';
+                        ctx.fillText("FLAPPY CHICKEN", canvas.width / 2, canvas.height / 2 - 40);
+
+                        ctx.fillStyle = '#ff6600';
+                        ctx.font = '12px "Inter", sans-serif';
+                        ctx.fillText("Lompati rintangan kamera & wajan!", canvas.width / 2, canvas.height / 2);
+
+                        // Show sisa kesempatan
+                        ctx.fillStyle = '#ff3300';
+                        ctx.font = 'bold 12px "Inter", sans-serif';
+                        ctx.fillText(`Sisa Kesempatan: ${attempts} / 3`, canvas.width / 2, canvas.height / 2 + 30);
+
+                        if (attempts <= 0) {
+                            ctx.fillStyle = '#ff3300';
+                            ctx.font = 'bold 12px "Syne", sans-serif';
+                            ctx.fillText("KESEMPATAN HABIS! HUBUNGI YOCHEF 🐔", canvas.width / 2, canvas.height / 2 + 60);
+                        } else {
+                            ctx.fillStyle = '#ffffff';
+                            ctx.font = 'bold 14px "Syne", sans-serif';
+                            ctx.fillText("TEKAN SPACE / TAP LAYAR UNTUK MULAI", canvas.width / 2, canvas.height / 2 + 60);
                         }
-                        return;
-                    }
+                    } else if (gameState === 'GAMEOVER') {
+                        ctx.fillStyle = 'rgba(5, 2, 1, 0.9)';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                    if (isEggHatched()) {
-                        // Telur sudah menetas dan masih ada kesempatan bermain (tidak dalam cooldown)
-                        playSynthSound('jump');
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = '#ff3300';
+                        ctx.font = 'bold 36px "Syne", sans-serif';
+                        ctx.fillText("GAME OVER", canvas.width / 2, 100);
 
-                        const toast = document.createElement('div');
-                        toast.className = 'fixed top-24 left-1/2 -translate-x-1/2 glass border border-brand-300 text-white font-display tracking-widest text-xs uppercase px-6 py-3 z-50 shadow-[0_0_30px_rgba(255,102,0,0.3)] rounded text-center max-w-md';
-                        toast.innerHTML = `🐣 ANAK AYAM SUDAH MENETAS! MAIN RETRO ARCADE DI BAWAH (SISA KESEMPATAN: ${attempts}/3) 🎮`;
-                        document.body.appendChild(toast);
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = '14px "Inter", sans-serif';
+                        ctx.fillText(`Skor Kamu: ${score}`, canvas.width / 2, 150);
+                        ctx.fillText(`Rekor Yoss: 346`, canvas.width / 2, 175);
 
-                        setTimeout(() => {
-                            toast.classList.add('transition-all', 'duration-500', 'opacity-0');
-                            setTimeout(() => toast.remove(), 500);
-                        }, 7500);
+                        ctx.font = '11px "Inter", sans-serif';
+                        ctx.fillStyle = '#aaaaaa';
+                        ctx.fillText(`Sisa Kesempatan: ${attempts} / 3`, canvas.width / 2, 205);
 
-                        if (gameSection) {
-                            gameSection.classList.remove('hidden');
-                            gameSection.scrollIntoView({ behavior: 'smooth' });
+                        if (score >= 346) {
+                            ctx.fillStyle = '#00ff66';
+                            ctx.font = 'bold 13px "Inter", sans-serif';
+                            ctx.fillText("🎉 ANJAY! LU BERHASIL KALAHIN REKOR GW! 🎉", canvas.width / 2, 245);
+
+                            ctx.fillStyle = '#ffcc00';
+                            ctx.font = 'bold 44px "Courier New", monospace';
+                            ctx.fillText(winCode, canvas.width / 2, 305);
+
+                            ctx.fillStyle = '#ffffff';
+                            ctx.font = 'bold 11px "Inter", sans-serif';
+                            ctx.fillText("SCREENSHOT KODE DI ATAS & KIRIM KE ADMIN GUE!", canvas.width / 2, 345);
+                        } else {
+                            ctx.fillStyle = '#ff3300';
+                            ctx.font = 'bold 13px "Inter", sans-serif';
+                            ctx.fillText("Wlee... Belum bisa kalahin Yoss! 😜", canvas.width / 2, 260);
                         }
-                        return;
+
+                        if (attempts > 0) {
+                            ctx.fillStyle = '#ffffff';
+                            ctx.font = 'bold 12px "Syne", sans-serif';
+                            ctx.fillText("TEKAN SPACE / TAP LAYAR UNTUK MAIN LAGI", canvas.width / 2, 420);
+                        } else {
+                            ctx.fillStyle = '#888888';
+                            ctx.font = 'bold 12px "Syne", sans-serif';
+                            ctx.fillText("KESEMPATAN HABIS! COBA LAGI LAIN KALI", canvas.width / 2, 420);
+                        }
+                    } else if (gameState === 'PLAYING') {
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = 'bold 28px "Syne", sans-serif';
+                        ctx.textAlign = 'left';
+                        ctx.fillText(score, 25, 45);
                     }
+                }
 
-                    // TELUR DIKLIK UNTUK PERTAMA KALI (MENETAS & BUKA GAME)
-                    localStorage.setItem('yochefEggHatched', 'true');
+                function gameLoop() {
+                    update();
+                    draw();
+                    requestAnimationFrame(gameLoop);
+                }
 
-                    // Suara koin chord
-                    playSynthSound('score');
+                gameLoop();
 
-                    // Terapkan visual pecah
+                // ==========================================
+                // GLOWING EGG EASTER EGG LOGIC
+                // ==========================================
+                document.addEventListener('DOMContentLoaded', () => {
+                    const easterEgg = document.getElementById('egg-easter-egg');
+                    const eggContent = document.getElementById('egg-content');
+                    const gameSection = document.getElementById('arcade-game');
+
+                    // Inisialisasi status telur saat halaman dimuat
                     setupEggState();
 
-                    // Toast selamat
-                    const toast = document.createElement('div');
-                    toast.className = 'fixed top-24 left-1/2 -translate-x-1/2 glass border border-brand-500 text-white font-display tracking-widest text-xs uppercase px-6 py-3 z-50 shadow-[0_0_30px_rgba(255,51,0,0.5)] rounded text-center max-w-md';
-                    toast.innerHTML = '✨ KAMU MENEMUKAN TELUR EMAS! KALAHIN HIGH SCORE GW BUAT DAPETIN DISKON 10%! 🥚🔥';
-                    document.body.appendChild(toast);
+                    // Periksa status berkala setiap 1 detik (agar timer dinamis tetap konsisten)
+                    setInterval(() => {
+                        isCooldownActive(); // Ini otomatis me-reset jika cooldown habis
+                        setupEggState();
+                    }, 1000);
 
-                    setTimeout(() => {
-                        toast.classList.add('transition-all', 'duration-500', 'opacity-0');
-                        setTimeout(() => toast.remove(), 500);
-                    }, 7500);
-
-                    // Tampilkan area game
-                    if (gameSection) {
-                        gameSection.classList.remove('hidden');
-
-                        // Gulir otomatis
-                        gameSection.scrollIntoView({ behavior: 'smooth' });
-
-                        // Jalankan game otomatis
-                        setTimeout(() => {
-                            if (gameState === 'START') {
-                                triggerJump();
+                    if (easterEgg && eggContent) {
+                        // Efek Hover
+                        easterEgg.addEventListener('mouseenter', () => {
+                            if (!isEggHatched()) {
+                                eggContent.textContent = '🐔';
+                                eggContent.classList.add('scale-125');
                             }
-                        }, 800);
-                    }
-                });
-            }
-        });
-    </script>
-
-    <script>
-        // Intersection Observer untuk video portfolio (hanya memutar video yang terlihat di layar)
-        document.addEventListener("DOMContentLoaded", () => {
-            const videos = document.querySelectorAll("#portfolio video");
-
-            const observerOptions = {
-                root: null, // Menggunakan viewport browser
-                rootMargin: "0px",
-                threshold: 0.3 // Memicu ketika 30% bagian video terlihat di layar
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const video = entry.target;
-                    if (entry.isIntersecting) {
-                        // Putar video ketika terlihat
-                        video.play().catch(error => {
-                            // Abaikan error autoplay diblokir browser jika belum ada interaksi pengguna
-                            console.log("Autoplay blocked:", error);
                         });
-                    } else {
-                        // Pause video ketika keluar dari layar
-                        video.pause();
+
+                        easterEgg.addEventListener('mouseleave', () => {
+                            if (!isEggHatched()) {
+                                eggContent.textContent = '🥚';
+                                eggContent.classList.remove('scale-125');
+                            }
+                        });
+
+                        // Efek Klik
+                        easterEgg.addEventListener('click', () => {
+                            if (isCooldownActive()) {
+                                // Play sound lembut
+                                playSynthSound('jump');
+
+                                // Hitung sisa waktu
+                                const timestamp = parseInt(localStorage.getItem('yochefEggHatchedTimestamp') || '0', 10);
+                                const remainingMs = COOLDOWN_MS - (Date.now() - timestamp);
+
+                                let timeText = "00:00";
+                                if (remainingMs > 0) {
+                                    const totalSec = Math.floor(remainingMs / 1000);
+                                    const mins = Math.floor(totalSec / 60);
+                                    const secs = totalSec % 60;
+                                    timeText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                                }
+
+                                // Tampilkan toast pemberitahuan cooldown
+                                const toast = document.createElement('div');
+                                toast.className = 'fixed top-24 left-1/2 -translate-x-1/2 glass border border-brand-300 text-white font-display tracking-widest text-xs uppercase px-6 py-3 z-50 shadow-[0_0_30px_rgba(255,102,0,0.3)] rounded text-center max-w-md';
+                                toast.innerHTML = `🐣 RETRO ARCADE SEDANG COOLDOWN! SILAKAN TUNGGU: ${timeText} SEBELUM BISA DIMAINKAN KEMBALI. 💤`;
+                                document.body.appendChild(toast);
+
+                                setTimeout(() => {
+                                    toast.classList.add('transition-all', 'duration-500', 'opacity-0');
+                                    setTimeout(() => toast.remove(), 500);
+                                }, 2500);
+
+                                // Gulir ke game
+                                if (gameSection) {
+                                    gameSection.classList.remove('hidden');
+                                    gameSection.scrollIntoView({ behavior: 'smooth' });
+                                }
+                                return;
+                            }
+
+                            if (isEggHatched()) {
+                                // Telur sudah menetas dan masih ada kesempatan bermain (tidak dalam cooldown)
+                                playSynthSound('jump');
+
+                                const toast = document.createElement('div');
+                                toast.className = 'fixed top-24 left-1/2 -translate-x-1/2 glass border border-brand-300 text-white font-display tracking-widest text-xs uppercase px-6 py-3 z-50 shadow-[0_0_30px_rgba(255,102,0,0.3)] rounded text-center max-w-md';
+                                toast.innerHTML = `🐣 ANAK AYAM SUDAH MENETAS! MAIN RETRO ARCADE DI BAWAH (SISA KESEMPATAN: ${attempts}/3) 🎮`;
+                                document.body.appendChild(toast);
+
+                                setTimeout(() => {
+                                    toast.classList.add('transition-all', 'duration-500', 'opacity-0');
+                                    setTimeout(() => toast.remove(), 500);
+                                }, 7500);
+
+                                if (gameSection) {
+                                    gameSection.classList.remove('hidden');
+                                    gameSection.scrollIntoView({ behavior: 'smooth' });
+                                }
+                                return;
+                            }
+
+                            // TELUR DIKLIK UNTUK PERTAMA KALI (MENETAS & BUKA GAME)
+                            localStorage.setItem('yochefEggHatched', 'true');
+
+                            // Suara koin chord
+                            playSynthSound('score');
+
+                            // Terapkan visual pecah
+                            setupEggState();
+
+                            // Toast selamat
+                            const toast = document.createElement('div');
+                            toast.className = 'fixed top-24 left-1/2 -translate-x-1/2 glass border border-brand-500 text-white font-display tracking-widest text-xs uppercase px-6 py-3 z-50 shadow-[0_0_30px_rgba(255,51,0,0.5)] rounded text-center max-w-md';
+                            toast.innerHTML = '✨ KAMU MENEMUKAN TELUR EMAS! KALAHIN HIGH SCORE GW BUAT DAPETIN DISKON 10%! 🥚🔥';
+                            document.body.appendChild(toast);
+
+                            setTimeout(() => {
+                                toast.classList.add('transition-all', 'duration-500', 'opacity-0');
+                                setTimeout(() => toast.remove(), 500);
+                            }, 7500);
+
+                            // Tampilkan area game
+                            if (gameSection) {
+                                gameSection.classList.remove('hidden');
+
+                                // Gulir otomatis
+                                gameSection.scrollIntoView({ behavior: 'smooth' });
+
+                                // Jalankan game otomatis
+                                setTimeout(() => {
+                                    if (gameState === 'START') {
+                                        triggerJump();
+                                    }
+                                }, 800);
+                            }
+                        });
                     }
                 });
-            }, observerOptions);
+            </script>
 
-            videos.forEach(video => {
-                observer.observe(video);
-            });
-        });
-    </script>
+            <script>
+                // Auto Scroll untuk Horizontal Portfolio (Smooth Continuous & Pause on Hover)
+                document.addEventListener("DOMContentLoaded", () => {
+                    const container = document.getElementById('portfolio-container');
+                    if (!container) return;
 
-    <!-- Glowing Egg Easter Egg Element -->
-    <style>
-        @keyframes eggGlow {
-            0% {
-                filter: drop-shadow(0 0 5px rgba(255, 102, 0, 0.6));
-            }
+                    const cards = container.querySelectorAll('.group');
+                    if (cards.length === 0) return;
 
-            50% {
-                filter: drop-shadow(0 0 20px rgba(255, 51, 0, 1));
-            }
+                    let isHovered = false;
+                    let scrollSpeed = 0.04; // Kecepatan scroll (pixel per milidetik, ~40px per detik)
+                    let direction = 1; // 1 = ke kanan, -1 = ke kiri
+                    let lastTimestamp = 0;
+                    let isInteracting = false;
+                    let interactionTimeout = null;
 
-            100% {
-                filter: drop-shadow(0 0 5px rgba(255, 102, 0, 0.6));
-            }
-        }
+                    // Deteksi hover pada masing-masing kartu video
+                    cards.forEach(card => {
+                        card.addEventListener('mouseenter', () => {
+                            isHovered = true;
+                        });
+                        card.addEventListener('mouseleave', () => {
+                            isHovered = false;
+                        });
+                    });
 
-        @keyframes eggWobble {
+                    function handleManualInteraction() {
+                        isInteracting = true;
+                        if (interactionTimeout) clearTimeout(interactionTimeout);
+                        interactionTimeout = setTimeout(() => {
+                            isInteracting = false;
+                        }, 4000); // Lanjutkan auto-scroll 4 detik setelah interaksi manual selesai
+                    }
 
-            0%,
-            75%,
-            100% {
-                transform: rotate(0deg) scale(1);
-            }
+                    // Deteksi interaksi sentuh dan scroll manual agar auto-scroll tidak bertabrakan
+                    container.addEventListener('touchstart', handleManualInteraction, { passive: true });
+                    container.addEventListener('touchmove', handleManualInteraction, { passive: true });
+                    container.addEventListener('scroll', () => {
+                        if (document.activeElement === container || isHovered) {
+                            handleManualInteraction();
+                        }
+                    }, { passive: true });
 
-            78% {
-                transform: rotate(-10deg) scale(1.08);
-            }
+                    function scrollLoop(timestamp) {
+                        if (!lastTimestamp) lastTimestamp = timestamp;
+                        const delta = timestamp - lastTimestamp;
+                        lastTimestamp = timestamp;
 
-            81% {
-                transform: rotate(10deg) scale(1.08);
-            }
+                        if (!isHovered && !isInteracting) {
+                            const maxScroll = container.scrollWidth - container.clientWidth;
 
-            84% {
-                transform: rotate(-8deg) scale(1.08);
-            }
+                            // Hitung pergeseran dinamis (independen terhadap frame-rate peramban)
+                            const step = direction * scrollSpeed * (delta || 16.7);
+                            container.scrollLeft += step;
 
-            87% {
-                transform: rotate(8deg) scale(1.08);
-            }
+                            // Jika mentok di paling kanan, balik arah ke kiri
+                            if (container.scrollLeft >= maxScroll - 1) {
+                                direction = -1;
+                            }
+                            // Jika mentok di paling kiri, balik arah ke kanan
+                            else if (container.scrollLeft <= 1) {
+                                direction = 1;
+                            }
+                        }
 
-            90% {
-                transform: rotate(-4deg) scale(1.04);
-            }
+                        requestAnimationFrame(scrollLoop);
+                    }
 
-            93% {
-                transform: rotate(4deg) scale(1.04);
-            }
+                    // Mulai animasi loop
+                    requestAnimationFrame(scrollLoop);
+                });
 
-            96% {
-                transform: rotate(0deg) scale(1.02);
-            }
-        }
+                // Intersection Observer untuk video portfolio (hanya memutar video yang terlihat di layar)
+                document.addEventListener("DOMContentLoaded", () => {
+                    const videos = document.querySelectorAll("#portfolio video");
 
-        @keyframes chickPulse {
-            0% {
-                transform: scale(1);
-            }
+                    const observerOptions = {
+                        root: null, // Menggunakan viewport browser
+                        rootMargin: "0px",
+                        threshold: 0.3 // Memicu ketika 30% bagian video terlihat di layar
+                    };
 
-            50% {
-                transform: scale(1.08);
-            }
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            const video = entry.target;
+                            if (entry.isIntersecting) {
+                                // Putar video ketika terlihat
+                                video.play().catch(error => {
+                                    // Abaikan error autoplay diblokir browser jika belum ada interaksi pengguna
+                                    console.log("Autoplay blocked:", error);
+                                });
+                            } else {
+                                // Pause video ketika keluar dari layar
+                                video.pause();
+                            }
+                        });
+                    }, observerOptions);
 
-            100% {
-                transform: scale(1);
-            }
-        }
+                    videos.forEach(video => {
+                        observer.observe(video);
+                    });
+                });
 
-        .glowing-egg {
-            animation: eggGlow 2.5s infinite ease-in-out;
-        }
+                // Dot navigation listener untuk slider foto event
+                document.addEventListener("DOMContentLoaded", () => {
+                    const sliders = document.querySelectorAll('.event-photo-slider');
+                    sliders.forEach(slider => {
+                        const dots = slider.parentElement.querySelectorAll('.dot');
+                        slider.addEventListener('scroll', () => {
+                            const index = Math.round(slider.scrollLeft / slider.clientWidth);
+                            dots.forEach((dot, idx) => {
+                                if (idx === index) {
+                                    dot.classList.add('bg-brand-500', 'w-3');
+                                    dot.classList.remove('bg-white/40', 'w-1.5');
+                                } else {
+                                    dot.classList.add('bg-white/40', 'w-1.5');
+                                    dot.classList.remove('bg-brand-500', 'w-3');
+                                }
+                            });
+                        });
+                    });
+                });
+            </script>
 
-        .wobbling-egg-content {
-            animation: eggWobble 3.5s infinite ease-in-out;
-            transform-origin: center bottom;
-            display: inline-block;
-        }
+            <!-- Glowing Egg Easter Egg Element -->
+            <style>
+                @keyframes eggGlow {
+                    0% {
+                        filter: drop-shadow(0 0 5px rgba(255, 102, 0, 0.6));
+                    }
 
-        .hatched-chick-pulse {
-            animation: chickPulse 2s infinite ease-in-out;
-            transform-origin: center bottom;
-            display: inline-block;
-        }
-    </style>
-    <div id="egg-easter-egg"
-        class="fixed right-4 top-1/2 -translate-y-1/2 z-50 cursor-pointer transition-all duration-300 translate-x-2 hover:translate-x-0 glowing-egg">
-        <div id="egg-content"
-            class="text-4xl select-none transition-transform duration-300 active:scale-90 wobbling-egg-content">🥚</div>
-    </div>
+                    50% {
+                        filter: drop-shadow(0 0 20px rgba(255, 51, 0, 1));
+                    }
+
+                    100% {
+                        filter: drop-shadow(0 0 5px rgba(255, 102, 0, 0.6));
+                    }
+                }
+
+                @keyframes eggWobble {
+
+                    0%,
+                    75%,
+                    100% {
+                        transform: rotate(0deg) scale(1);
+                    }
+
+                    78% {
+                        transform: rotate(-10deg) scale(1.08);
+                    }
+
+                    81% {
+                        transform: rotate(10deg) scale(1.08);
+                    }
+
+                    84% {
+                        transform: rotate(-8deg) scale(1.08);
+                    }
+
+                    87% {
+                        transform: rotate(8deg) scale(1.08);
+                    }
+
+                    90% {
+                        transform: rotate(-4deg) scale(1.04);
+                    }
+
+                    93% {
+                        transform: rotate(4deg) scale(1.04);
+                    }
+
+                    96% {
+                        transform: rotate(0deg) scale(1.02);
+                    }
+                }
+
+                @keyframes chickPulse {
+                    0% {
+                        transform: scale(1);
+                    }
+
+                    50% {
+                        transform: scale(1.08);
+                    }
+
+                    100% {
+                        transform: scale(1);
+                    }
+                }
+
+                .glowing-egg {
+                    animation: eggGlow 2.5s infinite ease-in-out;
+                }
+
+                .wobbling-egg-content {
+                    animation: eggWobble 3.5s infinite ease-in-out;
+                    transform-origin: center bottom;
+                    display: inline-block;
+                }
+
+                .hatched-chick-pulse {
+                    animation: chickPulse 2s infinite ease-in-out;
+                    transform-origin: center bottom;
+                    display: inline-block;
+                }
+            </style>
+            <div id="egg-easter-egg"
+                class="fixed right-4 top-1/2 -translate-y-1/2 z-50 cursor-pointer transition-all duration-300 translate-x-2 hover:translate-x-0 glowing-egg">
+                <div id="egg-content"
+                    class="text-4xl select-none transition-transform duration-300 active:scale-90 wobbling-egg-content">
+                    🥚</div>
+            </div>
 </body>
 
 </html>
