@@ -42,13 +42,10 @@
         body {
             background-color: #050201;
             color: #f3f4f6;
-            width: 210mm;
-            height: 297mm;
             margin: 0;
             padding: 0;
+            width: 210mm;
             box-sizing: border-box;
-            overflow: hidden;
-            position: relative;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
@@ -80,9 +77,28 @@
             border: 1px solid rgba(255, 51, 0, 0.4);
         }
 
+        /* Individual page styling to fit A4 perfectly */
+        .page-container {
+            width: 210mm;
+            height: 297mm;
+            box-sizing: border-box;
+            padding: 14mm;
+            overflow: hidden;
+            position: relative;
+        }
+
         @media print {
             body {
                 background-color: #050201 !important;
+            }
+            .page-container {
+                height: 297mm;
+                page-break-after: always;
+                break-after: page;
+            }
+            .page-break {
+                page-break-before: always;
+                break-before: page;
             }
             @page {
                 size: A4 portrait;
@@ -96,20 +112,20 @@
 </head>
 
 <body class="antialiased font-sans">
-    <!-- Noise Texture -->
-    <div class="bg-noise"></div>
+    
+    <!-- PAGE 1: PRICING & SERVICES -->
+    <div class="page-container flex flex-col justify-between">
+        <!-- Noise Texture -->
+        <div class="bg-noise"></div>
 
-    <!-- Ambient Glows -->
-    <div class="absolute top-0 right-0 w-[400px] h-[400px] rounded-full pointer-events-none z-0" 
-         style="background: radial-gradient(circle, rgba(255, 51, 0, 0.12) 0%, rgba(5, 2, 1, 0) 70%); filter: blur(50px);"></div>
-    <div class="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none z-0" 
-         style="background: radial-gradient(circle, rgba(255, 51, 0, 0.08) 0%, rgba(5, 2, 1, 0) 70%); filter: blur(50px);"></div>
-
-    <!-- Main Container (A4 Size) -->
-    <div class="relative z-10 w-full h-full flex flex-col justify-between p-12 box-border">
+        <!-- Ambient Glows -->
+        <div class="absolute top-0 right-0 w-[400px] h-[400px] rounded-full pointer-events-none z-0" 
+             style="background: radial-gradient(circle, rgba(255, 51, 0, 0.12) 0%, rgba(5, 2, 1, 0) 70%); filter: blur(50px);"></div>
+        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none z-0" 
+             style="background: radial-gradient(circle, rgba(255, 51, 0, 0.08) 0%, rgba(5, 2, 1, 0) 70%); filter: blur(50px);"></div>
 
         <!-- HEADER SECTION -->
-        <div class="flex items-center justify-between border-b border-brand-900/40 pb-6">
+        <div class="flex items-center justify-between border-b border-brand-900/40 pb-6 relative z-10">
             <div class="flex items-center gap-6">
                 <!-- Profile Image Frame (Matching Landing Page Hero) -->
                 <div class="relative w-24 h-24 flex-shrink-0">
@@ -132,7 +148,7 @@
             </div>
 
             <!-- Stats Block -->
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4 relative z-10">
                 <div class="text-center px-4 py-2 bg-brand-950/20 border border-brand-900/30 rounded-lg">
                     <div class="font-display text-xl font-bold text-white leading-none">522K+</div>
                     <div class="text-[9px] text-brand-100/40 uppercase tracking-widest mt-1">Total Followers</div>
@@ -149,7 +165,7 @@
         </div>
 
         <!-- TITLE/INTRO -->
-        <div class="my-4 text-center">
+        <div class="my-4 text-center relative z-10">
             <h2 class="font-display text-lg font-bold tracking-widest text-brand-300 uppercase leading-none">
                 COLLABORATION RATE CARD 2026
             </h2>
@@ -159,7 +175,7 @@
         </div>
 
         <!-- SERVICES GRID (3x2) -->
-        <div class="grid grid-cols-3 gap-5 flex-grow my-2 items-stretch">
+        <div class="grid grid-cols-3 gap-5 flex-grow my-2 items-stretch relative z-10">
             
             <!-- Card 1: Instagram Story -->
             <div class="glass-card p-5 rounded-lg flex flex-col justify-between">
@@ -272,8 +288,7 @@
         </div>
 
         <!-- TERMS & CONTACT SECTION (2 Columns) -->
-        <div class="grid grid-cols-2 gap-8 border-t border-brand-900/40 pt-6 mt-4">
-            
+        <div class="grid grid-cols-2 gap-8 border-t border-brand-900/40 pt-6 mt-4 relative z-10">
             <!-- Left Column: Terms & Conditions -->
             <div>
                 <h4 class="font-display text-xs font-bold uppercase text-white tracking-wider mb-3">
@@ -304,15 +319,15 @@
                     <div class="space-y-1.5 text-[10px]">
                         <div class="flex items-center gap-2">
                             <i class="fas fa-envelope text-brand-500 w-3 text-center"></i>
-                            <span class="text-white font-mono">collab@yossarianto.com</span>
+                            <span class="text-white font-mono font-medium">collab@yossarianto.com</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <i class="fab fa-whatsapp text-brand-500 w-3 text-center"></i>
-                            <span class="text-white font-mono">+62 822-1234-5678</span>
+                            <span class="text-white font-mono font-medium">+62 822-1234-5678</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <i class="fas fa-globe text-brand-500 w-3 text-center"></i>
-                            <span class="text-white font-mono">yossarianto.com</span>
+                            <span class="text-white font-mono font-medium">yossarianto.com</span>
                         </div>
                     </div>
                     <!-- Brand Graphic / Watermark -->
@@ -321,10 +336,262 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+
+    <!-- PAGE 2: AUDIENCE INSIGHTS & STATS -->
+    <div class="page-container flex flex-col justify-between page-break">
+        <!-- Noise Texture -->
+        <div class="bg-noise"></div>
+
+        <!-- Ambient Glows -->
+        <div class="absolute top-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none z-0" 
+             style="background: radial-gradient(circle, rgba(255, 51, 0, 0.12) 0%, rgba(5, 2, 1, 0) 70%); filter: blur(50px);"></div>
+        <div class="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full pointer-events-none z-0" 
+             style="background: radial-gradient(circle, rgba(255, 51, 0, 0.08) 0%, rgba(5, 2, 1, 0) 70%); filter: blur(50px);"></div>
+
+        <!-- HEADER SECTION (Same header for consistency) -->
+        <div class="flex items-center justify-between border-b border-brand-900/40 pb-6 relative z-10">
+            <div class="flex items-center gap-6">
+                <!-- Mini Logo -->
+                <div class="text-2xl font-display font-bold text-white tracking-widest lowercase">
+                    <span class="text-brand-500">@</span>yoschf
+                </div>
+                <div class="border-l border-brand-900/40 pl-6">
+                    <h1 class="font-display text-base font-bold text-white tracking-wider uppercase leading-none">
+                        AUDIENCE INSIGHTS
+                    </h1>
+                    <p class="text-[10px] text-brand-500 tracking-wider uppercase mt-1">
+                        Instagram & TikTok Analytics 2026
+                    </p>
+                </div>
+            </div>
+            
+            <div class="text-xs text-brand-100/40">
+                Media Kit / Personal Stats
+            </div>
+        </div>
+
+        <!-- MAIN INSIGHTS GRID (2 Columns: TikTok & Instagram) -->
+        <div class="grid grid-cols-2 gap-8 flex-grow my-6 relative z-10 items-stretch">
+            
+            <!-- COLUMN 1: TIKTOK ANALYTICS -->
+            <div class="glass-card p-6 rounded-lg flex flex-col justify-between border border-brand-500/20">
+                <div>
+                    <!-- Section Header -->
+                    <div class="flex items-center justify-between border-b border-brand-900/30 pb-3 mb-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fab fa-tiktok text-xl text-white"></i>
+                            <span class="font-display text-base font-bold text-white">TikTok Analytics</span>
+                        </div>
+                        <span class="text-[10px] text-brand-400 font-mono">@yoschff</span>
+                    </div>
+
+                    <!-- Main Stats Grid -->
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <div class="bg-black/40 border border-brand-900/20 p-3 rounded">
+                            <span class="text-[9px] text-brand-100/40 uppercase block mb-1">Followers</span>
+                            <span class="text-lg font-display font-bold text-white leading-none">338K</span>
+                        </div>
+                        <div class="bg-black/40 border border-brand-900/20 p-3 rounded">
+                            <span class="text-[9px] text-brand-100/40 uppercase block mb-1">Total Likes</span>
+                            <span class="text-lg font-display font-bold text-white leading-none">12.4M</span>
+                        </div>
+                        <div class="bg-black/40 border border-brand-900/20 p-3 rounded">
+                            <span class="text-[9px] text-brand-100/40 uppercase block mb-1">Avg. Views</span>
+                            <span class="text-lg font-display font-bold text-brand-400 leading-none">250K+</span>
+                        </div>
+                        <div class="bg-black/40 border border-brand-950/20 p-3 rounded">
+                            <span class="text-[9px] text-brand-100/40 uppercase block mb-1">Engagement</span>
+                            <span class="text-lg font-display font-bold text-brand-400 leading-none">8.7%</span>
+                        </div>
+                    </div>
+
+                    <!-- Demographics split -->
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-display font-bold text-white uppercase tracking-wider">
+                            <i class="fas fa-chart-pie text-brand-500 mr-2"></i>Demografi Pengikut
+                        </h4>
+
+                        <!-- Age Groups -->
+                        <div class="space-y-2">
+                            <span class="text-[9px] text-brand-100/40 uppercase block">Kelompok Usia (Top Age)</span>
+                            <div class="space-y-1.5">
+                                <div>
+                                    <div class="flex justify-between text-[9px] text-brand-100/60 mb-0.5">
+                                        <span>18 - 24 tahun</span>
+                                        <span class="font-bold text-white">48%</span>
+                                    </div>
+                                    <div class="w-full bg-brand-950/45 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-brand-500 h-full rounded-full" style="width: 48%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[9px] text-brand-100/60 mb-0.5">
+                                        <span>25 - 34 tahun</span>
+                                        <span class="font-bold text-white">35%</span>
+                                    </div>
+                                    <div class="w-full bg-brand-950/45 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-brand-400 h-full rounded-full" style="width: 35%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[9px] text-brand-100/60 mb-0.5">
+                                        <span>Lainnya</span>
+                                        <span class="font-bold text-white">17%</span>
+                                    </div>
+                                    <div class="w-full bg-brand-950/45 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-brand-900 h-full rounded-full" style="width: 17%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gender Split -->
+                        <div class="mt-4">
+                            <span class="text-[9px] text-brand-100/40 uppercase block mb-2">Distribusi Gender (Gender Split)</span>
+                            <div class="flex items-center gap-3">
+                                <div class="flex-grow flex h-4 rounded overflow-hidden text-[9px] font-bold text-center leading-none">
+                                    <div class="bg-brand-500 text-white flex items-center justify-center" style="width: 53%">Pria 53%</div>
+                                    <div class="bg-brand-300 text-[#050201] flex items-center justify-center" style="width: 47%">Wanita 47%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Cities -->
+                        <div class="mt-4">
+                            <span class="text-[9px] text-brand-100/40 uppercase block mb-1">Kota Asal Terbanyak (Top Cities)</span>
+                            <div class="flex flex-wrap gap-1.5 text-[9px] text-brand-100/80 font-mono mt-1">
+                                <span class="bg-brand-950/40 px-2 py-1 rounded border border-brand-900/35">Jakarta (28%)</span>
+                                <span class="bg-brand-950/40 px-2 py-1 rounded border border-brand-900/35">Bandung (15%)</span>
+                                <span class="bg-brand-950/40 px-2 py-1 rounded border border-brand-900/35">Surabaya (12%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-brand-900/20 pt-4 mt-6 text-[8px] text-brand-100/30 flex justify-between items-center">
+                    <span>*Data diperbarui Juni 2026</span>
+                    <span>TikTok Live Insights</span>
+                </div>
+            </div>
+
+            <!-- COLUMN 2: INSTAGRAM ANALYTICS -->
+            <div class="glass-card p-6 rounded-lg flex flex-col justify-between border border-brand-500/20">
+                <div>
+                    <!-- Section Header -->
+                    <div class="flex items-center justify-between border-b border-brand-900/30 pb-3 mb-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fab fa-instagram text-xl text-white"></i>
+                            <span class="font-display text-base font-bold text-white">Instagram Stats</span>
+                        </div>
+                        <span class="text-[10px] text-brand-400 font-mono">@yoschf</span>
+                    </div>
+
+                    <!-- Main Stats Grid -->
+                    <div class="grid grid-cols-2 gap-3 mb-6">
+                        <div class="bg-black/40 border border-brand-900/20 p-3 rounded">
+                            <span class="text-[9px] text-brand-100/40 uppercase block mb-1">Followers</span>
+                            <span class="text-lg font-display font-bold text-white leading-none">184K</span>
+                        </div>
+                        <div class="bg-black/40 border border-brand-900/20 p-3 rounded">
+                            <span class="text-[9px] text-brand-100/40 uppercase block mb-1">Monthly Reach</span>
+                            <span class="text-lg font-display font-bold text-white leading-none">2.1M</span>
+                        </div>
+                        <div class="bg-black/40 border border-brand-900/20 p-3 rounded">
+                            <span class="text-[9px] text-brand-100/40 uppercase block mb-1">Avg. Reels Views</span>
+                            <span class="text-lg font-display font-bold text-brand-400 leading-none">180K+</span>
+                        </div>
+                        <div class="bg-black/40 border border-brand-950/20 p-3 rounded">
+                            <span class="text-[9px] text-brand-100/40 uppercase block mb-1">Engagement</span>
+                            <span class="text-lg font-display font-bold text-brand-400 leading-none">9.4%</span>
+                        </div>
+                    </div>
+
+                    <!-- Demographics split -->
+                    <div class="space-y-4">
+                        <h4 class="text-xs font-display font-bold text-white uppercase tracking-wider">
+                            <i class="fas fa-chart-pie text-brand-500 mr-2"></i>Demografi Pengikut
+                        </h4>
+
+                        <!-- Age Groups -->
+                        <div class="space-y-2">
+                            <span class="text-[9px] text-brand-100/40 uppercase block">Kelompok Usia (Top Age)</span>
+                            <div class="space-y-1.5">
+                                <div>
+                                    <div class="flex justify-between text-[9px] text-brand-100/60 mb-0.5">
+                                        <span>18 - 24 tahun</span>
+                                        <span class="font-bold text-white">42%</span>
+                                    </div>
+                                    <div class="w-full bg-brand-950/45 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-brand-500 h-full rounded-full" style="width: 42%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[9px] text-brand-100/60 mb-0.5">
+                                        <span>25 - 34 tahun</span>
+                                        <span class="font-bold text-white">41%</span>
+                                    </div>
+                                    <div class="w-full bg-brand-950/45 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-brand-400 h-full rounded-full" style="width: 41%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[9px] text-brand-100/60 mb-0.5">
+                                        <span>Lainnya</span>
+                                        <span class="font-bold text-white">17%</span>
+                                    </div>
+                                    <div class="w-full bg-brand-950/45 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-brand-900 h-full rounded-full" style="width: 17%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gender Split -->
+                        <div class="mt-4">
+                            <span class="text-[9px] text-brand-100/40 uppercase block mb-2">Distribusi Gender (Gender Split)</span>
+                            <div class="flex items-center gap-3">
+                                <div class="flex-grow flex h-4 rounded overflow-hidden text-[9px] font-bold text-center leading-none">
+                                    <div class="bg-brand-500 text-white flex items-center justify-center" style="width: 51%">Pria 51%</div>
+                                    <div class="bg-brand-300 text-[#050201] flex items-center justify-center" style="width: 49%">Wanita 49%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Cities -->
+                        <div class="mt-4">
+                            <span class="text-[9px] text-brand-100/40 uppercase block mb-1">Kota Asal Terbanyak (Top Cities)</span>
+                            <div class="flex flex-wrap gap-1.5 text-[9px] text-brand-100/80 font-mono mt-1">
+                                <span class="bg-brand-950/40 px-2 py-1 rounded border border-brand-900/35">Jakarta (32%)</span>
+                                <span class="bg-brand-950/40 px-2 py-1 rounded border border-brand-900/35">Surabaya (14%)</span>
+                                <span class="bg-brand-950/40 px-2 py-1 rounded border border-brand-900/35">Bandung (11%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-brand-900/20 pt-4 mt-6 text-[8px] text-brand-100/30 flex justify-between items-center">
+                    <span>*Data diperbarui Juni 2026</span>
+                    <span>Instagram Professional Stats</span>
+                </div>
+            </div>
 
         </div>
 
+        <!-- FOOTER BRAND SLOGAN (Page 2) -->
+        <div class="border-t border-brand-900/40 pt-4 flex items-center justify-between text-[9px] text-brand-100/40 relative z-10">
+            <div>
+                © 2026 Yochef Arianto. All Rights Reserved.
+            </div>
+            <div class="font-display font-bold tracking-widest text-[9px] uppercase text-brand-400">
+                Tech, Storytelling & AI Insights.
+            </div>
+        </div>
+
     </div>
+    
 </body>
 
 </html>
