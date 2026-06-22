@@ -2278,6 +2278,70 @@
                 let pipeSpeed = 2.0;
                 let frameCount = 0;
 
+                // Cloud & Time-Step Physics variables for Delta-Time Optimization
+                let clouds = [];
+                let pipeSpawnTimer = 0;
+                let cloudSpawnTimer = 0;
+                let lastTime = performance.now();
+
+                // Simple Offline Signature Verification for Discount Codes
+                function generateSecureSignature(score, rand) {
+                    const data = `${score}-${rand}-yochef-secret-salt-2026`;
+                    let hash = 5381;
+                    for (let i = 0; i < data.length; i++) {
+                        hash = (hash * 33) ^ data.charCodeAt(i);
+                    }
+                    return Math.abs(hash % 65536).toString(16).toUpperCase().padStart(4, '0');
+                }
+
+                window.verifyDiscountCode = function(code) {
+                    try {
+                        const parts = code.split('-');
+                        if (parts.length !== 3) return { valid: false, reason: "Format invalid (must be PREFIX-RAND-SIGN)" };
+                        const prefix = parts[0]; // DISC5 or DISC10
+                        const rand = parts[1];
+                        const sig = parts[2];
+                        const score = prefix === 'DISC10' ? 68 : 36;
+                        const expectedSig = generateSecureSignature(score, rand);
+                        if (sig === expectedSig) {
+                            return { valid: true, discount: prefix === 'DISC10' ? '10%' : '5%', code: code };
+                        }
+                        return { valid: false, reason: "Signature mismatch (code has been tampered with or is fake)" };
+                    } catch(e) {
+                        return { valid: false, reason: "Error parsing code" };
+                    }
+                };
+
+                window.resetGameCooldown = function() {
+                    localStorage.removeItem('yochefEggHatchedTimestamp');
+                    localStorage.removeItem('yochefEggHatched');
+                    localStorage.setItem('flappyChickenAttempts', '3');
+                    attempts = 3;
+                    gameState = 'START';
+                    resetGame();
+                    setupEggState();
+                    console.log("Game cooldown has been successfully reset! Cooldown status: Inactive. Attempts: 3/3.");
+                    return "Cooldown reset successfully!";
+                };
+
+                function spawnCloud(startX = canvas.width) {
+                    const radius = Math.random() * 8 + 12;
+                    clouds.push({
+                        x: startX,
+                        y: Math.random() * 100 + 15,
+                        radius: radius,
+                        speed: Math.random() * 0.25 + 0.12,
+                        opacity: Math.random() * 0.12 + 0.12
+                    });
+                }
+
+                function initClouds() {
+                    clouds = [];
+                    for (let i = 0; i < 4; i++) {
+                        spawnCloud(Math.random() * canvas.width);
+                    }
+                }
+
                 function resetGame() {
                     chicken.y = 200;
                     chicken.velocity = 0;
@@ -2285,6 +2349,9 @@
                     score = 0;
                     frameCount = 0;
                     winCode = '';
+                    pipeSpawnTimer = 0;
+                    cloudSpawnTimer = 0;
+                    initClouds();
                 }
 
                 function spawnPipe() {
@@ -2360,16 +2427,24 @@
                     }
                 });
 
-                // Game Loop
-                function update() {
+                // Game Loop - Optimized with Delta-Time for Consistent Speed across Refresh Rates/Devices
+                function update(dt) {
                     if (gameState === 'PLAYING') {
                         frameCount++;
 
-                        chicken.velocity += chicken.gravity;
-                        chicken.y += chicken.velocity;
+                        chicken.velocity += chicken.gravity * dt;
+                        chicken.y += chicken.velocity * dt;
+
+                        // update clouds
+                        for (let i = clouds.length - 1; i >= 0; i--) {
+                            clouds[i].x -= clouds[i].speed * dt;
+                            if (clouds[i].x + clouds[i].radius * 3 < 0) {
+                                clouds.splice(i, 1);
+                            }
+                        }
 
                         for (let i = pipes.length - 1; i >= 0; i--) {
-                            pipes[i].x -= pipeSpeed;
+                            pipes[i].x -= pipeSpeed * dt;
 
                             if (!pipes[i].passed && pipes[i].x + pipeWidth < chicken.x) {
                                 pipes[i].passed = true;
@@ -2387,19 +2462,31 @@
                             }
                         }
 
-                        if (frameCount % 120 === 0) {
+                        // Spawn pipes based on elapsed time rather than frame count
+                        pipeSpawnTimer += dt;
+                        if (pipeSpawnTimer >= 100) {
                             spawnPipe();
+                            pipeSpawnTimer = 0;
+                        }
+
+                        // Spawn clouds based on elapsed time
+                        cloudSpawnTimer += dt;
+                        if (cloudSpawnTimer >= 150 || clouds.length === 0) {
+                            spawnCloud();
+                            cloudSpawnTimer = 0;
                         }
 
                         if (checkCollision()) {
                             gameState = 'GAMEOVER';
                             playSynthSound('hit');
 
-                            // Generate verification code based on score thresholds
+                            // Generate cryptographic verification code based on score thresholds
                             if (score > 67) {
-                                winCode = "DISC10-" + generateWinCode();
+                                const rand = generateWinCode();
+                                winCode = `DISC10-${rand}-${generateSecureSignature(68, rand)}`;
                             } else if (score > 35) {
-                                winCode = "DISC5-" + generateWinCode();
+                                const rand = generateWinCode();
+                                winCode = `DISC5-${rand}-${generateSecureSignature(36, rand)}`;
                             } else {
                                 winCode = '';
                             }
@@ -2427,17 +2514,17 @@
                 }
 
                 function draw() {
-                    // Create linear gradient (orange at top, black at bottom)
+                    // Create linear gradient (Bright Warm retro sky theme)
                     let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-                    gradient.addColorStop(0, '#cc3300');    // Brand orange/red at the top
-                    gradient.addColorStop(0.35, '#3d0f00');  // Transition to dark orange-brown
-                    gradient.addColorStop(1, '#050201');     // Black/dark base at the bottom
+                    gradient.addColorStop(0, '#5cc0f4');    // Bright retro sky blue
+                    gradient.addColorStop(0.65, '#a4e5ff'); // Light pastel sky blue
+                    gradient.addColorStop(1, '#ffd294');    // Warm morning horizon glow
 
                     ctx.fillStyle = gradient;
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                     // Draw grid lines
-                    ctx.strokeStyle = 'rgba(255, 51, 0, 0.03)';
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
                     ctx.lineWidth = 1;
                     for (let i = 0; i < canvas.width; i += 20) {
                         ctx.beginPath();
@@ -2452,25 +2539,79 @@
                         ctx.stroke();
                     }
 
-                    // Draw Pipes
-                    pipes.forEach(pipe => {
-                        ctx.shadowColor = 'rgba(255, 51, 0, 0.4)';
-                        ctx.shadowBlur = 10;
+                    // Draw Moving Clouds (Parallax effect)
+                    clouds.forEach(cloud => {
+                        ctx.fillStyle = `rgba(255, 255, 255, ${cloud.opacity})`;
+                        ctx.beginPath();
+                        ctx.arc(cloud.x, cloud.y, cloud.radius, 0, Math.PI * 2);
+                        ctx.arc(cloud.x + cloud.radius * 0.7, cloud.y - cloud.radius * 0.45, cloud.radius * 0.9, 0, Math.PI * 2);
+                        ctx.arc(cloud.x + cloud.radius * 1.4, cloud.y, cloud.radius * 0.75, 0, Math.PI * 2);
+                        ctx.closePath();
+                        ctx.fill();
+                    });
 
-                        ctx.fillStyle = '#1f0d07';
-                        ctx.strokeStyle = '#ff3300';
+                    // Draw Pipes with polished retro 3D cylindrical texture & caps
+                    pipes.forEach(pipe => {
+                        // 3D cylindrical gradient for the main pipe body
+                        let pipeGrad = ctx.createLinearGradient(pipe.x, 0, pipe.x + pipeWidth, 0);
+                        pipeGrad.addColorStop(0, '#5c940d');   // Dark green edge shadow
+                        pipeGrad.addColorStop(0.25, '#87d312'); // Shiny bright highlight
+                        pipeGrad.addColorStop(0.5, '#73bf2d');  // Main bright green body
+                        pipeGrad.addColorStop(0.85, '#5c940d'); // Medium shadow
+                        pipeGrad.addColorStop(1, '#2b4d00');    // Very dark shadow edge
+
+                        // 3D cylindrical gradient for the pipe cap
+                        const capExtension = 4;
+                        let topCapGrad = ctx.createLinearGradient(pipe.x - capExtension, 0, pipe.x + pipeWidth + capExtension, 0);
+                        topCapGrad.addColorStop(0, '#5c940d');
+                        topCapGrad.addColorStop(0.25, '#a2e519'); // Extra shiny cap highlight
+                        topCapGrad.addColorStop(0.5, '#87d312');
+                        topCapGrad.addColorStop(0.85, '#3b6100');
+                        topCapGrad.addColorStop(1, '#2b4d00');
+
+                        const capHeight = 22;
+
+                        ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
+                        ctx.shadowBlur = 5;
+                        ctx.strokeStyle = '#2b4d00';
                         ctx.lineWidth = 2.5;
 
-                        ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight);
-                        ctx.strokeRect(pipe.x, -5, pipeWidth, pipe.topHeight + 5);
+                        // TOP PIPE
+                        // Body
+                        ctx.fillStyle = pipeGrad;
+                        ctx.fillRect(pipe.x, 0, pipeWidth, pipe.topHeight - capHeight);
+                        ctx.strokeRect(pipe.x, -5, pipeWidth, pipe.topHeight - capHeight + 5);
+                        
+                        // Cap
+                        ctx.fillStyle = topCapGrad;
+                        ctx.fillRect(pipe.x - capExtension, pipe.topHeight - capHeight, pipeWidth + (capExtension * 2), capHeight);
+                        ctx.strokeRect(pipe.x - capExtension, pipe.topHeight - capHeight, pipeWidth + (capExtension * 2), capHeight);
 
-                        ctx.fillRect(pipe.x, canvas.height - pipe.bottomHeight, pipeWidth, pipe.bottomHeight);
-                        ctx.strokeRect(pipe.x, canvas.height - pipe.bottomHeight, pipeWidth, pipe.bottomHeight + 5);
+                        // BOTTOM PIPE
+                        // Body
+                        ctx.fillStyle = pipeGrad;
+                        ctx.fillRect(pipe.x, canvas.height - pipe.bottomHeight + capHeight, pipeWidth, pipe.bottomHeight - capHeight);
+                        ctx.strokeRect(pipe.x, canvas.height - pipe.bottomHeight + capHeight, pipeWidth, pipe.bottomHeight - capHeight + 5);
+
+                        // Cap
+                        ctx.fillStyle = topCapGrad;
+                        ctx.fillRect(pipe.x - capExtension, canvas.height - pipe.bottomHeight, pipeWidth + (capExtension * 2), capHeight);
+                        ctx.strokeRect(pipe.x - capExtension, canvas.height - pipe.bottomHeight, pipeWidth + (capExtension * 2), capHeight);
+
+                        // Add fine vertical reflective line on the pipe bodies for texture
+                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+                        ctx.lineWidth = 1.2;
+                        ctx.beginPath();
+                        ctx.moveTo(pipe.x + 8, 0);
+                        ctx.lineTo(pipe.x + 8, pipe.topHeight - capHeight);
+                        ctx.moveTo(pipe.x + 8, canvas.height - pipe.bottomHeight + capHeight);
+                        ctx.lineTo(pipe.x + 8, canvas.height);
+                        ctx.stroke();
 
                         ctx.shadowBlur = 0;
                     });
 
-                    // Draw Chicken (Emoji)
+                    // Draw Chicken (Baby chick emoji 🐥)
                     ctx.save();
                     ctx.translate(chicken.x, chicken.y);
                     let angle = Math.min(Math.max(chicken.velocity * 0.07, -0.4), 0.7);
@@ -2478,12 +2619,12 @@
                     ctx.font = "32px Inter";
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
-                    ctx.fillText("🐔", 0, 0);
+                    ctx.fillText("🐥", 0, 0);
                     ctx.restore();
 
                     // Overlay Screens
                     if (isCooldownActive()) {
-                        ctx.fillStyle = 'rgba(5, 2, 1, 0.92)';
+                        ctx.fillStyle = 'rgba(255, 245, 235, 0.92)';
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                         ctx.textAlign = 'center';
@@ -2496,7 +2637,7 @@
                         let bounce = Math.sin(Date.now() * 0.003) * 5;
                         ctx.fillText("🐣💤", canvas.width / 2, canvas.height / 2 - 15 + bounce);
 
-                        ctx.fillStyle = '#ffffff';
+                        ctx.fillStyle = '#3d0f00';
                         ctx.font = '13px "Inter", sans-serif';
                         ctx.fillText("Ayam sedang tidur setelah lelah terbang...", canvas.width / 2, canvas.height / 2 + 45);
 
@@ -2511,19 +2652,19 @@
                             timeText = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
                         }
 
-                        ctx.fillStyle = '#ffcc00';
+                        ctx.fillStyle = '#cc5200';
                         ctx.font = 'bold 24px "Courier New", monospace';
                         ctx.fillText(`COOLDOWN: ${timeText}`, canvas.width / 2, canvas.height / 2 + 85);
 
-                        ctx.fillStyle = '#888888';
+                        ctx.fillStyle = '#777777';
                         ctx.font = 'bold 11px "Syne", sans-serif';
                         ctx.fillText("TUNGGU SAMPAI SELESAI UNTUK MAIN LAGI", canvas.width / 2, canvas.height / 2 + 130);
                     } else if (gameState === 'START') {
-                        ctx.fillStyle = 'rgba(5, 2, 1, 0.85)';
+                        ctx.fillStyle = 'rgba(255, 245, 235, 0.85)';
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                         ctx.textAlign = 'center';
-                        ctx.fillStyle = '#ffffff';
+                        ctx.fillStyle = '#3d0f00';
                         ctx.font = 'bold 24px "Syne", sans-serif';
                         ctx.fillText("FLAPPY CHICKEN", canvas.width / 2, canvas.height / 2 - 40);
 
@@ -2539,14 +2680,14 @@
                         if (attempts <= 0) {
                             ctx.fillStyle = '#ff3300';
                             ctx.font = 'bold 12px "Syne", sans-serif';
-                            ctx.fillText("KESEMPATAN HABIS! HUBUNGI YOCHEF 🐔", canvas.width / 2, canvas.height / 2 + 60);
+                            ctx.fillText("KESEMPATAN HABIS! HUBUNGI YOCHEF 🐥", canvas.width / 2, canvas.height / 2 + 60);
                         } else {
-                            ctx.fillStyle = '#ffffff';
+                            ctx.fillStyle = '#3d0f00';
                             ctx.font = 'bold 14px "Syne", sans-serif';
                             ctx.fillText("TEKAN SPACE / TAP LAYAR UNTUK MULAI", canvas.width / 2, canvas.height / 2 + 60);
                         }
                     } else if (gameState === 'GAMEOVER') {
-                        ctx.fillStyle = 'rgba(5, 2, 1, 0.9)';
+                        ctx.fillStyle = 'rgba(255, 245, 235, 0.9)';
                         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                         ctx.textAlign = 'center';
@@ -2554,37 +2695,37 @@
                         ctx.font = 'bold 36px "Syne", sans-serif';
                         ctx.fillText("GAME OVER", canvas.width / 2, 100);
 
-                        ctx.fillStyle = '#ffffff';
+                        ctx.fillStyle = '#3d0f00';
                         ctx.font = '14px "Inter", sans-serif';
                         ctx.fillText(`Skor Kamu: ${score}`, canvas.width / 2, 150);
                         ctx.fillText(`Skor Terbaikmu: ${highScore}`, canvas.width / 2, 175);
 
                         ctx.font = '11px "Inter", sans-serif';
-                        ctx.fillStyle = '#aaaaaa';
+                        ctx.fillStyle = '#666666';
                         ctx.fillText(`Sisa Kesempatan: ${attempts} / 3`, canvas.width / 2, 205);
 
                         if (score > 67) {
-                            ctx.fillStyle = '#00ff66';
+                            ctx.fillStyle = '#00aa44';
                             ctx.font = 'bold 13px "Inter", sans-serif';
                             ctx.fillText("🎉 HEBAT! LU DAPET DISKON 10%! 🎉", canvas.width / 2, 240);
 
-                            ctx.fillStyle = '#ffcc00';
+                            ctx.fillStyle = '#cc5200';
                             ctx.font = 'bold 36px "Courier New", monospace';
                             ctx.fillText(winCode, canvas.width / 2, 290);
 
-                            ctx.fillStyle = '#ffffff';
+                            ctx.fillStyle = '#3d0f00';
                             ctx.font = 'bold 11px "Inter", sans-serif';
                             ctx.fillText("SCREENSHOT KODE DI ATAS & KIRIM KE ADMIN GUE!", canvas.width / 2, 335);
                         } else if (score > 35) {
-                            ctx.fillStyle = '#00ff66';
+                            ctx.fillStyle = '#00aa44';
                             ctx.font = 'bold 13px "Inter", sans-serif';
                             ctx.fillText("🎉 MANTAP! LU DAPET DISKON 5%! 🎉", canvas.width / 2, 240);
 
-                            ctx.fillStyle = '#ffcc00';
+                            ctx.fillStyle = '#cc5200';
                             ctx.font = 'bold 36px "Courier New", monospace';
                             ctx.fillText(winCode, canvas.width / 2, 290);
 
-                            ctx.fillStyle = '#ffffff';
+                            ctx.fillStyle = '#3d0f00';
                             ctx.font = 'bold 11px "Inter", sans-serif';
                             ctx.fillText("SCREENSHOT KODE DI ATAS & KIRIM KE ADMIN GUE!", canvas.width / 2, 335);
                         } else {
@@ -2594,28 +2735,36 @@
                         }
 
                         if (attempts > 0) {
-                            ctx.fillStyle = '#ffffff';
+                            ctx.fillStyle = '#3d0f00';
                             ctx.font = 'bold 12px "Syne", sans-serif';
                             ctx.fillText("TEKAN SPACE / TAP LAYAR UNTUK MAIN LAGI", canvas.width / 2, 420);
                         } else {
-                            ctx.fillStyle = '#888888';
+                            ctx.fillStyle = '#666666';
                             ctx.font = 'bold 12px "Syne", sans-serif';
                             ctx.fillText("KESEMPATAN HABIS! COBA LAGI LAIN KALI", canvas.width / 2, 420);
                         }
                     } else if (gameState === 'PLAYING') {
-                        ctx.fillStyle = '#ffffff';
+                        ctx.fillStyle = '#3d0f00';
                         ctx.font = 'bold 28px "Syne", sans-serif';
                         ctx.textAlign = 'left';
                         ctx.fillText(score, 25, 45);
                     }
                 }
 
-                function gameLoop() {
-                    update();
+                function gameLoop(timestamp) {
+                    if (!timestamp) timestamp = performance.now();
+                    let dt = (timestamp - lastTime) / 16.666;
+                    lastTime = timestamp;
+
+                    // Cap maximum delta time to handle frame rate freeze gracefully (like tabs switching)
+                    if (dt > 4) dt = 4;
+
+                    update(dt);
                     draw();
                     requestAnimationFrame(gameLoop);
                 }
 
+                initClouds();
                 gameLoop();
 
                 // ==========================================
@@ -2639,7 +2788,7 @@
                         // Efek Hover
                         easterEgg.addEventListener('mouseenter', () => {
                             if (!isEggHatched()) {
-                                eggContent.textContent = '🐔';
+                                eggContent.textContent = '🐥';
                                 eggContent.classList.add('scale-125');
                             }
                         });
