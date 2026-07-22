@@ -226,18 +226,16 @@ window.addEventListener('DOMContentLoaded', () => {
       // --- SETUP AWAL GSAP ---
       gsap.set(".preloader-title", { opacity: 0, scale: 1.5, filter: "blur(15px)" });
       gsap.set(".preloader-subtitle", { opacity: 0, y: 20, letterSpacing: "0.8em" });
-      
-      // Sembunyikan lukisan asli di awal agar masker hitam mendominasi
       gsap.set(".hero-original", { autoAlpha: 0 });
       
-      // Masker hitam menutupi lukisan hero di awal, outline siap di atas masker hitam
-      gsap.set("#hero-black-mask", { opacity: 1, display: "block" });
+      // BARIS BARU: Atur potongan outline dari JS, bukan dari CSS!
       gsap.set(".hero-outline-layer", { 
         opacity: 1, 
         display: "block", 
-        clipPath: "inset(0% 0% 100% 0%)",
-        webkitClipPath: "inset(0% 0% 100% 0%)"
+        clipPath: "inset(0% 0% 99.9% 0%)",
+        webkitClipPath: "inset(0% 0% 99.9% 0%)"
       });
+      gsap.set("#hero-black-mask", { opacity: 1, display: "block" });
 
       const introTl = gsap.timeline({
         onComplete: () => {
