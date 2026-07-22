@@ -198,22 +198,22 @@ window.addEventListener('DOMContentLoaded', () => {
     gsap.set("#testimonials", { y: "100vh" });
 
     let masterTl = gsap.timeline({
-      scrollTrigger: { trigger: "#pin-master", start: "top top", end: "+=2400%", scrub: 1, pin: true, invalidateOnRefresh: true }
+      scrollTrigger: { trigger: "#pin-master", start: "top top", end: "+=2200%", scrub: 1, pin: true, invalidateOnRefresh: true }
     });
 
     // STAGE 1: Hero Parallax (0 to 1)
     masterTl.to("#hero .hero-typo-container", { x: "-10vw", opacity: 0, ease: "none", duration: 1 }, 0);
     masterTl.to("#hero .subject-man", { scale: 1.3, transformOrigin: "bottom center", ease: "none", duration: 1 }, 0);
     masterTl.to("#hero .bg-deep", { y: "15vh", ease: "none", duration: 1 }, 0);
-    masterTl.to("#hero .sun-flare", { y: "15vh", ease: "none", duration: 1 }, 0); // Preserved from existing
+    masterTl.to("#hero .sun-flare", { y: "15vh", ease: "none", duration: 1 }, 0);
     masterTl.to("#hero .griffin", { y: "-30vh", x: "10vw", ease: "none", duration: 1 }, 0);
     masterTl.to("#hero .ruins", { scale: 1.2, ease: "none", duration: 1 }, 0);
 
     // STAGE 2: Visual Showcase (1 to 2)
     masterTl.set("#visual-showcase", { autoAlpha: 1 }, 1);
-    masterTl.to(root, { "--visual-size": "300%", ease: "power2.inOut", duration: 1 }, 1);
+    masterTl.to(root, { "--visual-size": "450%", ease: "power2.inOut", duration: 1 }, 1);
     masterTl.fromTo("#visual-showcase .visual-bg", { scale: 1 }, { scale: 1.15, ease: "none", duration: 2 }, 1);
-    masterTl.fromTo("#visual-showcase .visual-text", { y: "5vh" }, { y: "-5vh", ease: "none", duration: 2 }, 1); // Preserved from existing
+    masterTl.fromTo("#visual-showcase .visual-text", { y: "5vh" }, { y: "-5vh", ease: "none", duration: 2 }, 1);
 
     // STAGE 3: Stats (2 to 3)
     masterTl.set("#stats", { autoAlpha: 1 }, 2);
@@ -223,7 +223,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // STAGE 4: Brands (3 to 4)
     masterTl.set("#brands", { autoAlpha: 1 }, 3);
     masterTl.to(root, { "--brands-pos": "0%", ease: "power2.inOut", duration: 1 }, 3);
-    masterTl.fromTo("#brands .logo-grid", { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, ease: "power1.out", duration: 2 }, 3); // Preserved from existing
+    masterTl.fromTo("#brands .logo-grid", { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, ease: "power1.out", duration: 2 }, 3);
     
     // STAGE 5: Works Reveal (4 to 5)
     masterTl.set("#works", { autoAlpha: 1 }, 4);
@@ -238,37 +238,37 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // STAGE 8: Layanan Visual Ink Drop (8 to 9)
     masterTl.set("#layanan-visual", { autoAlpha: 1 }, 8);
-    masterTl.fromTo("#layanan-visual", { webkitMaskSize: "0%", maskSize: "0%" }, { webkitMaskSize: "300%", maskSize: "300%", ease: "power2.inOut", duration: 1 }, 8);
+    masterTl.fromTo("#layanan-visual", { webkitMaskSize: "0%", maskSize: "0%" }, { webkitMaskSize: "450%", maskSize: "450%", ease: "power2.inOut", duration: 1 }, 8);
     masterTl.fromTo("#layanan-visual .visual-bg", { scale: 1 }, { scale: 1.15, ease: "none", duration: 2 }, 8);
 
-    // STAGE 9: Layanan Slide 1 Up (10 to 11)
-    masterTl.set("#layanan", { autoAlpha: 1 }, 10); 
-    masterTl.to("#slide-1", { y: "0vh", ease: "power2.inOut", duration: 1 }, 10);
+    // STAGE 9: Layanan Slide 1 Up (9 to 10)
+    masterTl.set("#layanan", { autoAlpha: 1 }, 9); 
+    masterTl.to("#slide-1", { y: "0vh", ease: "power2.inOut", duration: 1 }, 9);
 
-    // STAGE 10: Layanan Slide 2 Right (11 to 12)
-    masterTl.to("#slide-1", { x: "100vw", ease: "power2.inOut", duration: 1 }, 11);
-    masterTl.to("#slide-2", { x: "0vw", ease: "power2.inOut", duration: 1 }, 11);
+    // STAGE 10: Layanan Slide 2 Right (10 to 11)
+    masterTl.to("#slide-1", { x: "100vw", ease: "power2.inOut", duration: 1 }, 10);
+    masterTl.to("#slide-2", { x: "0vw", ease: "power2.inOut", duration: 1 }, 10);
 
-    // STAGE 11: Layanan Slide 3 Right (12 to 13)
-    masterTl.to("#slide-2", { x: "100vw", ease: "power2.inOut", duration: 1 }, 12);
-    masterTl.to("#slide-3", { x: "0vw", ease: "power2.inOut", duration: 1 }, 12);
+    // STAGE 11: Layanan Slide 3 Right (11 to 12)
+    masterTl.to("#slide-2", { x: "100vw", ease: "power2.inOut", duration: 1 }, 11);
+    masterTl.to("#slide-3", { x: "0vw", ease: "power2.inOut", duration: 1 }, 11);
 
-    // STAGE 12: Layanan Slide 4 Down (13 to 14)
-    masterTl.to("#slide-3", { y: "100vh", ease: "power2.inOut", duration: 1 }, 13);
-    masterTl.to("#slide-4", { y: "0vh", ease: "power2.inOut", duration: 1 }, 13);
+    // STAGE 12: Layanan Slide 4 Down (12 to 13)
+    masterTl.to("#slide-3", { y: "100vh", ease: "power2.inOut", duration: 1 }, 12);
+    masterTl.to("#slide-4", { y: "0vh", ease: "power2.inOut", duration: 1 }, 12);
 
-    // STAGE 13: TESTIMONIALS REVEAL (14 to 15) -> FIXED Z-INDEX & TRANSITION
-    masterTl.set("#testimonials", { autoAlpha: 1 }, 14);
-    masterTl.to("#slide-4", { y: "-100vh", ease: "power2.inOut", duration: 1 }, 14); 
-    masterTl.to("#testimonials", { y: "0vh", ease: "power2.inOut", duration: 1 }, 14); 
-    masterTl.fromTo(".bust-left", { y: "30vh" }, { y: "-5vh", ease: "none", duration: 2 }, 14);
-    masterTl.fromTo(".bust-center", { y: "15vh" }, { y: "10vh", ease: "none", duration: 2 }, 14);
-    masterTl.fromTo(".bust-right", { y: "40vh" }, { y: "-15vh", ease: "none", duration: 2 }, 14);
+    // STAGE 13: TESTIMONIALS REVEAL (13 to 14)
+    masterTl.set("#testimonials", { autoAlpha: 1 }, 13);
+    masterTl.to("#slide-4", { y: "-100vh", ease: "power2.inOut", duration: 1 }, 13); 
+    masterTl.to("#testimonials", { y: "0vh", ease: "power2.inOut", duration: 1 }, 13); 
+    masterTl.fromTo(".bust-left", { y: "30vh" }, { y: "-5vh", ease: "none", duration: 2 }, 13);
+    masterTl.fromTo(".bust-center", { y: "15vh" }, { y: "10vh", ease: "none", duration: 2 }, 13);
+    masterTl.fromTo(".bust-right", { y: "40vh" }, { y: "-15vh", ease: "none", duration: 2 }, 13);
 
-    // STAGE 14: Footer Ink Drop (15 to 16)
-    masterTl.set("#footer", { autoAlpha: 1 }, 15);
-    masterTl.fromTo("#footer", { webkitMaskSize: "0%", maskSize: "0%" }, { webkitMaskSize: "300%", maskSize: "300%", ease: "power2.inOut", duration: 1 }, 15);
-    masterTl.fromTo("#footer .footer-hand", { y: "15vh", scale: 0.9 }, { y: "-5vh", scale: 1, ease: "power1.out", duration: 1 }, 15);
+    // STAGE 14: Footer Ink Drop (14 to 15)
+    masterTl.set("#footer", { autoAlpha: 1 }, 14);
+    masterTl.fromTo("#footer", { webkitMaskSize: "0%", maskSize: "0%" }, { webkitMaskSize: "450%", maskSize: "450%", ease: "power2.inOut", duration: 1 }, 14);
+    masterTl.fromTo("#footer .footer-hand", { y: "15vh", scale: 0.9 }, { y: "-5vh", scale: 1, ease: "power1.out", duration: 1 }, 14);
 
     ScrollTrigger.refresh();
   }

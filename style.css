@@ -20,9 +20,9 @@
 
   /* DATA URI TEXTURED MASKS (ULTRA FAST 60FPS REAL PAPER BURN DISPLACEMENT) */
   --svg-ink: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'><filter id='t_ink'><feTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='55' xChannelSelector='R' yChannelSelector='G'/></filter><circle cx='500' cy='500' r='400' fill='black' filter='url(%23t_ink)'/></svg>");
-  --svg-up: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_up'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='55' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='500' width='1200' height='600' fill='black' filter='url(%23t_up)'/></svg>");
-  --svg-down: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_down'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='55' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='-100' width='1200' height='600' fill='black' filter='url(%23t_down)'/></svg>");
-  --svg-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_right'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='55' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='-100' width='600' height='1200' fill='black' filter='url(%23t_right)'/></svg>");
+  --svg-up: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_up'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='55' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='400' width='1200' height='800' fill='black' filter='url(%23t_up)'/></svg>");
+  --svg-down: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_down'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='55' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='-200' width='1200' height='800' fill='black' filter='url(%23t_down)'/></svg>");
+  --svg-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_right'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='55' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-200' y='-100' width='800' height='1200' fill='black' filter='url(%23t_right)'/></svg>");
 
   /* GSAP ANIMATION VARIABLES */
   --visual-size: 0%;
@@ -1869,6 +1869,10 @@ canvas {
 /* -------------------------------------
    STRICT Z-INDEX LADDER FOR ALL SECTIONS
    ------------------------------------- */
+#hero { z-index: 10 !important; }
+#visual-showcase { z-index: 20 !important; }
+#stats { z-index: 30 !important; }
+#brands { z-index: 40 !important; }
 #works { z-index: 50 !important; }
 #events { z-index: 60 !important; }
 #layanan-visual { z-index: 70 !important; }
