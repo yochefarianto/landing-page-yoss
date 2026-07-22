@@ -34,6 +34,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <button id="lang-switch" class="lang-switch">ID</button>
   <!-- GLOBAL CINEMATIC OVERLAYS -->
   <div class="tilt-shift-overlay"></div>
   <div class="dreamy-overlay"></div>
@@ -54,10 +55,10 @@
       <div class="hero-typo-container" id="hero-ui">
         <span class="hero-handle">@yoschf</span>
         <h1 class="main-title" id="hero-name">YOCHEF<br>ARIANTO</h1>
-        <h3 class="hero-niche">AI • TECH • MINDSET • PRODUCTIVITY</h3>
-        <p class="hero-subtitle">Edukasi teknologi dan pengembangan diri yang dibalut dalam penceritaan sinematik serta konten kuis interaktif.</p>
+        <h3 class="hero-niche" data-i18n="hero_niche">AI • TECH • MINDSET • PRODUCTIVITY</h3>
+        <p class="hero-subtitle" data-i18n="hero_desc">Edukasi teknologi dan pengembangan diri yang dibalut dalam penceritaan sinematik serta konten kuis interaktif.</p>
         <a href="https://wa.me/6282132631083?text=Halo%20Yochef!%20Saya%20dari%20%5BNama%20Brand%5D%20tertarik%20untuk%20berkolaborasi.%0A%0ABerikut%20adalah%20detail%20SOW%20%28Scope%20of%20Work%29%20yang%20kami%20butuhkan%3A%0A-%20%0A%0ATerima%20kasih!" target="_blank" rel="noopener" class="btn-premium">
-          <span class="btn-text">HUBUNGI VIA WHATSAPP</span>
+          <span class="btn-text" data-i18n="hero_wa">HUBUNGI VIA WHATSAPP</span>
         </a>
       </div>
 
@@ -69,7 +70,7 @@
     <section id="visual-showcase">
       <img loading="lazy" src="assets/bg_cinematic_vision.png" class="visual-bg" alt="Visionary Tech">
       <canvas id="canvas-dust" class="dust-overlay"></canvas>
-      <h2 class="visual-text">VISIONARY TECH</h2>
+      <h2 class="visual-text" data-i18n="visual_title">VISIONARY TECH</h2>
     </section>
 
     <!-- SECTION 2: STATS & PORTFOLIO -->
@@ -79,8 +80,8 @@
       
       <div class="content-wrapper" id="stats-content">
         <div class="stats-header-block">
-          <span class="stats-tag">RENAISSANCE CREATOR</span>
-          <h2 class="stats-heading">SEDIKIT TENTANG GUE</h2>
+          <span class="stats-tag" data-i18n="stats_tag">RENAISSANCE CREATOR</span>
+          <h2 class="stats-heading" data-i18n="stats_heading">SEDIKIT TENTANG GUE</h2>
           <p class="stats-bio-text">
             Berawal dari kecintaan pada dunia teknologi dan storytelling visual, saya membangun ekosistem konten yang menginspirasi jutaan penonton di seluruh Indonesia — dari ulasan gadget futuristik hingga riset teknologi mendalam, sambil tetap menjadi peternak ayam paruh waktu.
           </p>
@@ -89,15 +90,15 @@
         <div class="stats-grid">
           <div class="stat-card">
             <span class="stat-number" data-target="186">186M+</span>
-            <span class="stat-label">TOTAL VIEWS</span>
+            <span class="stat-label" data-i18n="stats_views">TOTAL VIEWS</span>
           </div>
           <div class="stat-card">
             <span class="stat-number" data-target="522">522K+</span>
-            <span class="stat-label">TOTAL FOLLOWERS</span>
+            <span class="stat-label" data-i18n="stats_followers">TOTAL FOLLOWERS</span>
           </div>
           <div class="stat-card">
             <span class="stat-number" data-target="69">69+</span>
-            <span class="stat-label">BRAND DEALS</span>
+            <span class="stat-label" data-i18n="stats_deals">BRAND DEALS</span>
           </div>
         </div>
       </div>
@@ -107,8 +108,8 @@
     <section id="brands">
       <div class="brands-container">
         <div class="brands-header-block">
-          <span class="brands-subtitle">KOLABORASI EKSKLUSIF</span>
-          <h2 class="brands-title">PERNAH BERKOLABORASI DENGAN</h2>
+          <span class="brands-subtitle" data-i18n="brands_subtitle">KOLABORASI EKSKLUSIF</span>
+          <h2 class="brands-title" data-i18n="brands_title">PERNAH BERKOLABORASI DENGAN</h2>
         </div>
 
         <div class="marquee-wrapper">
@@ -169,15 +170,15 @@
           </div>
         </div>
 
-        <p class="brands-footer">DAN MASIH BANYAK LAGI 😲</p>
+        <p class="brands-footer" data-i18n="brands_footer">DAN MASIH BANYAK LAGI 😲</p>
       </div>
     </section>
 
     <!-- SECTION 4: WORKS (HORIZONTAL SCROLL WITH 9 VIDEO SHOWCASES) -->
     <section id="works">
       <div class="works-header">
-        <h2>KARYA TERBAIK</h2>
-        <p>Sorotan beberapa kolaborasi dan konten personal yang mencapai jutaan tayangan (TikTok). Tahu sendiri kan bakal segila apa kalo mirror ke Instagram juga</p>
+        <h2 data-i18n="works_title">KARYA TERBAIK</h2>
+        <p data-i18n="works_desc">Sorotan beberapa kolaborasi dan konten personal yang mencapai jutaan tayangan (TikTok). Tahu sendiri kan bakal segila apa kalo mirror ke Instagram juga</p>
       </div>
       <div class="works-track" id="works-track">
         <div class="work-card">
@@ -233,7 +234,7 @@
       <div class="events-container">
         <h2 class="events-title">DOKUMENTASI EVENT & SEMINAR</h2>
         <div class="events-line"></div>
-        <p class="events-subtitle">Rekam jejak gue sebagai pembicara dan mentor.</p>
+        <p class="events-subtitle" data-i18n="events_subtitle">Rekam jejak gue sebagai pembicara dan mentor.</p>
         
         <div class="events-grid">
           <!-- Card 1: Webinar -->
@@ -245,7 +246,7 @@
             </div>
             <div class="event-info">
               <h3>Fundamental AI & Content Creation</h3>
-              <p>Membagikan konsep dasar AI dan cara praktis pengaplikasiannya.</p>
+              <p data-i18n="events_ai_desc">Membagikan konsep dasar AI dan cara praktis pengaplikasiannya.</p>
             </div>
           </div>
 
@@ -267,7 +268,7 @@
             </div>
             <div class="event-info">
               <h3>Hands-on AI & Productivity Workshop At KAI</h3>
-              <p>Pelatihan langsung implementasi AI untuk membangun konten cerdas.</p>
+              <p data-i18n="events_workshop_desc">Pelatihan langsung implementasi AI untuk membangun konten cerdas.</p>
             </div>
           </div>
         </div>
@@ -280,7 +281,7 @@
         <div class="light-rays"></div>
         <!-- Asset Prompt: Classical Renaissance oil painting of a glowing futuristic astrolabe or mechanical clockwork in a dark grand library -->
         <img loading="lazy" src="assets/adams_creation_layanan.png" class="visual-bg" alt="Kolaborasi">
-        <h2 class="visual-text">LAYANAN KOLABORASI</h2>
+        <h2 class="visual-text" data-i18n="services_title">LAYANAN KOLABORASI</h2>
       </div>
     </section>
 
@@ -290,10 +291,10 @@
       <div id="slide-1" class="layanan-slide" style="z-index: 1;">
         <div class="slide-img-wrap"><img loading="lazy" src="assets/bg_portrait_noble.png" alt="Social Media"></div>
         <div class="slide-content">
-          <h3>I. SOCIAL MEDIA CAMPAIGNS</h3>
-          <div class="editorial-item"><h4>Bundle IG Reels + TikTok (Best Value)</h4><p>Cross-platform campaign untuk eksposur ganda. Termasuk 1x Video, konsep &amp; script eksklusif.</p></div>
-          <div class="editorial-item"><h4>Instagram Services</h4><p>IG Story (aktif 24 jam dengan link), Feed, Carousel, hingga Reels bernarasi kuat.</p></div>
-          <div class="editorial-item"><h4>TikTok Services</h4><p>Video vertikal dengan hook tajam atau Carousel berorientasi edukasi dan tren.</p></div>
+          <h3 data-i18n="serv_1">I. SOCIAL MEDIA CAMPAIGNS</h3>
+          <div class="editorial-item"><h4>Bundle IG Reels + TikTok (Best Value)</h4><p data-i18n="serv_1_a">Cross-platform campaign untuk eksposur ganda. Termasuk 1x Video, konsep &amp; script eksklusif.</p></div>
+          <div class="editorial-item"><h4 data-i18n="serv_1_b_title">Instagram Services</h4><p data-i18n="serv_1_b">IG Story (aktif 24 jam dengan link), Feed, Carousel, hingga Reels bernarasi kuat.</p></div>
+          <div class="editorial-item"><h4 data-i18n="serv_1_c_title">TikTok Services</h4><p data-i18n="serv_1_c">Video vertikal dengan hook tajam atau Carousel berorientasi edukasi dan tren.</p></div>
         </div>
       </div>
 
@@ -301,8 +302,8 @@
       <div id="slide-2" class="layanan-slide" style="z-index: 2;">
         <div class="slide-img-wrap"><img loading="lazy" src="assets/bg_portrait_scholar.png" alt="Event Visit"></div>
         <div class="slide-content">
-          <h3>II. EVENT VISIT &amp; COVERAGE</h3>
-          <div class="editorial-item"><h4>Pre-Event, On-Site &amp; Post-Event</h4><p>Hadir meramaikan offline event dengan teaser interaktif, liputan real-time via Stories/Reels, dan video kompilasi recap dinamis pasca-acara.</p></div>
+          <h3 data-i18n="serv_2">II. EVENT VISIT &amp; COVERAGE</h3>
+          <div class="editorial-item"><h4 data-i18n="serv_2_a_title">Pre-Event, On-Site &amp; Post-Event</h4><p data-i18n="serv_2_a">Hadir meramaikan offline event dengan teaser interaktif, liputan real-time via Stories/Reels, dan video kompilasi recap dinamis pasca-acara.</p></div>
         </div>
       </div>
 
@@ -310,8 +311,8 @@
       <div id="slide-3" class="layanan-slide" style="z-index: 3;">
         <div class="slide-img-wrap"><img loading="lazy" src="assets/bg_portrait_orator.png" alt="Speaker"></div>
         <div class="slide-content">
-          <h3>III. SPEAKER &amp; TALKSHOW</h3>
-          <div class="editorial-item"><h4>Topik Unggulan &amp; Format</h4><p>Fundamental AI, Workshop Hands-on, Strategi Viral, &amp; Konten Visual. Tersedia untuk Event Online (Webinar/Live) maupun Offline (Seminar/Juri).</p></div>
+          <h3 data-i18n="serv_3">III. SPEAKER &amp; TALKSHOW</h3>
+          <div class="editorial-item"><h4 data-i18n="serv_3_a_title">Topik Unggulan &amp; Format</h4><p data-i18n="serv_3_a">Fundamental AI, Workshop Hands-on, Strategi Viral, &amp; Konten Visual. Tersedia untuk Event Online (Webinar/Live) maupun Offline (Seminar/Juri).</p></div>
         </div>
       </div>
 
@@ -319,8 +320,8 @@
       <div id="slide-4" class="layanan-slide" style="z-index: 4;">
         <div class="slide-img-wrap"><img loading="lazy" src="assets/bg_portrait_diplomat.png" alt="Partnerships"></div>
         <div class="slide-content">
-          <h3>IV. EXCLUSIVE PARTNERSHIPS</h3>
-          <div class="editorial-item"><h4>Brand Ambassador &amp; Custom Projects</h4><p>Kerjasama strategis 3-6 bulan atau campaign spesifik yang disesuaikan dengan brief, integrasi link, dan opsi Usage Rights.</p></div>
+          <h3 data-i18n="serv_4">IV. EXCLUSIVE PARTNERSHIPS</h3>
+          <div class="editorial-item"><h4 data-i18n="serv_4_a_title">Brand Ambassador &amp; Custom Projects</h4><p data-i18n="serv_4_a">Kerjasama strategis 3-6 bulan atau campaign spesifik yang disesuaikan dengan brief, integrasi link, dan opsi Usage Rights.</p></div>
         </div>
       </div>
     </section>
@@ -334,7 +335,7 @@
 
       <!-- Foreground Content -->
       <div class="testi-container">
-        <h2 class="testi-title">APA KATA MEREKA?</h2>
+        <h2 class="testi-title" data-i18n="testi_title">APA KATA MEREKA?</h2>
         <div class="testi-line"></div>
         
         <div class="testi-grid">
@@ -344,7 +345,7 @@
               <div class="testi-stars">★★★★★</div>
               <div class="testi-quote-icon">“</div>
             </div>
-            <p class="testi-text">"Gokil sih, ulasan hapenya detail banget tapi tetep asyik ditonton. Retention rate-nya tinggi, engagement naik, dan pelayanan komunikasinya responsif banget. Top notch!"</p>
+            <p class="testi-text" data-i18n="testi_1">"Gokil sih, ulasan hapenya detail banget tapi tetep asyik ditonton. Retention rate-nya tinggi, engagement naik, dan pelayanan komunikasinya responsif banget. Top notch!"</p>
             <div class="testi-author">
               <div class="testi-avatar">M</div>
               <div class="testi-author-info">
@@ -359,7 +360,7 @@
               <div class="testi-stars">★★★★★</div>
               <div class="testi-quote-icon">“</div>
             </div>
-            <p class="testi-text">"Kerja bareng bro satu ini gak pernah ribet. Kreatif banget bikin analogi laptop kita jadi gampang dipahami awam. Performa kontennya mantap, delivery-nya super cepet!"</p>
+            <p class="testi-text" data-i18n="testi_2">"Kerja bareng bro satu ini gak pernah ribet. Kreatif banget bikin analogi laptop kita jadi gampang dipahami awam. Performa kontennya mantap, delivery-nya super cepet!"</p>
             <div class="testi-author">
               <div class="testi-avatar">A</div>
               <div class="testi-author-info">
@@ -374,7 +375,7 @@
               <div class="testi-stars">★★★★★</div>
               <div class="testi-quote-icon">“</div>
             </div>
-            <p class="testi-text">"Gak cuma jago bikin skrip yang nge-hook, tapi profesionalitas kerjanya juara. Konversi bagus, minim revisi, dan komunikasinya bener-bener suportif. Highly recommended!"</p>
+            <p class="testi-text" data-i18n="testi_3">"Gak cuma jago bikin skrip yang nge-hook, tapi profesionalitas kerjanya juara. Konversi bagus, minim revisi, dan komunikasinya bener-bener suportif. Highly recommended!"</p>
             <div class="testi-author">
               <div class="testi-avatar">V</div>
               <div class="testi-author-info">
@@ -393,7 +394,7 @@
       <canvas id="canvas-hand-footer" class="footer-hand"></canvas>
       <div class="footer-content" id="footer-content">
         <h3 class="footer-subtitle">Ready for the next masterpiece?</h3>
-        <h2 class="footer-headline">MULAI KOLABORASI</h2>
+        <h2 class="footer-headline" data-i18n="footer_headline">MULAI KOLABORASI</h2>
         <div class="footer-line"></div>
         <div class="footer-links-row">
           <a href="https://wa.me/6282132631083?text=Halo%20Yochef!%20Saya%20dari%20%5BNama%20Brand%5D%20tertarik%20untuk%20berkolaborasi.%0A%0ABerikut%20adalah%20detail%20SOW%20%28Scope%20of%20Work%29%20yang%20kami%20butuhkan%3A%0A-%20%0A%0ATerima%20kasih!" target="_blank" rel="noopener" class="btn-premium">
@@ -425,7 +426,7 @@
     <div class="modal-content">
       <button id="modal-close-btn" class="modal-close-btn" aria-label="Close modal">&times;</button>
       
-      <h2 class="modal-title">Flappy Chicken Arcade!</h2>
+      <h2 class="modal-title" data-i18n="modal_title">Flappy Chicken Arcade!</h2>
       <p class="modal-desc">
         Flappy Chicken Arcade! Dapatkan skor di atas 35 untuk diskon 5%.
       </p>

@@ -1,3 +1,71 @@
+const i18n = {
+  "hero_niche": { id: `AI • TECH • MINDSET • PRODUCTIVITY`, en: `AI • TECH • MINDSET • PRODUCTIVITY` },
+  "hero_desc": { id: `Edukasi teknologi dan pengembangan diri yang dibalut dalam penceritaan sinematik serta konten kuis interaktif.`, en: `Technology and self-development education wrapped in cinematic storytelling and interactive quiz content.` },
+  "hero_wa": { id: `HUBUNGI VIA WHATSAPP`, en: `CONTACT VIA WHATSAPP` },
+  "visual_title": { id: `VISIONARY TECH`, en: `VISIONARY TECH` },
+  "stats_tag": { id: `RENAISSANCE CREATOR`, en: `RENAISSANCE CREATOR` },
+  "stats_heading": { id: `SEDIKIT TENTANG GUE`, en: `A LITTLE ABOUT ME` },
+  "stats_views": { id: `TOTAL VIEWS`, en: `TOTAL VIEWS` },
+  "stats_followers": { id: `TOTAL FOLLOWERS`, en: `TOTAL FOLLOWERS` },
+  "stats_deals": { id: `BRAND DEALS`, en: `BRAND DEALS` },
+  "brands_subtitle": { id: `KOLABORASI EKSKLUSIF`, en: `EXCLUSIVE COLLABORATIONS` },
+  "brands_title": { id: `PERNAH BERKOLABORASI DENGAN`, en: `HAS COLLABORATED WITH` },
+  "brands_footer": { id: `DAN MASIH BANYAK LAGI 😲`, en: `AND MANY MORE 😲` },
+  "works_title": { id: `KARYA TERBAIK`, en: `BEST WORKS` },
+  "works_desc": { id: `Sorotan beberapa kolaborasi dan konten personal yang mencapai jutaan tayangan (TikTok). Tahu sendiri kan bakal segila apa kalo mirror ke Instagram juga`, en: `Highlights of several collaborations and personal content that reached millions of views (TikTok). Imagine the impact when mirrored to Instagram!` },
+  "events_title": { id: `DOKUMENTASI EVENT &amp; SEMINAR`, en: `EVENT &amp; SEMINAR DOCUMENTATION` },
+  "events_subtitle": { id: `Rekam jejak gue sebagai pembicara dan mentor.`, en: `My track record as a speaker and mentor.` },
+  "events_ai_desc": { id: `Membagikan konsep dasar AI dan cara praktis pengaplikasiannya.`, en: `Sharing the fundamental concepts of AI and practical ways to apply them.` },
+  "events_workshop_desc": { id: `Pelatihan langsung implementasi AI untuk membangun konten cerdas.`, en: `Hands-on training implementing AI to build smart content.` },
+  "services_title": { id: `LAYANAN KOLABORASI`, en: `COLLABORATION SERVICES` },
+  "serv_1": { id: `I. SOCIAL MEDIA CAMPAIGNS`, en: `I. SOCIAL MEDIA CAMPAIGNS` },
+  "serv_1_a": { id: `Cross-platform campaign untuk eksposur ganda. Termasuk 1x Video, konsep &amp; script eksklusif.`, en: `Cross-platform campaign for double exposure. Includes 1x Video, exclusive concept &amp; script.` },
+  "serv_1_b_title": { id: `Instagram Services`, en: `Instagram Services` },
+  "serv_1_b": { id: `IG Story (aktif 24 jam dengan link), Feed, Carousel, hingga Reels bernarasi kuat.`, en: `IG Story (active 24 hrs with link), Feed, Carousel, to highly narrative Reels.` },
+  "serv_1_c_title": { id: `TikTok Services`, en: `TikTok Services` },
+  "serv_1_c": { id: `Video vertikal dengan hook tajam atau Carousel berorientasi edukasi dan tren.`, en: `Vertical video with sharp hooks or trend-driven educational Carousels.` },
+  "serv_2": { id: `II. EVENT VISIT &amp; COVERAGE`, en: `II. EVENT VISIT &amp; COVERAGE` },
+  "serv_2_a_title": { id: `Pre-Event, On-Site &amp; Post-Event`, en: `Pre-Event, On-Site &amp; Post-Event` },
+  "serv_2_a": { id: `Hadir meramaikan offline event dengan teaser interaktif, liputan real-time via Stories/Reels, dan video kompilasi recap dinamis pasca-acara.`, en: `Livening up offline events with interactive teasers, real-time coverage via Stories/Reels, and dynamic recap compilation videos post-event.` },
+  "serv_3": { id: `III. SPEAKER &amp; TALKSHOW`, en: `III. SPEAKER &amp; TALKSHOW` },
+  "serv_3_a_title": { id: `Topik Unggulan &amp; Format`, en: `Featured Topics &amp; Formats` },
+  "serv_3_a": { id: `Fundamental AI, Workshop Hands-on, Strategi Viral, &amp; Konten Visual. Tersedia untuk Event Online (Webinar/Live) maupun Offline (Seminar/Juri).`, en: `AI Fundamentals, Hands-on Workshops, Viral Strategies, &amp; Visual Content. Available for Online (Webinar/Live) and Offline (Seminar/Judge) Events.` },
+  "serv_4": { id: `IV. EXCLUSIVE PARTNERSHIPS`, en: `IV. EXCLUSIVE PARTNERSHIPS` },
+  "serv_4_a_title": { id: `Brand Ambassador &amp; Custom Projects`, en: `Brand Ambassador &amp; Custom Projects` },
+  "serv_4_a": { id: `Kerjasama strategis 3-6 bulan atau campaign spesifik yang disesuaikan dengan brief, integrasi link, dan opsi Usage Rights.`, en: `Strategic 3-6 month partnerships or specific campaigns customized to your brief, link integration, and Usage Rights options.` },
+  "testi_title": { id: `APA KATA MEREKA?`, en: `WHAT THEY SAY` },
+  "testi_1": { id: `"Gokil sih, ulasan hapenya detail banget tapi tetep asyik ditonton. Retention rate-nya tinggi, engagement naik, dan pelayanan komunikasinya responsif banget. Top notch!"`, en: `"Crazy good! The phone review was highly detailed but still super fun to watch. High retention rate, increased engagement, and very responsive communication. Top notch!"` },
+  "testi_2": { id: `"Kerja bareng bro satu ini gak pernah ribet. Kreatif banget bikin analogi laptop kita jadi gampang dipahami awam. Performa kontennya mantap, delivery-nya super cepet!"`, en: `"Working with this bro is never complicated. Super creative in making laptop analogies easily understood by the public. Solid content performance, super fast delivery!"` },
+  "testi_3": { id: `"Gak cuma jago bikin skrip yang nge-hook, tapi profesionalitas kerjanya juara. Konversi bagus, minim revisi, dan komunikasinya bener-bener suportif. Highly recommended!"`, en: `"Not only great at writing hooking scripts, but his professionalism is top tier. Good conversions, minimal revisions, and truly supportive communication. Highly recommended!"` },
+  "footer_headline": { id: `MULAI KOLABORASI`, en: `START COLLABORATION` },
+  "modal_title": { id: `Flappy Chicken Arcade!`, en: `Flappy Chicken Arcade!` },
+};
+
+
+let currentLang = localStorage.getItem('yochef_lang') || 'id';
+
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('yochef_lang', lang);
+  document.getElementById('lang-switch').textContent = lang.toUpperCase();
+  
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[key] && i18n[key][lang]) {
+      el.innerHTML = i18n[key][lang];
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('lang-switch');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      setLanguage(currentLang === 'id' ? 'en' : 'id');
+    });
+  }
+  setLanguage(currentLang);
+});
 window.addEventListener('DOMContentLoaded', () => {
   // 1. REGISTER GSAP PLUGINS
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
