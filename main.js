@@ -1,3 +1,11 @@
+// 1. Matikan fitur "sok tahu" browser yang suka nginget posisi scroll
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
+// 2. Paksa layar selalu mulai dari titik paling atas sebelum dirender
+window.scrollTo(0, 0);
+
 const i18n = {
   "hero_niche": { id: `AI • TECH • MINDSET • PRODUCTIVITY`, en: `AI • TECH • MINDSET • PRODUCTIVITY` },
   "hero_desc": { id: `Edukasi teknologi dan pengembangan diri yang dibalut dalam penceritaan sinematik serta konten kuis interaktif.`, en: `Technology and self-development education wrapped in cinematic storytelling and interactive quiz content.` },
@@ -215,56 +223,71 @@ window.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = "hidden"; // Kunci scroll saat loading
 
     const startPreloaderAnim = () => {
-      // --- 1. SET AWAL: Blur dan Membesar (Out of Focus) ---
+      // --- SETUP AWAL GSAP ---
       gsap.set(".preloader-title", { opacity: 0, scale: 1.5, filter: "blur(15px)" });
-      gsap.set(".preloader-subtitle", { opacity: 0, y: 20, letterSpacing: "0.8em" }); // Spasi huruf renggang
+      gsap.set(".preloader-subtitle", { opacity: 0, y: 20, letterSpacing: "0.8em" });
+      
+      // Masker hitam menutupi lukisan hero di awal, outline siap di atas masker hitam
+      gsap.set("#hero-black-mask", { opacity: 1, display: "block" });
+      gsap.set(".hero-outline-layer", { 
+        opacity: 1, 
+        display: "block", 
+        clipPath: "inset(0% 0% 100% 0%)",
+        webkitClipPath: "inset(0% 0% 100% 0%)"
+      });
 
       const introTl = gsap.timeline({
         onComplete: () => {
           document.body.style.overflow = "auto"; 
           const preloaderEl = document.getElementById("museum-preloader");
           if (preloaderEl) preloaderEl.remove(); 
+          const maskEl = document.getElementById("hero-black-mask");
+          if (maskEl) maskEl.remove();
           if (typeof ScrollTrigger !== 'undefined') {
             ScrollTrigger.refresh(); 
           }
         }
       });
 
-      // --- 2. CINEMATIC FOCUS PULL: Lensa menyesuaikan fokus ---
-      introTl.to(".preloader-title", { 
-               opacity: 1, 
-               scale: 1, 
-               filter: "blur(0px)", 
-               duration: 2.5, 
-               ease: "power3.out", 
-               delay: 0.2 
-             })
-             // Subtitle merapat layaknya kalibrasi sistem digital
-             .to(".preloader-subtitle", { 
-               opacity: 1, 
-               y: 0, 
-               letterSpacing: "0.3em", 
-               duration: 2, 
-               ease: "power2.out" 
-             }, "-=1.5")
+      // ANIMASI OPENING TEKS PRELOADER
+      introTl.to(".preloader-title", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.2, ease: "power3.out", delay: 0.1 })
+             .to(".preloader-subtitle", { opacity: 1, y: 0, letterSpacing: "0.3em", duration: 1.0, ease: "power2.out" }, "-=0.8")
+             .to({}, { duration: 0.5 }) // Jeda baca singkat
              
-             // Jeda sejenak untuk membiarkan audiens menikmati kemegahannya
-             .to({}, { duration: 1.5 }) 
-             
-             // --- 3. CAMERA RUSH EXIT: Melesat nembus teks ke dalam layar ---
+             // --- CAMERA RUSH EXIT & PRELOADER BLACKOUT FADE ---
              .to(".preloader-content", {
-               scale: 4,          // Teks membesar brutal nabrak kamera
+               scale: 4,          
                opacity: 0, 
                filter: "blur(20px)", 
-               duration: 1.2, 
+               duration: 0.8, 
                ease: "power3.in"
              })
-             // Background hitam terangkat persis saat teks nembus kamera
-             .to("#museum-preloader", { 
-               y: "-100dvh", 
-               duration: 1.5, 
-               ease: "power4.inOut" 
-             }, "-=0.8");
+             // Matikan bungkusan preloader luar agar beralih ke masker hitam
+             .set("#museum-preloader", { display: "none" })
+             
+             // --- FASE 1: DA VINCI LASER SCAN (Garis outline emas menyapu latar hitam pekat) ---
+             .to(".hero-outline-layer", {
+               clipPath: "inset(0% 0% 0% 0%)",
+               webkitClipPath: "inset(0% 0% 0% 0%)",
+               duration: 1.2,
+               ease: "power2.inOut"
+             }) 
+             
+             .to({}, { duration: 0.8 }) // Jeda memandangi blueprint
+             
+             // --- FASE 2: RENAISSANCE COLORIZATION (Masker hitam & outline pudar menyingkap lukisan asli) ---
+             .to("#hero-black-mask", {
+               opacity: 0,
+               duration: 1.5,
+               ease: "power2.inOut"
+             })
+             .to(".hero-outline-layer", {
+               opacity: 0,
+               duration: 1.5,
+               ease: "power2.inOut"
+             }, "<")
+             .set(".hero-outline-layer", { display: "none" })
+             .set("#hero-black-mask", { display: "none" });
     };
 
     if (document.readyState === "complete") {

@@ -34,6 +34,7 @@
   <link rel="stylesheet" href="style.css?v=4.0">
 </head>
 <body>
+  <!-- THE MUSEUM PRELOADER -->
   <div id="museum-preloader">
     <div class="preloader-content">
       <h1 class="preloader-title">YOCHEF ARIANTO</h1>
@@ -50,16 +51,25 @@
   <div id="pin-master">
     <!-- SECTION 1: THE HERO (GOLDEN RATIO 62/38 & ADAM'S CREATION OIL PAINTING STYLE) -->
     <section id="hero">
-      <img src="assets/bg_mountain.webp" class="layer bg-deep" id="hero-bg" alt="Renaissance Mountain Oil Painting">
-      <div class="layer sun-flare" id="hero-sun-flare"></div>
-      <canvas id="canvas-griffin" class="layer griffin"></canvas>
-      <img src="assets/cutout_ruins.webp" class="layer ruins" id="hero-ruins" alt="Classical Ruins">
-      
-      <!-- Black Gradient Fade for text readability -->
-      <div class="layer hero-fade-overlay" id="hero-fade"></div>
+      <!-- MASKER HITAM PENUTUP HERO -->
+      <div id="hero-black-mask"></div>
+
+      <!-- LAYER LUKISAN HERO (.hero-painting) -->
+      <img src="assets/bg_mountain.webp" class="layer bg-deep hero-painting" id="hero-bg" alt="Renaissance Mountain Oil Painting">
+      <img src="assets/cutout_ruins.webp" class="layer ruins hero-painting" id="hero-ruins" alt="Classical Ruins">
+      <img src="assets/cutout_man.webp" class="layer subject-man hero-painting" id="hero-man" alt="Yochef Renaissance Portrait">
+      <div class="layer hero-fade-overlay hero-painting" id="hero-fade"></div>
+
+      <!-- LAYER OUTLINE BLUEPRINT (.hero-outline-layer) -->
+      <img src="assets/hero_classic_ruins_outline.png" class="layer ruins hero-outline-layer" alt="Ruins Blueprint">
+      <img src="assets/hero_classic_subject_outline.png" class="layer subject-man hero-outline-layer" alt="Subject Blueprint">
+
+      <!-- LAYER LIGHT RAYS & TIPOGRAFI TEKS (.hero-ui-elements) -->
+      <div class="layer sun-flare hero-ui-elements" id="hero-sun-flare"></div>
+      <canvas id="canvas-griffin" class="layer griffin hero-ui-elements"></canvas>
 
       <!-- 62% Golden Ratio Left Container: Brutalist Typography -->
-      <div class="hero-typo-container" id="hero-ui">
+      <div class="hero-typo-container hero-ui-elements" id="hero-ui">
         <span class="hero-handle">@yoschf</span>
         <h1 class="main-title" id="hero-name">YOCHEF<br>ARIANTO</h1>
         <h3 class="hero-niche" data-i18n="hero_niche">AI • TECH • MINDSET • PRODUCTIVITY</h3>
@@ -68,9 +78,6 @@
           <span class="btn-text" data-i18n="hero_wa">HUBUNGI VIA WHATSAPP</span>
         </a>
       </div>
-
-      <!-- 38% Golden Ratio Right Container: Oil Painting Subject Foreground -->
-      <img src="assets/cutout_man.webp" class="layer subject-man" id="hero-man" alt="Yochef Renaissance Portrait">
     </section>
 
     <!-- SECTION 1.5: VISUAL SHOWCASE -->

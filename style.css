@@ -72,6 +72,30 @@ img {
   .preloader-subtitle { font-size: 3vw; }
 }
 
+.preloader-content {
+  z-index: 2;
+  position: relative;
+}
+
+#hero-black-mask {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+  background: #050505;
+  z-index: 9000;
+  pointer-events: none;
+}
+
+.hero-outline-layer {
+  position: absolute; 
+  z-index: 9500 !important; 
+  pointer-events: none;
+  clip-path: inset(0% 0% 100% 0%);
+  -webkit-clip-path: inset(0% 0% 100% 0%);
+  will-change: clip-path, -webkit-clip-path, opacity;
+}
+
 :root {
   --bg-obsidian: #000000;
   --gold-primary: #d4af37;
@@ -1986,16 +2010,13 @@ canvas {
   }
 
   #hero .subject-man {
-    position: absolute !important;
-    height: 52vh !important;
-    right: -18vw !important;
-    bottom: 0 !important;
-    left: auto !important;
-    opacity: 0.95 !important;
-    z-index: 4 !important;
-    pointer-events: none !important;
-    display: block !important;
-    visibility: visible !important;
+    position: absolute;
+    height: 52vh;
+    right: -18vw;
+    bottom: 0;
+    left: auto;
+    z-index: 4;
+    pointer-events: none;
   }
 
   #hero .hero-fade-overlay {
