@@ -227,6 +227,9 @@ window.addEventListener('DOMContentLoaded', () => {
       gsap.set(".preloader-title", { opacity: 0, scale: 1.5, filter: "blur(15px)" });
       gsap.set(".preloader-subtitle", { opacity: 0, y: 20, letterSpacing: "0.8em" });
       
+      // Sembunyikan lukisan asli di awal agar masker hitam mendominasi
+      gsap.set(".hero-original", { autoAlpha: 0 });
+      
       // Masker hitam menutupi lukisan hero di awal, outline siap di atas masker hitam
       gsap.set("#hero-black-mask", { opacity: 1, display: "block" });
       gsap.set(".hero-outline-layer", { 
@@ -275,17 +278,15 @@ window.addEventListener('DOMContentLoaded', () => {
              
              .to({}, { duration: 0.8 }) // Jeda memandangi blueprint
              
-             // --- FASE 2: RENAISSANCE COLORIZATION (Masker hitam & outline pudar menyingkap lukisan asli) ---
-             .to("#hero-black-mask", {
-               opacity: 0,
-               duration: 1.5,
-               ease: "power2.inOut"
-             })
-             .to(".hero-outline-layer", {
-               opacity: 0,
-               duration: 1.5,
-               ease: "power2.inOut"
-             }, "<")
+             // FASE 2 & 3: GRAND REVEAL (iOS BUG FIXED)
+             // 1. Masker hitam pudar (tetap pakai opacity karena dia bukan elemen 3D/parallax)
+             .to("#hero-black-mask", { opacity: 0, duration: 1.5, ease: "power2.inOut" })
+             
+             // 2. Gunakan autoAlpha agar gambar hero dipaksa render oleh Safari iOS
+             .to(".hero-original", { autoAlpha: 1, duration: 1.5, ease: "power2.inOut" }, "<")
+             
+             // 3. Outline hilang dengan bersih di iOS
+             .to(".hero-outline-layer", { autoAlpha: 0, duration: 1.5, ease: "power2.inOut" }, "<")
              .set(".hero-outline-layer", { display: "none" })
              .set("#hero-black-mask", { display: "none" });
     };
