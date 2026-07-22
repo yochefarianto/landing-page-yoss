@@ -18,11 +18,11 @@
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Inter', sans-serif;
 
-  /* DATA URI TEXTURED VECTOR MASKS (100% HARDWARE ACCELERATED ORGANIC PAPER BURN) */
-  --svg-ink: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'><path d='M 500,40 Q 560,25 610,65 T 710,95 T 800,165 T 870,255 T 935,360 T 960,470 T 930,590 T 875,695 T 790,780 T 695,845 T 575,885 T 460,895 T 345,860 T 240,795 T 150,710 T 80,605 T 50,485 T 70,365 T 135,255 T 225,160 T 330,90 T 435,50 Z' fill='black'/></svg>");
-  --svg-up: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><path d='M -100 1100 L 1100 1100 L 1100 500 Q 1060 520, 1020 480 T 940 525 T 860 475 T 780 520 T 700 480 T 620 525 T 540 470 T 460 520 T 380 475 T 300 525 T 220 480 T 140 520 T 60 475 T -20 520 T -100 480 Z' fill='black'/></svg>");
-  --svg-down: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><path d='M -100 -100 L 1100 -100 L 1100 500 Q 1060 480, 1020 520 T 940 475 T 860 525 T 780 480 T 700 520 T 620 475 T 540 525 T 460 480 T 380 525 T 300 475 T 220 520 T 140 480 T 60 525 T -20 480 T -100 520 Z' fill='black'/></svg>");
-  --svg-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><path d='M -100 -100 L -100 1100 L 500 1100 Q 480 1060, 520 1020 T 475 940 T 525 860 T 480 780 T 520 700 T 475 620 T 525 540 T 480 460 T 525 380 T 475 300 T 520 220 T 480 140 T 525 60 T 480 -20 T 520 -100 Z' fill='black'/></svg>");
+  /* DATA URI TEXTURED MASKS (EXACT ORIGINAL REAL PAPER BURN NOISE DISPLACEMENT) */
+  --svg-ink: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'><filter id='t_ink'><feTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='60' xChannelSelector='R' yChannelSelector='G'/></filter><circle cx='500' cy='500' r='400' fill='black' filter='url(%23t_ink)'/></svg>");
+  --svg-up: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_up'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='60' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='500' width='1200' height='600' fill='black' filter='url(%23t_up)'/></svg>");
+  --svg-down: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_down'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='60' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='-100' width='1200' height='600' fill='black' filter='url(%23t_down)'/></svg>");
+  --svg-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_right'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='60' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='-100' width='600' height='1200' fill='black' filter='url(%23t_right)'/></svg>");
 
   /* GSAP ANIMATION VARIABLES */
   --visual-size: 0%;
@@ -177,6 +177,9 @@ section {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* Z-INDEX HIERARCHY & DATA URI TEXTURED MASKS (REAL PAPER BURN) */
