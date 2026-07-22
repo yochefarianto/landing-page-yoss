@@ -298,7 +298,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     let masterTl = gsap.timeline({
-      scrollTrigger: { trigger: "#pin-master", start: "top top", end: "+=2200%", scrub: 1, pin: true, invalidateOnRefresh: true }
+      scrollTrigger: { trigger: "#pin-master", start: "top top", end: "+=2200%", scrub: (window.innerWidth < 768 ? 0.3 : 1), pin: true, invalidateOnRefresh: true }
     });
 
     // STAGE 1: Hero Parallax (0 to 1)
