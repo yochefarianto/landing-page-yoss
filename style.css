@@ -124,13 +124,11 @@ p,
 #works .works-header p::first-letter,
 .work-card .card-title::first-letter {
   font-family: 'Great Vibes', cursive !important;
-  font-size: 3vw !important;
+  font-size: clamp(2.2rem, 3.8vw, 3.5rem) !important;
   display: inline-block !important;
-  /* Replaced float: left */
-  vertical-align: bottom !important;
-  /* Aligns smoothly with text */
-  line-height: 0.7 !important;
-  margin-right: 0.1em !important;
+  vertical-align: middle !important;
+  line-height: 0.8 !important;
+  margin-right: -0.05em !important;
   color: #d4af37 !important;
   font-weight: normal !important;
   text-transform: uppercase !important;
@@ -1084,11 +1082,11 @@ canvas {
 
 .stats-bio-text::first-letter {
   font-family: 'Great Vibes', cursive !important;
-  font-size: 3.2vw !important;
+  font-size: clamp(2.2rem, 3.8vw, 3.5rem) !important;
   display: inline-block !important;
-  vertical-align: bottom !important;
-  line-height: 0.7 !important;
-  margin-right: 0.1em !important;
+  vertical-align: middle !important;
+  line-height: 0.8 !important;
+  margin-right: -0.05em !important;
   color: #d4af37 !important;
 }
 
@@ -1104,7 +1102,7 @@ canvas {
   background: rgba(15, 15, 15, 0.75);
   border: 1px solid rgba(212, 175, 55, 0.25);
   border-radius: 12px;
-  padding: 2.5rem 1.5rem;
+  padding: 2.5rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1134,13 +1132,15 @@ canvas {
 
 .stat-number {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(3rem, 5vw, 6rem);
+  font-size: clamp(1.8rem, 4.8vw, 6rem);
   font-weight: 900;
   letter-spacing: -0.03em;
   color: #d4af37;
   line-height: 0.95;
   margin-bottom: 0.5rem;
   text-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .stat-label {
@@ -1584,11 +1584,12 @@ canvas {
 .events-title {
   font-family: 'Inter', sans-serif;
   font-weight: 900;
-  font-size: 3vw;
+  font-size: clamp(1.8rem, 3.5vw, 3.8rem);
   color: #fff;
   letter-spacing: 0.02em;
   margin: 0;
   text-transform: uppercase;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.95);
 }
 
 .events-line {
@@ -1600,7 +1601,7 @@ canvas {
 
 .events-subtitle {
   font-family: 'Playfair Display', serif;
-  font-size: 1.2vw;
+  font-size: clamp(1rem, 1.4vw, 1.6rem);
   color: #a0a0a0;
   margin-bottom: 6vh;
   font-style: italic;
@@ -1921,7 +1922,58 @@ canvas {
   #stats .content-wrapper {
     flex-direction: column;
     justify-content: center;
-    gap: 3rem;
+    gap: 2rem;
+  }
+
+  #stats .stats-grid {
+    gap: 0.8rem;
+    width: 100%;
+  }
+
+  #stats .stat-card {
+    padding: 1.5rem 0.3rem;
+  }
+
+  #stats .stat-number {
+    font-size: clamp(1.3rem, 5vw, 2.8rem);
+  }
+
+  #stats .stat-label {
+    font-size: clamp(0.6rem, 2vw, 0.85rem);
+    letter-spacing: 0.1em;
+  }
+
+  /* Brands Section Mobile Layout */
+  #brands .brands-title {
+    font-size: clamp(1.2rem, 5vw, 2.5rem);
+  }
+
+  #brands .marquee-wrapper {
+    gap: 0.8rem;
+  }
+
+  #brands .track-left .marquee-content,
+  #brands .track-right .marquee-content {
+    gap: 0.8rem;
+  }
+
+  #brands .brand-card {
+    height: 44px;
+    padding: 0.4rem 1.1rem;
+    border-radius: 25px;
+  }
+
+  #brands .brand-card img {
+    height: 22px;
+    max-width: 85px;
+  }
+
+  #brands .brand-card img[src*="logo-aico"] { height: 25px !important; max-width: 100px !important; }
+  #brands .brand-card img[src*="logo-blibli"] { height: 24px !important; max-width: 90px !important; }
+  #brands .brand-card img[src*="logo-smartfren"] { height: 22px !important; max-width: 85px !important; }
+
+  #works .works-header p {
+    max-width: 85vw;
   }
 
   #layanan .massive-text {
@@ -1957,30 +2009,34 @@ canvas {
   }
 
   /* Events Section Mobile Layout */
+  .events-title {
+    font-size: clamp(1.4rem, 6vw, 2.5rem);
+  }
+
+  .events-subtitle {
+    font-size: clamp(0.95rem, 3.5vw, 1.3rem);
+    margin-bottom: 4vw;
+  }
+
   .events-grid {
     grid-template-columns: 1fr; /* Stack cards vertically */
     gap: 3vw;
   }
 
-  .events-subtitle {
-    font-size: 3.5vw;
-    margin-bottom: 4vw;
-  }
-
   .event-info h3 {
-    font-size: 4.5vw;
+    font-size: clamp(1.1rem, 4.5vw, 1.6rem);
     margin-bottom: 1vw;
   }
 
   .event-info p {
-    font-size: 3.2vw;
+    font-size: clamp(0.85rem, 3.2vw, 1.1rem);
   }
 
   .event-badge {
-    font-size: 2.5vw;
-    padding: 1vw 2vw;
-    top: 2vw;
-    left: 2vw;
+    font-size: clamp(0.65rem, 2.5vw, 0.85rem);
+    padding: 0.4rem 0.8rem;
+    top: 10px;
+    left: 10px;
   }
 
   .event-img-wrapper {

@@ -272,18 +272,37 @@ window.addEventListener('DOMContentLoaded', () => {
     ScrollTrigger.refresh();
   }
 
-  // Continuous Auto-Play & Mute Engine for #works videos
-  const workVideos = document.querySelectorAll('#works .work-video');
+  // Continuous Auto-Play & Mute Engine for ALL videos (including mobile Safari / WebKit portrait)
+  const allVideos = document.querySelectorAll('video');
   const playAllVideos = () => {
-    workVideos.forEach(video => {
+    allVideos.forEach(video => {
       video.muted = true;
-      video.play().catch(() => {});
+      video.playsInline = true;
+      const promise = video.play();
+      if (promise !== undefined) {
+        promise.catch(() => {});
+      }
     });
   };
 
   playAllVideos();
-  document.addEventListener('touchstart', playAllVideos, { once: true });
-  document.addEventListener('click', playAllVideos, { once: true });
+  ['touchstart', 'touchend', 'click', 'scroll', 'pointerdown'].forEach(evt => {
+    window.addEventListener(evt, playAllVideos, { passive: true });
+  });
+
+  if ('IntersectionObserver' in window) {
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const vid = entry.target;
+          vid.muted = true;
+          vid.play().catch(() => {});
+        }
+      });
+    }, { threshold: 0.05 });
+
+    allVideos.forEach(vid => videoObserver.observe(vid));
+  }
 
   // Initialize ScrollTrigger animations
   initScrollAnimations();
