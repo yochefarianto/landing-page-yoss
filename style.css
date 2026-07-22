@@ -18,11 +18,11 @@
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Inter', sans-serif;
 
-  /* DATA URI TEXTURED MASKS (REAL PAPER BURN) */
-  --svg-ink: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'><filter id='t'><feTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='60' xChannelSelector='R' yChannelSelector='G'/></filter><circle cx='500' cy='500' r='400' fill='black' filter='url(%23t)'/></svg>");
-  --svg-up: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='60' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='500' width='1200' height='600' fill='black' filter='url(%23t)'/></svg>");
-  --svg-down: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='60' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='-100' width='1200' height='600' fill='black' filter='url(%23t)'/></svg>");
-  --svg-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t'><feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='3' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='60' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='-100' width='600' height='1200' fill='black' filter='url(%23t)'/></svg>");
+  /* DATA URI TEXTURED MASKS (REAL PAPER BURN) - OPTIMIZED FOR ALL DEVICES */
+  --svg-ink: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'><filter id='t_ink'><feTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='50' xChannelSelector='R' yChannelSelector='G'/></filter><circle cx='500' cy='500' r='400' fill='black' filter='url(%23t_ink)'/></svg>");
+  --svg-up: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_up'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='50' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='500' width='1200' height='600' fill='black' filter='url(%23t_up)'/></svg>");
+  --svg-down: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_down'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='50' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='-100' width='1200' height='600' fill='black' filter='url(%23t_down)'/></svg>");
+  --svg-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_right'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='50' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='-100' width='600' height='1200' fill='black' filter='url(%23t_right)'/></svg>");
 
   /* GSAP ANIMATION VARIABLES */
   --visual-size: 0%;
@@ -87,11 +87,10 @@
   will-change: transform;
 }
 
-/* REDUCE BLUR ON MOBILE TO PREVENT GPU LAG */
+/* DISABLE TILT SHIFT BLUR OVERLAY ON MOBILE TO PREVENT GPU CONTEXT LOSS & GLITCHES */
 @media (max-width: 900px) {
   .tilt-shift-overlay {
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    display: none !important;
   }
 }
 
@@ -755,10 +754,8 @@ section {
   font-weight: 300;
 }
 
-/* STRICT ANTI-GLASSMORPHISM & ANTI-BORDER RULE */
+/* CLEAN SHADOW & BORDER RESET */
 * {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
   box-shadow: none;
 }
 
@@ -1909,14 +1906,8 @@ canvas {
     filter: contrast(1.15) saturate(0.85) brightness(0.9);
   }
 
-  /* Optional subtle canvas grain overlay */
   #pin-master::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
-    z-index: 99;
+    display: none !important;
   }
 
   #stats .content-wrapper {
@@ -2169,5 +2160,9 @@ canvas {
   
   .footer-social-icons a {
     font-size: 1.8rem; /* Make icons slightly smaller but still touch-friendly */
+  }
+
+  .footer-noise-overlay {
+    display: none !important;
   }
 }

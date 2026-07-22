@@ -70,6 +70,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // 1. REGISTER GSAP PLUGINS
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
   }
 
   // 2. HIGH-PERFORMANCE CHROMA KEY ENGINE USING OFFSCREEN TEMPORARY CANVAS
@@ -272,42 +273,56 @@ window.addEventListener('DOMContentLoaded', () => {
     ScrollTrigger.refresh();
   }
 
-  // Continuous Auto-Play & Mute Engine for ALL videos (including mobile Safari / WebKit portrait)
+  // High-Performance Smart Video Engine for Mobile & Desktop (plays visible videos, pauses offscreen videos)
   const allVideos = document.querySelectorAll('video');
-  const playAllVideos = () => {
-    allVideos.forEach(video => {
-      video.muted = true;
-      video.playsInline = true;
-      const promise = video.play();
-      if (promise !== undefined) {
-        promise.catch(() => {});
-      }
-    });
-  };
-
-  playAllVideos();
-  ['touchstart', 'touchend', 'click', 'scroll', 'pointerdown'].forEach(evt => {
-    window.addEventListener(evt, playAllVideos, { passive: true });
+  allVideos.forEach(vid => {
+    vid.muted = true;
+    vid.playsInline = true;
+    vid.setAttribute('muted', '');
+    vid.setAttribute('playsinline', 'true');
+    vid.setAttribute('webkit-playsinline', 'true');
   });
 
   if ('IntersectionObserver' in window) {
     const videoObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
+        const vid = entry.target;
         if (entry.isIntersecting) {
-          const vid = entry.target;
           vid.muted = true;
-          vid.play().catch(() => {});
+          const promise = vid.play();
+          if (promise !== undefined) {
+            promise.catch(() => {});
+          }
+        } else {
+          vid.pause();
         }
       });
-    }, { threshold: 0.05 });
+    }, { threshold: 0.1 });
 
     allVideos.forEach(vid => videoObserver.observe(vid));
+  } else {
+    allVideos.forEach(vid => vid.play().catch(() => {}));
   }
+
+  // One-time gesture handler to unlock media autoplay policy on strict mobile browsers
+  const unlockAutoplay = () => {
+    allVideos.forEach(vid => {
+      const rect = vid.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      if (isVisible && vid.paused) {
+        vid.muted = true;
+        vid.play().catch(() => {});
+      }
+    });
+  };
+
+  ['touchstart', 'click'].forEach(evt => {
+    window.addEventListener(evt, unlockAutoplay, { once: true, passive: true });
+  });
 
   // Initialize ScrollTrigger animations
   initScrollAnimations();
   window.addEventListener('load', () => {
-    playAllVideos();
     if (typeof ScrollTrigger !== 'undefined') {
       ScrollTrigger.refresh();
     }
