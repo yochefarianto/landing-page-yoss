@@ -74,23 +74,38 @@
   will-change: transform;
 }
 
-.tilt-shift-overlay {
+/* OPTIMIZED CINEMATIC TILT-SHIFT DEPTH OF FIELD (60FPS HIGH PERFORMANCE) */
+.tilt-shift-top,
+.tilt-shift-bottom {
   position: fixed;
-  inset: 0;
+  left: 0;
+  width: 100vw;
+  height: 12vh;
   z-index: 9998;
   pointer-events: none;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(0,0,0,1) 100%);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(0,0,0,1) 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   transform: translateZ(0);
-  will-change: transform;
 }
 
-/* DISABLE TILT SHIFT BLUR OVERLAY ON MOBILE TO PREVENT GPU CONTEXT LOSS & GLITCHES */
+.tilt-shift-top {
+  top: 0;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+}
+
+.tilt-shift-bottom {
+  bottom: 0;
+  mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+}
+
 @media (max-width: 900px) {
-  .tilt-shift-overlay {
-    display: none !important;
+  .tilt-shift-top,
+  .tilt-shift-bottom {
+    height: 8vh;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 }
 
