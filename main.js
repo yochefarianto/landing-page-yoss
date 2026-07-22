@@ -67,10 +67,24 @@ document.addEventListener('DOMContentLoaded', () => {
   setLanguage(currentLang);
 });
 window.addEventListener('DOMContentLoaded', () => {
-  // 1. REGISTER GSAP PLUGINS
+  // 1. REGISTER GSAP PLUGINS & PERFORMANCE OPTIMIZATION
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
-    ScrollTrigger.config({ ignoreMobileResize: true });
+
+    // Mengurangi frekuensi kalkulasi GSAP agar CPU laptop tidak kepanasan
+    gsap.ticker.fps(60); // Batasi maksimal di 60fps yang mulus
+    gsap.ticker.lagSmoothing(500, 33); // Mencegah stuttering/lag saat frame drop
+
+    // Update ScrollTrigger setting untuk performa maksimal
+    ScrollTrigger.config({ 
+      limitCallbacks: true,
+      ignoreMobileResize: true // Mencegah lag karena resize berlebih
+    });
+
+    ScrollTrigger.normalizeScroll(true); // Mencegah over-scroll lompat-lompat di mobile
+    window.addEventListener("resize", () => {
+      ScrollTrigger.refresh();
+    });
   }
 
   // 2. HIGH-PERFORMANCE CHROMA KEY ENGINE USING OFFSCREEN TEMPORARY CANVAS
@@ -196,6 +210,68 @@ window.addEventListener('DOMContentLoaded', () => {
     gsap.set("#slide-3", { x: "-100vw" });
     gsap.set("#slide-4", { y: "-100vh" });
     gsap.set("#testimonials", { y: "100vh" });
+
+    // --- 1. PRELOADER ANIMATION (FOCUS PULL & CAMERA RUSH EXIT) ---
+    document.body.style.overflow = "hidden"; // Kunci scroll saat loading
+
+    const startPreloaderAnim = () => {
+      // --- 1. SET AWAL: Blur dan Membesar (Out of Focus) ---
+      gsap.set(".preloader-title", { opacity: 0, scale: 1.5, filter: "blur(15px)" });
+      gsap.set(".preloader-subtitle", { opacity: 0, y: 20, letterSpacing: "0.8em" }); // Spasi huruf renggang
+
+      const introTl = gsap.timeline({
+        onComplete: () => {
+          document.body.style.overflow = "auto"; 
+          const preloaderEl = document.getElementById("museum-preloader");
+          if (preloaderEl) preloaderEl.remove(); 
+          if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.refresh(); 
+          }
+        }
+      });
+
+      // --- 2. CINEMATIC FOCUS PULL: Lensa menyesuaikan fokus ---
+      introTl.to(".preloader-title", { 
+               opacity: 1, 
+               scale: 1, 
+               filter: "blur(0px)", 
+               duration: 2.5, 
+               ease: "power3.out", 
+               delay: 0.2 
+             })
+             // Subtitle merapat layaknya kalibrasi sistem digital
+             .to(".preloader-subtitle", { 
+               opacity: 1, 
+               y: 0, 
+               letterSpacing: "0.3em", 
+               duration: 2, 
+               ease: "power2.out" 
+             }, "-=1.5")
+             
+             // Jeda sejenak untuk membiarkan audiens menikmati kemegahannya
+             .to({}, { duration: 1.5 }) 
+             
+             // --- 3. CAMERA RUSH EXIT: Melesat nembus teks ke dalam layar ---
+             .to(".preloader-content", {
+               scale: 4,          // Teks membesar brutal nabrak kamera
+               opacity: 0, 
+               filter: "blur(20px)", 
+               duration: 1.2, 
+               ease: "power3.in"
+             })
+             // Background hitam terangkat persis saat teks nembus kamera
+             .to("#museum-preloader", { 
+               y: "-100dvh", 
+               duration: 1.5, 
+               ease: "power4.inOut" 
+             }, "-=0.8");
+    };
+
+    if (document.readyState === "complete") {
+      startPreloaderAnim();
+    } else {
+      window.addEventListener("load", startPreloaderAnim);
+    }
 
     let masterTl = gsap.timeline({
       scrollTrigger: { trigger: "#pin-master", start: "top top", end: "+=2200%", scrub: 1, pin: true, invalidateOnRefresh: true }
