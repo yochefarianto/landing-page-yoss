@@ -154,9 +154,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // PROCESS CHROMA KEY GREEN CANVASES (GRIFFIN, FOOTER HAND, EGG TRIGGER)
   const cutouts = [
-    { src: 'assets/cutout_griffin.png', canvas: document.getElementById('canvas-griffin') },
-    { src: 'assets/cutout_hand_footer.png', canvas: document.getElementById('canvas-hand-footer') },
-    { src: 'assets/egg_trigger.png', canvas: document.getElementById('canvas-egg-trigger') }
+    { src: 'assets/cutout_griffin.webp', canvas: document.getElementById('canvas-griffin') },
+    { src: 'assets/cutout_hand_footer.webp', canvas: document.getElementById('canvas-hand-footer') },
+    { src: 'assets/egg_trigger.webp', canvas: document.getElementById('canvas-egg-trigger') }
   ];
 
   let loadedCount = 0;
