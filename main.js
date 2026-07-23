@@ -79,9 +79,8 @@ window.addEventListener('DOMContentLoaded', () => {
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Mengurangi frekuensi kalkulasi GSAP agar CPU laptop tidak kepanasan
     gsap.ticker.fps(60); // Batasi maksimal di 60fps yang mulus
-    gsap.ticker.lagSmoothing(500, 33); // Mencegah stuttering/lag saat frame drop
+    gsap.ticker.lagSmoothing(1000, 16); // Interpolasi mulus 60fps tanpa lompatan frame
 
     // Update ScrollTrigger setting untuk performa maksimal
     ScrollTrigger.config({ 
@@ -89,7 +88,8 @@ window.addEventListener('DOMContentLoaded', () => {
       ignoreMobileResize: true // Mencegah lag karena resize berlebih
     });
 
-    ScrollTrigger.normalizeScroll(true); // Mencegah over-scroll lompat-lompat di mobile
+    // Disable normalizeScroll to ensure smooth native touch momentum on iOS & Android
+    ScrollTrigger.normalizeScroll(false);
     window.addEventListener("resize", () => {
       ScrollTrigger.refresh();
     });
@@ -296,7 +296,14 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     let masterTl = gsap.timeline({
-      scrollTrigger: { trigger: "#pin-master", start: "top top", end: "+=2200%", scrub: (window.innerWidth < 768 ? 0.3 : 1), pin: true, invalidateOnRefresh: true }
+      scrollTrigger: { 
+        trigger: "#pin-master", 
+        start: "top top", 
+        end: "+=1200%", 
+        scrub: 0.3, 
+        pin: true, 
+        invalidateOnRefresh: true 
+      }
     });
 
     // STAGE 1: Hero Parallax (0 to 1)
@@ -309,23 +316,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // STAGE 2: Visual Showcase (1 to 2)
     masterTl.set("#visual-showcase", { autoAlpha: 1 }, 1);
-    masterTl.to(root, { "--visual-size": "450%", ease: "power2.inOut", duration: 1 }, 1);
+    masterTl.fromTo("#visual-showcase", { maskSize: "0% 0%", webkitMaskSize: "0% 0%" }, { maskSize: "450% 450%", webkitMaskSize: "450% 450%", ease: "power2.inOut", duration: 1 }, 1);
     masterTl.fromTo("#visual-showcase .visual-bg", { scale: 1 }, { scale: 1.15, ease: "none", duration: 2 }, 1);
     masterTl.fromTo("#visual-showcase .visual-text", { y: "5vh" }, { y: "-5vh", ease: "none", duration: 2 }, 1);
 
     // STAGE 3: Stats (2 to 3)
     masterTl.set("#stats", { autoAlpha: 1 }, 2);
-    masterTl.to(root, { "--stats-pos": "100%", ease: "power2.inOut", duration: 1 }, 2);
+    masterTl.fromTo("#stats", { maskPosition: "center 0%", webkitMaskPosition: "center 0%" }, { maskPosition: "center 100%", webkitMaskPosition: "center 100%", ease: "power2.inOut", duration: 1 }, 2);
     masterTl.fromTo("#stats img", { scale: 1 }, { scale: 1.15, ease: "none", duration: 2 }, 2);
 
     // STAGE 4: Brands (3 to 4)
     masterTl.set("#brands", { autoAlpha: 1 }, 3);
-    masterTl.to(root, { "--brands-pos": "0%", ease: "power2.inOut", duration: 1 }, 3);
+    masterTl.fromTo("#brands", { maskPosition: "center 100%", webkitMaskPosition: "center 100%" }, { maskPosition: "center 0%", webkitMaskPosition: "center 0%", ease: "power2.inOut", duration: 1 }, 3);
     masterTl.fromTo("#brands .logo-grid", { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, ease: "power1.out", duration: 2 }, 3);
     
     // STAGE 5: Works Reveal (4 to 5)
     masterTl.set("#works", { autoAlpha: 1 }, 4);
-    masterTl.to(root, { "--works-pos": "0%", ease: "power2.inOut", duration: 1 }, 4);
+    masterTl.fromTo("#works", { maskPosition: "100% center", webkitMaskPosition: "100% center" }, { maskPosition: "0% center", webkitMaskPosition: "0% center", ease: "power2.inOut", duration: 1 }, 4);
 
     // STAGE 6: Horizontal Scroll Works (5 to 7)
     masterTl.to("#works-track", { x: getTrackWidth, ease: "none", duration: 2 }, 5);
@@ -336,7 +343,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // STAGE 8: Layanan Visual Ink Drop (8 to 9)
     masterTl.set("#layanan-visual", { autoAlpha: 1 }, 8);
-    masterTl.fromTo("#layanan-visual", { webkitMaskSize: "0%", maskSize: "0%" }, { webkitMaskSize: "450%", maskSize: "450%", ease: "power2.inOut", duration: 1 }, 8);
+    masterTl.fromTo("#layanan-visual", { maskSize: "0% 0%", webkitMaskSize: "0% 0%" }, { maskSize: "450% 450%", webkitMaskSize: "450% 450%", ease: "power2.inOut", duration: 1 }, 8);
     masterTl.fromTo("#layanan-visual .visual-bg", { scale: 1 }, { scale: 1.15, ease: "none", duration: 2 }, 8);
 
     // STAGE 9: Layanan Slide 1 Up (9 to 10)
@@ -365,7 +372,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // STAGE 14: Footer Ink Drop (14 to 15)
     masterTl.set("#footer", { autoAlpha: 1 }, 14);
-    masterTl.fromTo("#footer", { webkitMaskSize: "0%", maskSize: "0%" }, { webkitMaskSize: "450%", maskSize: "450%", ease: "power2.inOut", duration: 1 }, 14);
+    masterTl.fromTo("#footer", { maskSize: "0% 0%", webkitMaskSize: "0% 0%" }, { maskSize: "450% 450%", webkitMaskSize: "450% 450%", ease: "power2.inOut", duration: 1 }, 14);
     masterTl.fromTo("#footer .footer-hand", { y: "15vh", scale: 0.9 }, { y: "-5vh", scale: 1, ease: "power1.out", duration: 1 }, 14);
 
     ScrollTrigger.refresh();
