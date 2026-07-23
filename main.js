@@ -56,7 +56,7 @@ function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem('yochef_lang', lang);
   document.getElementById('lang-switch').textContent = lang.toUpperCase();
-  
+
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (i18n[key] && i18n[key][lang]) {
@@ -83,7 +83,7 @@ window.addEventListener('DOMContentLoaded', () => {
     gsap.ticker.lagSmoothing(1000, 16); // Interpolasi mulus 60fps tanpa lompatan frame
 
     // Update ScrollTrigger setting untuk performa maksimal
-    ScrollTrigger.config({ 
+    ScrollTrigger.config({
       limitCallbacks: true,
       ignoreMobileResize: true // Mencegah lag karena resize berlebih
     });
@@ -184,7 +184,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   let loadedCount = 0;
   cutouts.forEach(item => {
-    processChromaKey(item.src, item.canvas, { 
+    processChromaKey(item.src, item.canvas, {
       onComplete: () => {
         loadedCount++;
         if (loadedCount === cutouts.length && typeof ScrollTrigger !== 'undefined') {
@@ -201,7 +201,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (animInitialized || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
     animInitialized = true;
 
-    const root = document.documentElement; 
+    const root = document.documentElement;
 
     const getTrackWidth = () => {
       const track = document.getElementById("works-track");
@@ -210,7 +210,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // 1. INIT HIDE ALL SECTIONS
     gsap.set("#visual-showcase, #stats, #brands, #works, #events, #layanan-visual, #layanan, #testimonials, #footer", { autoAlpha: 0 });
-    
+
     // 2. INITIAL OFF-SCREEN POSITIONS FOR SPATIAL CAMERA
     gsap.set("#events", { y: "100vh" });
     gsap.set("#slide-1", { y: "100vh" });
@@ -227,11 +227,11 @@ window.addEventListener('DOMContentLoaded', () => {
       gsap.set(".preloader-title", { opacity: 0, scale: 1.5, filter: "blur(15px)" });
       gsap.set(".preloader-subtitle", { opacity: 0, y: 20, letterSpacing: "0.8em" });
       gsap.set(".hero-original", { autoAlpha: 0 });
-      
+
       // BARIS BARU: Atur potongan outline dari JS, bukan dari CSS!
-      gsap.set(".hero-outline-layer", { 
-        opacity: 1, 
-        display: "block", 
+      gsap.set(".hero-outline-layer", {
+        opacity: 1,
+        display: "block",
         clipPath: "inset(0% 0% 99.9% 0%)",
         webkitClipPath: "inset(0% 0% 99.9% 0%)"
       });
@@ -239,54 +239,54 @@ window.addEventListener('DOMContentLoaded', () => {
 
       const introTl = gsap.timeline({
         onComplete: () => {
-          document.body.style.overflow = "auto"; 
+          document.body.style.overflow = "auto";
           const preloaderEl = document.getElementById("museum-preloader");
-          if (preloaderEl) preloaderEl.remove(); 
+          if (preloaderEl) preloaderEl.remove();
           const maskEl = document.getElementById("hero-black-mask");
           if (maskEl) maskEl.remove();
           if (typeof ScrollTrigger !== 'undefined') {
-            ScrollTrigger.refresh(); 
+            ScrollTrigger.refresh();
           }
         }
       });
 
       // ANIMASI OPENING TEKS PRELOADER
       introTl.to(".preloader-title", { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.2, ease: "power3.out", delay: 0.1 })
-             .to(".preloader-subtitle", { opacity: 1, y: 0, letterSpacing: "0.3em", duration: 1.0, ease: "power2.out" }, "-=0.8")
-             .to({}, { duration: 0.5 }) // Jeda baca singkat
-             
-             // --- CAMERA RUSH EXIT & PRELOADER BLACKOUT FADE ---
-             .to(".preloader-content", {
-               scale: 4,          
-               opacity: 0, 
-               filter: "blur(20px)", 
-               duration: 0.8, 
-               ease: "power3.in"
-             })
-             // Matikan bungkusan preloader luar agar beralih ke masker hitam
-             .set("#museum-preloader", { display: "none" })
-             
-             // --- FASE 1: DA VINCI LASER SCAN (Garis outline emas menyapu latar hitam pekat) ---
-             .to(".hero-outline-layer", {
-               clipPath: "inset(0% 0% 0% 0%)",
-               webkitClipPath: "inset(0% 0% 0% 0%)",
-               duration: 1.2,
-               ease: "power2.inOut"
-             }) 
-             
-             .to({}, { duration: 0.8 }) // Jeda memandangi blueprint
-             
-             // FASE 2 & 3: GRAND REVEAL (iOS BUG FIXED)
-             // 1. Masker hitam pudar (tetap pakai opacity karena dia bukan elemen 3D/parallax)
-             .to("#hero-black-mask", { opacity: 0, duration: 1.5, ease: "power2.inOut" })
-             
-             // 2. Gunakan autoAlpha agar gambar hero dipaksa render oleh Safari iOS
-             .to(".hero-original", { autoAlpha: 1, duration: 1.5, ease: "power2.inOut" }, "<")
-             
-             // 3. Outline hilang dengan bersih di iOS
-             .to(".hero-outline-layer", { autoAlpha: 0, duration: 1.5, ease: "power2.inOut" }, "<")
-             .set(".hero-outline-layer", { display: "none" })
-             .set("#hero-black-mask", { display: "none" });
+        .to(".preloader-subtitle", { opacity: 1, y: 0, letterSpacing: "0.3em", duration: 1.0, ease: "power2.out" }, "-=0.8")
+        .to({}, { duration: 0.5 }) // Jeda baca singkat
+
+        // --- CAMERA RUSH EXIT & PRELOADER BLACKOUT FADE ---
+        .to(".preloader-content", {
+          scale: 4,
+          opacity: 0,
+          filter: "blur(20px)",
+          duration: 0.8,
+          ease: "power3.in"
+        })
+        // Matikan bungkusan preloader luar agar beralih ke masker hitam
+        .set("#museum-preloader", { display: "none" })
+
+        // --- FASE 1: DA VINCI LASER SCAN (Garis outline emas menyapu latar hitam pekat) ---
+        .to(".hero-outline-layer", {
+          clipPath: "inset(0% 0% 0% 0%)",
+          webkitClipPath: "inset(0% 0% 0% 0%)",
+          duration: 1.2,
+          ease: "power2.inOut"
+        })
+
+        .to({}, { duration: 0.8 }) // Jeda memandangi blueprint
+
+        // FASE 2 & 3: GRAND REVEAL (iOS BUG FIXED)
+        // 1. Masker hitam pudar (tetap pakai opacity karena dia bukan elemen 3D/parallax)
+        .to("#hero-black-mask", { opacity: 0, duration: 1.5, ease: "power2.inOut" })
+
+        // 2. Gunakan autoAlpha agar gambar hero dipaksa render oleh Safari iOS
+        .to(".hero-original", { autoAlpha: 1, duration: 1.5, ease: "power2.inOut" }, "<")
+
+        // 3. Outline hilang dengan bersih di iOS
+        .to(".hero-outline-layer", { autoAlpha: 0, duration: 1.5, ease: "power2.inOut" }, "<")
+        .set(".hero-outline-layer", { display: "none" })
+        .set("#hero-black-mask", { display: "none" });
     };
 
     if (document.readyState === "complete") {
@@ -296,13 +296,13 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     let masterTl = gsap.timeline({
-      scrollTrigger: { 
-        trigger: "#pin-master", 
-        start: "top top", 
-        end: "+=1200%", 
-        scrub: 0.3, 
-        pin: true, 
-        invalidateOnRefresh: true 
+      scrollTrigger: {
+        trigger: "#pin-master",
+        start: "top top",
+        end: "+=1200%",
+        scrub: 0.3,
+        pin: true,
+        invalidateOnRefresh: true
       }
     });
 
@@ -329,7 +329,7 @@ window.addEventListener('DOMContentLoaded', () => {
     masterTl.set("#brands", { autoAlpha: 1 }, 3);
     masterTl.fromTo("#brands", { maskPosition: "center 100%", webkitMaskPosition: "center 100%" }, { maskPosition: "center 0%", webkitMaskPosition: "center 0%", ease: "power2.inOut", duration: 1 }, 3);
     masterTl.fromTo("#brands .logo-grid", { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, ease: "power1.out", duration: 2 }, 3);
-    
+
     // STAGE 5: Works Reveal (4 to 5)
     masterTl.set("#works", { autoAlpha: 1 }, 4);
     masterTl.fromTo("#works", { maskPosition: "100% center", webkitMaskPosition: "100% center" }, { maskPosition: "0% center", webkitMaskPosition: "0% center", ease: "power2.inOut", duration: 1 }, 4);
@@ -347,7 +347,7 @@ window.addEventListener('DOMContentLoaded', () => {
     masterTl.fromTo("#layanan-visual .visual-bg", { scale: 1 }, { scale: 1.15, ease: "none", duration: 2 }, 8);
 
     // STAGE 9: Layanan Slide 1 Up (9 to 10)
-    masterTl.set("#layanan", { autoAlpha: 1 }, 9); 
+    masterTl.set("#layanan", { autoAlpha: 1 }, 9);
     masterTl.to("#slide-1", { y: "0vh", ease: "power2.inOut", duration: 1 }, 9);
 
     // STAGE 10: Layanan Slide 2 Right (10 to 11)
@@ -364,8 +364,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // STAGE 13: TESTIMONIALS REVEAL (13 to 14)
     masterTl.set("#testimonials", { autoAlpha: 1 }, 13);
-    masterTl.to("#slide-4", { y: "-100vh", ease: "power2.inOut", duration: 1 }, 13); 
-    masterTl.to("#testimonials", { y: "0vh", ease: "power2.inOut", duration: 1 }, 13); 
+    masterTl.to("#slide-4", { y: "-100vh", ease: "power2.inOut", duration: 1 }, 13);
+    masterTl.to("#testimonials", { y: "0vh", ease: "power2.inOut", duration: 1 }, 13);
     masterTl.fromTo(".bust-left", { y: "30vh" }, { y: "-5vh", ease: "none", duration: 2 }, 13);
     masterTl.fromTo(".bust-center", { y: "15vh" }, { y: "10vh", ease: "none", duration: 2 }, 13);
     masterTl.fromTo(".bust-right", { y: "40vh" }, { y: "-15vh", ease: "none", duration: 2 }, 13);
@@ -396,7 +396,7 @@ window.addEventListener('DOMContentLoaded', () => {
           vid.muted = true;
           const promise = vid.play();
           if (promise !== undefined) {
-            promise.catch(() => {});
+            promise.catch(() => { });
           }
         } else {
           vid.pause();
@@ -406,7 +406,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     allVideos.forEach(vid => videoObserver.observe(vid));
   } else {
-    allVideos.forEach(vid => vid.play().catch(() => {}));
+    allVideos.forEach(vid => vid.play().catch(() => { }));
   }
 
   // One-time gesture handler to unlock media autoplay policy on strict mobile browsers
@@ -416,7 +416,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
       if (isVisible && vid.paused) {
         vid.muted = true;
-        vid.play().catch(() => {});
+        vid.play().catch(() => { });
       }
     });
   };
@@ -453,7 +453,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // Click trigger toggles modal
     eggContainer.addEventListener('click', () => {
       modal.classList.add('flex-active');
-      document.querySelectorAll('.tilt-shift-overlay, .dreamy-overlay').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.dreamy-overlay').forEach(el => el.style.display = 'none');
       initFlappyGame();
     });
   }
@@ -461,7 +461,7 @@ window.addEventListener('DOMContentLoaded', () => {
   if (closeBtn) {
     closeBtn.addEventListener('click', () => {
       modal.classList.remove('flex-active');
-      document.querySelectorAll('.tilt-shift-overlay, .dreamy-overlay').forEach(el => el.style.display = 'block');
+      document.querySelectorAll('.dreamy-overlay').forEach(el => el.style.display = 'block');
       if (flappyLoopId) {
         cancelAnimationFrame(flappyLoopId);
         flappyLoopId = null;
@@ -472,7 +472,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // 5. FLAPPY CHICKEN ARCADE GAME ENGINE
   let flappyLoopId = null;
-    function initFlappyGame() {
+  function initFlappyGame() {
     const fCanvas = document.getElementById('flappy-canvas');
     if (!fCanvas) return;
     const fCtx = fCanvas.getContext('2d');
@@ -503,7 +503,7 @@ window.addEventListener('DOMContentLoaded', () => {
     let attempts = parseInt(localStorage.getItem('yochef_flappy_attempts'));
     if (isNaN(attempts)) attempts = 3;
     let lastFailTime = parseInt(localStorage.getItem('yochef_flappy_failtime') || '0');
-    
+
     function checkCooldown() {
       if (attempts <= 0) {
         const now = Date.now();
@@ -524,22 +524,22 @@ window.addEventListener('DOMContentLoaded', () => {
     function getOrGenerateVoucher() {
       let code = localStorage.getItem('yochef_voucher');
       if (!code) {
-         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-         code = 'YOS-';
-         for(let i=0; i<4; i++) code += chars.charAt(Math.floor(Math.random()*chars.length));
-         code += '-';
-         for(let i=0; i<4; i++) code += chars.charAt(Math.floor(Math.random()*chars.length));
-         localStorage.setItem('yochef_voucher', code);
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        code = 'YOS-';
+        for (let i = 0; i < 4; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+        code += '-';
+        for (let i = 0; i < 4; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+        localStorage.setItem('yochef_voucher', code);
       }
       return code;
     }
 
     // Init Parallax Backgrounds
-    for(let i=0; i<4; i++) {
-      clouds.push({ x: Math.random() * fCanvas.width, y: Math.random() * (fCanvas.height/2), speed: 0.2 + Math.random()*0.3, scale: 0.5 + Math.random()*0.8 });
+    for (let i = 0; i < 4; i++) {
+      clouds.push({ x: Math.random() * fCanvas.width, y: Math.random() * (fCanvas.height / 2), speed: 0.2 + Math.random() * 0.3, scale: 0.5 + Math.random() * 0.8 });
     }
-    for(let i=0; i<5; i++) {
-      trees.push({ x: i * 80, height: 40 + Math.random()*60 });
+    for (let i = 0; i < 5; i++) {
+      trees.push({ x: i * 80, height: 40 + Math.random() * 60 });
     }
 
     function spawnPipe() {
@@ -558,17 +558,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function handleJump() {
       if (state === 'COOLDOWN' || state === 'WON') return;
-      
+
       if (state === 'START') {
         state = 'PLAYING';
         birdVelocity = jump;
         return;
       }
-      
+
       if (state === 'GAMEOVER') {
         if (checkCooldown()) {
-           state = 'COOLDOWN';
-           return;
+          state = 'COOLDOWN';
+          return;
         }
         score = 0;
         birdY = fCanvas.height / 2;
@@ -580,7 +580,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (couponBox) couponBox.style.display = 'none';
         return;
       }
-      
+
       if (state === 'PLAYING') {
         birdVelocity = jump;
       }
@@ -614,11 +614,11 @@ window.addEventListener('DOMContentLoaded', () => {
       // Update Parallax
       clouds.forEach(c => {
         c.x -= c.speed;
-        if(c.x < -100) { c.x = fCanvas.width + 50; c.y = Math.random() * (fCanvas.height/2); }
+        if (c.x < -100) { c.x = fCanvas.width + 50; c.y = Math.random() * (fCanvas.height / 2); }
       });
       trees.forEach(t => {
         t.x -= pipeSpeed * 0.5;
-        if(t.x < -60) { t.x = fCanvas.width; t.height = 40 + Math.random()*60; }
+        if (t.x < -60) { t.x = fCanvas.width; t.height = 40 + Math.random() * 60; }
       });
 
       pipeTimer++;
@@ -655,7 +655,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (p.x < -60) pipes.splice(i, 1);
       }
     }
-    
+
     function die() {
       state = 'GAMEOVER';
       attempts--;
@@ -679,45 +679,45 @@ window.addEventListener('DOMContentLoaded', () => {
       ctx.fill();
       ctx.restore();
     }
-    
+
     function drawRomanPillar(ctx, x, y, w, h, isTop) {
-       ctx.fillStyle = 'rgba(20, 20, 25, 0.9)';
-       ctx.strokeStyle = '#d4af37';
-       ctx.lineWidth = 1.5;
-       
-       // Shaft
-       ctx.fillRect(x, y, w, h);
-       ctx.strokeRect(x, y, w, h);
-       
-       // Fluting lines
-       ctx.beginPath();
-       ctx.moveTo(x + w*0.3, y); ctx.lineTo(x + w*0.3, y + h);
-       ctx.moveTo(x + w*0.7, y); ctx.lineTo(x + w*0.7, y + h);
-       ctx.stroke();
-       
-       // Capitals/Bases
-       if (isTop) {
-         ctx.fillRect(x - 5, y + h - 15, w + 10, 15);
-         ctx.strokeRect(x - 5, y + h - 15, w + 10, 15);
-       } else {
-         ctx.fillRect(x - 5, y, w + 10, 15);
-         ctx.strokeRect(x - 5, y, w + 10, 15);
-       }
+      ctx.fillStyle = 'rgba(20, 20, 25, 0.9)';
+      ctx.strokeStyle = '#d4af37';
+      ctx.lineWidth = 1.5;
+
+      // Shaft
+      ctx.fillRect(x, y, w, h);
+      ctx.strokeRect(x, y, w, h);
+
+      // Fluting lines
+      ctx.beginPath();
+      ctx.moveTo(x + w * 0.3, y); ctx.lineTo(x + w * 0.3, y + h);
+      ctx.moveTo(x + w * 0.7, y); ctx.lineTo(x + w * 0.7, y + h);
+      ctx.stroke();
+
+      // Capitals/Bases
+      if (isTop) {
+        ctx.fillRect(x - 5, y + h - 15, w + 10, 15);
+        ctx.strokeRect(x - 5, y + h - 15, w + 10, 15);
+      } else {
+        ctx.fillRect(x - 5, y, w + 10, 15);
+        ctx.strokeRect(x - 5, y, w + 10, 15);
+      }
     }
 
     function render() {
       fCtx.clearRect(0, 0, fCanvas.width, fCanvas.height);
-      
+
       // Draw background elements (parallax)
       clouds.forEach(c => drawCloud(fCtx, c.x, c.y, c.scale));
-      
+
       fCtx.fillStyle = 'rgba(10, 10, 15, 0.7)';
       trees.forEach(t => {
-         fCtx.beginPath();
-         fCtx.moveTo(t.x, fCanvas.height);
-         fCtx.lineTo(t.x + 15, fCanvas.height - t.height);
-         fCtx.lineTo(t.x + 30, fCanvas.height);
-         fCtx.fill();
+        fCtx.beginPath();
+        fCtx.moveTo(t.x, fCanvas.height);
+        fCtx.lineTo(t.x + 15, fCanvas.height - t.height);
+        fCtx.lineTo(t.x + 30, fCanvas.height);
+        fCtx.fill();
       });
 
       // Draw Pillars
@@ -729,10 +729,10 @@ window.addEventListener('DOMContentLoaded', () => {
       // Draw Bird
       fCtx.save();
       fCtx.translate(60, birdY);
-      if(state === 'PLAYING' || state === 'GAMEOVER') {
-         fCtx.rotate(Math.min(Math.PI / 4, Math.max(-Math.PI / 4, birdVelocity * 0.08)));
+      if (state === 'PLAYING' || state === 'GAMEOVER') {
+        fCtx.rotate(Math.min(Math.PI / 4, Math.max(-Math.PI / 4, birdVelocity * 0.08)));
       }
-      
+
       // Bird Body
       fCtx.fillStyle = '#ffffff';
       fCtx.strokeStyle = '#d4af37';
@@ -772,7 +772,7 @@ window.addEventListener('DOMContentLoaded', () => {
         fCtx.fillStyle = '#fff';
         fCtx.font = '14px "Inter", sans-serif';
         fCtx.fillText('Tap/Space untuk Mulai', fCanvas.width / 2, fCanvas.height / 2 + 15);
-      } 
+      }
       else if (state === 'GAMEOVER') {
         fCtx.fillStyle = 'rgba(0, 0, 0, 0.7)';
         fCtx.fillRect(0, 0, fCanvas.width, fCanvas.height);
@@ -784,8 +784,8 @@ window.addEventListener('DOMContentLoaded', () => {
         fCtx.font = '14px "Inter", sans-serif';
         fCtx.fillText(`Sisa Nyawa: ${attempts}`, fCanvas.width / 2, fCanvas.height / 2 + 5);
         if (attempts > 0) {
-           fCtx.fillStyle = '#b0ab9e';
-           fCtx.fillText('Tap untuk mencoba lagi', fCanvas.width / 2, fCanvas.height / 2 + 30);
+          fCtx.fillStyle = '#b0ab9e';
+          fCtx.fillText('Tap untuk mencoba lagi', fCanvas.width / 2, fCanvas.height / 2 + 30);
         }
       }
       else if (state === 'COOLDOWN') {
@@ -811,16 +811,16 @@ window.addEventListener('DOMContentLoaded', () => {
         fCtx.font = '700 24px "Playfair Display", serif';
         fCtx.textAlign = 'center';
         fCtx.fillText('YOU WON!', fCanvas.width / 2, fCanvas.height / 2 - 40);
-        
+
         fCtx.fillStyle = '#fff';
         fCtx.font = '12px "Inter", sans-serif';
         fCtx.fillText('Screenshot ini & kirim ke Admin', fCanvas.width / 2, fCanvas.height / 2 - 15);
-        
+
         fCtx.fillStyle = '#222';
-        fCtx.fillRect(fCanvas.width/2 - 90, fCanvas.height/2 + 5, 180, 40);
+        fCtx.fillRect(fCanvas.width / 2 - 90, fCanvas.height / 2 + 5, 180, 40);
         fCtx.strokeStyle = '#d4af37';
-        fCtx.strokeRect(fCanvas.width/2 - 90, fCanvas.height/2 + 5, 180, 40);
-        
+        fCtx.strokeRect(fCanvas.width / 2 - 90, fCanvas.height / 2 + 5, 180, 40);
+
         fCtx.fillStyle = '#d4af37';
         fCtx.font = '600 16px "Inter", sans-serif';
         fCtx.fillText(getOrGenerateVoucher(), fCanvas.width / 2, fCanvas.height / 2 + 31);
@@ -869,79 +869,79 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-      let dustAnimId = null;
-      function animateDust() {
-        dustCtx.clearRect(0, 0, dWidth, dHeight);
+    let dustAnimId = null;
+    function animateDust() {
+      dustCtx.clearRect(0, 0, dWidth, dHeight);
 
-        for (let i = 0; i < dustParticles.length; i++) {
-          const p = dustParticles[i];
-          p.x += p.speedX + Math.sin(p.pulse) * 0.3;
-          p.y += p.speedY;
-          p.pulse += p.pulseSpeed;
+      for (let i = 0; i < dustParticles.length; i++) {
+        const p = dustParticles[i];
+        p.x += p.speedX + Math.sin(p.pulse) * 0.3;
+        p.y += p.speedY;
+        p.pulse += p.pulseSpeed;
 
-          if (p.y < -10) {
-            p.y = dHeight + 10;
-            p.x = Math.random() * dWidth;
-          }
-          if (p.x < -10) p.x = dWidth + 10;
-          if (p.x > dWidth + 10) p.x = -10;
-
-          const currentOpacity = Math.max(0, p.opacity * (0.6 + Math.sin(p.pulse) * 0.4));
-
-          dustCtx.beginPath();
-          dustCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          dustCtx.fillStyle = `rgba(255, 235, 180, ${currentOpacity})`;
-          dustCtx.shadowBlur = 8;
-          dustCtx.shadowColor = 'rgba(255, 215, 120, 0.8)';
-          dustCtx.fill();
+        if (p.y < -10) {
+          p.y = dHeight + 10;
+          p.x = Math.random() * dWidth;
         }
+        if (p.x < -10) p.x = dWidth + 10;
+        if (p.x > dWidth + 10) p.x = -10;
 
-        dustAnimId = requestAnimationFrame(animateDust);
+        const currentOpacity = Math.max(0, p.opacity * (0.6 + Math.sin(p.pulse) * 0.4));
+
+        dustCtx.beginPath();
+        dustCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        dustCtx.fillStyle = `rgba(255, 235, 180, ${currentOpacity})`;
+        dustCtx.shadowBlur = 8;
+        dustCtx.shadowColor = 'rgba(255, 215, 120, 0.8)';
+        dustCtx.fill();
       }
 
-      // Optimization: Only animate dust when visible
-      const dustObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            if (!dustAnimId) animateDust();
-          } else {
-            if (dustAnimId) {
-              cancelAnimationFrame(dustAnimId);
-              dustAnimId = null;
-            }
-          }
-        });
-      }, { threshold: 0 });
-      dustObserver.observe(dustCanvas);
-
-      // 3D Parallax Mouse Move for Layanan Visual
-      const layananVis = document.getElementById("layanan-visual");
-      const layananVisInner = layananVis ? layananVis.querySelector(".layanan-visual-inner") : null;
-      
-      if (layananVis && layananVisInner) {
-        layananVis.addEventListener("mousemove", (e) => {
-          const rect = layananVis.getBoundingClientRect();
-          // Calculate mouse position relative to center (-0.5 to +0.5)
-          const x = (e.clientX - rect.left) / rect.width - 0.5;
-          const y = (e.clientY - rect.top) / rect.height - 0.5;
-          
-          gsap.to(layananVisInner, {
-            rotateY: x * 15,
-            rotateX: -y * 15,
-            duration: 0.5,
-            ease: "power2.out"
-          });
-        });
-        
-        layananVis.addEventListener("mouseleave", () => {
-          gsap.to(layananVisInner, {
-            rotateY: 0,
-            rotateX: 0,
-            duration: 0.8,
-            ease: "power2.out"
-          });
-        });
-      }
+      dustAnimId = requestAnimationFrame(animateDust);
     }
+
+    // Optimization: Only animate dust when visible
+    const dustObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (!dustAnimId) animateDust();
+        } else {
+          if (dustAnimId) {
+            cancelAnimationFrame(dustAnimId);
+            dustAnimId = null;
+          }
+        }
+      });
+    }, { threshold: 0 });
+    dustObserver.observe(dustCanvas);
+
+    // 3D Parallax Mouse Move for Layanan Visual
+    const layananVis = document.getElementById("layanan-visual");
+    const layananVisInner = layananVis ? layananVis.querySelector(".layanan-visual-inner") : null;
+
+    if (layananVis && layananVisInner) {
+      layananVis.addEventListener("mousemove", (e) => {
+        const rect = layananVis.getBoundingClientRect();
+        // Calculate mouse position relative to center (-0.5 to +0.5)
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+        gsap.to(layananVisInner, {
+          rotateY: x * 15,
+          rotateX: -y * 15,
+          duration: 0.5,
+          ease: "power2.out"
+        });
+      });
+
+      layananVis.addEventListener("mouseleave", () => {
+        gsap.to(layananVisInner, {
+          rotateY: 0,
+          rotateX: 0,
+          duration: 0.8,
+          ease: "power2.out"
+        });
+      });
+    }
+  }
 });
 
