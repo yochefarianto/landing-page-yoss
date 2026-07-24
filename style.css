@@ -406,17 +406,20 @@ html.is-touch #layanan-visual .light-rays { display: none !important; }
   #layanan-visual .visual-text { transform: translate(-50%, -50%) !important; }
   #layanan-visual .light-rays { display: none !important; }
 
-  /* ANDROID FIX (glitch/banding saat scroll): gambar slide full-screen digeser
-     oleh GSAP; Android sering gagal ngecat seluruh tile-nya saat bergerak cepat
-     -> gambar cuma kerender sepotong band lalu pop-in. Promote tiap gambar jadi
-     satu layer GPU stabil supaya di-cache & digeser utuh (bukan re-raster per-tile).
-     Murni hint kompositor -> TIDAK mengubah tampilan sama sekali. */
-  #layanan .slide-img-wrap img {
+  /* ANDROID FIX: stabilkan SELURUH slide sebagai satu layer GPU (gambar + teks jadi
+     satu tekstur yang digeser utuh oleh GSAP). Sebelumnya hanya gambar yang di-promote
+     -> gambar & teks ada di layer berbeda dalam subtree yang di-transform, dan Android
+     bikin teks kedip (muncul sekejap lalu hilang). Menyatukannya menghentikan kedip itu
+     sekaligus mencegah banding. Slide sudah punya will-change:transform. */
+  #layanan .layanan-slide {
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
   }
+}
+
+html.is-touch #layanan .layanan-slide {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 #stats {
