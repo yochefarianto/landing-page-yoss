@@ -382,9 +382,16 @@ window.addEventListener('DOMContentLoaded', () => {
     masterTl.set("#testimonials", { autoAlpha: 1 }, 13);
     masterTl.to("#slide-4", { y: "-100vh", ease: "power2.inOut", duration: 1 }, 13);
     masterTl.to("#testimonials", { y: "0vh", ease: "power2.inOut", duration: 1 }, 13);
-    masterTl.fromTo(".bust-left", { y: "30vh" }, { y: "-5vh", ease: "none", duration: 2 }, 13);
-    masterTl.fromTo(".bust-center", { y: "15vh" }, { y: "10vh", ease: "none", duration: 2 }, 13);
-    masterTl.fromTo(".bust-right", { y: "40vh" }, { y: "-15vh", ease: "none", duration: 2 }, 13);
+    // Di perangkat sentuh, parallax bust diselesaikan lebih awal (pos 13->14) supaya saat
+    // footer di-reveal (masked) di atas testimonial, backdrop-nya sudah DIAM. Backdrop yang
+    // masih beranimasi di bawah mask bikin Android kedip-kedip saat transisi reviews->footer.
+    // Desktop tetap dur 2 (tampilan tak berubah). Spacer kosong di bawah menjaga panjang
+    // timeline tetap 15 agar pemetaan scroll tidak berubah.
+    var bustDur = IS_TOUCH ? 1 : 2;
+    masterTl.fromTo(".bust-left", { y: "30vh" }, { y: "-5vh", ease: "none", duration: bustDur }, 13);
+    masterTl.fromTo(".bust-center", { y: "15vh" }, { y: "10vh", ease: "none", duration: bustDur }, 13);
+    masterTl.fromTo(".bust-right", { y: "40vh" }, { y: "-15vh", ease: "none", duration: bustDur }, 13);
+    masterTl.to({}, { duration: 1 }, 14); // spacer: kunci panjang timeline = 15
 
     // STAGE 14: Footer Ink Drop (14 to 14.5), lalu HOLD fully-revealed sampai ujung (15).
     // Footer sengaja selesai reveal lebih awal supaya ~40% scroll terakhir semuanya
