@@ -845,6 +845,11 @@ window.addEventListener('DOMContentLoaded', () => {
   const dustCanvas = document.getElementById('canvas-dust');
   if (dustCanvas) {
     const dustCtx = dustCanvas.getContext('2d');
+    // Semua section ditumpuk (stacked) di viewport, jadi IntersectionObserver
+    // selalu "intersecting" walau section masih disembunyikan (autoAlpha/visibility:hidden).
+    // Referensi section induk dipakai untuk skip render mahal (75x shadowBlur/frame)
+    // selama debu belum benar-benar terlihat. Tidak mengubah tampilan sama sekali.
+    const dustSection = document.getElementById('visual-showcase');
     let dWidth = dustCanvas.width = window.innerWidth;
     let dHeight = dustCanvas.height = window.innerHeight;
 
@@ -871,6 +876,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
     let dustAnimId = null;
     function animateDust() {
+      // Lewati kerja berat selama section debu masih disembunyikan (dari awal page
+      // sampai section-nya di-reveal). Loop tetap hidup agar otomatis lanjut saat terlihat.
+      if (dustSection && dustSection.style.visibility === 'hidden') {
+        dustAnimId = requestAnimationFrame(animateDust);
+        return;
+      }
       dustCtx.clearRect(0, 0, dWidth, dHeight);
 
       for (let i = 0; i < dustParticles.length; i++) {

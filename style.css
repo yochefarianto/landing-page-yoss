@@ -12,7 +12,11 @@ html, body {
 }
 
 /* GPU & RENDER PERFORMANCE BOOSTERS */
-#works-track, .layanan-slide, section, .testi-bust {
+/* Catatan: `section` (semua 10 section) dihapus dari daftar ini karena mempromote
+   semuanya ke layer GPU permanen sekaligus = beban compositing besar sejak awal page
+   (anti-pattern will-change). Hanya elemen yang benar-benar butuh transform kontinu
+   yang dipertahankan. Section bertopeng tetap punya will-change mask masing-masing. */
+#works-track, .layanan-slide, #hero, .testi-bust {
   will-change: transform;
 }
 
@@ -369,6 +373,16 @@ section {
 }
 #layanan-visual .visual-bg { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; filter: contrast(1.15) saturate(0.85) brightness(0.9); z-index: 0; transform: translateZ(-100px) scale(1.1); }
 #layanan-visual .visual-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) translateZ(80px); font-family: 'Inter', sans-serif !important; font-weight: 900 !important; letter-spacing: -0.05em !important; font-size: 8vw; color: rgba(255,255,255,0.9); z-index: 2; white-space: nowrap; text-shadow: 0 20px 40px rgba(0,0,0,0.8); }
+
+/* ANDROID FIX: Di perangkat sentuh, konteks 3D (perspective + preserve-3d + translateZ)
+   yang dikombinasikan dengan SVG mask bikin section ini blank/gagal ke-composite di
+   Android Chrome/WebView. Efek 3D-tilt hanya dipicu mousemove (desktop), jadi
+   men-datarkan-nya di perangkat sentuh TIDAK mengubah tampilan sama sekali — hanya
+   memperbaiki agar gambar + teks "LAYANAN KOLABORASI" muncul. Desktop tetap 3D penuh. */
+@media (hover: none) and (pointer: coarse) {
+  #layanan-visual { perspective: none !important; }
+  .layanan-visual-inner { transform-style: flat !important; }
+}
 
 #stats {
   z-index: 30 !important;
