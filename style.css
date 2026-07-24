@@ -126,11 +126,15 @@ img {
   --font-serif: 'Playfair Display', serif;
   --font-sans: 'Inter', sans-serif;
 
-  /* DATA URI TEXTURED MASKS (ORIGINAL REAL PAPER BURN DISPLACEMENT) */
-  --svg-ink: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'><filter id='t_ink'><feTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='55' xChannelSelector='R' yChannelSelector='G'/></filter><circle cx='500' cy='500' r='400' fill='black' filter='url(%23t_ink)'/></svg>");
-  --svg-up: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_up'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='55' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='400' width='1200' height='800' fill='black' filter='url(%23t_up)'/></svg>");
-  --svg-down: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_down'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='55' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-100' y='-200' width='1200' height='800' fill='black' filter='url(%23t_down)'/></svg>");
-  --svg-right: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000' preserveAspectRatio='none'><filter id='t_right'><feTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='1' result='n'/><feDisplacementMap in='SourceGraphic' in2='n' scale='55' xChannelSelector='R' yChannelSelector='G'/></filter><rect x='-200' y='-100' width='800' height='1200' fill='black' filter='url(%23t_right)'/></svg>");
+  /* TEXTURED REVEAL MASKS — "baked" ke WebP alpha (2048px) dari SVG feTurbulence/
+     feDisplacement ASLI via renderer browser yang sama. Bentuk & tepi robeknya
+     identik, tapi menghilangkan biaya rasterisasi filter SVG per-frame saat scrub
+     (dulu berat di desktop, bikin glitch di Android) -> tinggal geser tekstur di GPU.
+     Sumber SVG asli disimpan di catatan commit kalau perlu regenerasi. */
+  --svg-ink: url("assets/mask_ink.webp");
+  --svg-up: url("assets/mask_up.webp");
+  --svg-down: url("assets/mask_down.webp");
+  --svg-right: url("assets/mask_right.webp");
 
   /* GSAP ANIMATION VARIABLES */
   --visual-size: 0%;
@@ -382,6 +386,18 @@ section {
 @media (hover: none) and (pointer: coarse) {
   #layanan-visual { perspective: none !important; }
   .layanan-visual-inner { transform-style: flat !important; }
+
+  /* ANDROID FIX (glitch/banding saat scroll): gambar slide full-screen digeser
+     oleh GSAP; Android sering gagal ngecat seluruh tile-nya saat bergerak cepat
+     -> gambar cuma kerender sepotong band lalu pop-in. Promote tiap gambar jadi
+     satu layer GPU stabil supaya di-cache & digeser utuh (bukan re-raster per-tile).
+     Murni hint kompositor -> TIDAK mengubah tampilan sama sekali. */
+  #layanan .slide-img-wrap img {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
 }
 
 #stats {
