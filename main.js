@@ -6,6 +6,15 @@ if ('scrollRestoration' in history) {
 // 2. Paksa layar selalu mulai dari titik paling atas sebelum dirender
 window.scrollTo(0, 0);
 
+// 2b. Tandai perangkat sentuh sedini mungkin. Deteksi ini lebih andal daripada
+// hanya media query CSS (sebagian Android WebView salah lapor pointer/hover),
+// dipakai untuk mematikan konteks 3D/tilt di #layanan-visual yang bikin Android
+// glitch/nyangkut. Efek tilt hanya relevan untuk mouse, jadi tak ada yang hilang.
+var IS_TOUCH = (window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse)').matches) || ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+if (IS_TOUCH) {
+  document.documentElement.classList.add('is-touch');
+}
+
 const i18n = {
   "hero_niche": { id: `AI • TECH • MINDSET • PRODUCTIVITY`, en: `AI • TECH • MINDSET • PRODUCTIVITY` },
   "hero_desc": { id: `Edukasi teknologi dan pengembangan diri yang dibalut dalam penceritaan sinematik serta konten kuis interaktif.`, en: `Technology and self-development education wrapped in cinematic storytelling and interactive quiz content.` },
@@ -929,7 +938,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const layananVis = document.getElementById("layanan-visual");
     const layananVisInner = layananVis ? layananVis.querySelector(".layanan-visual-inner") : null;
 
-    if (layananVis && layananVisInner) {
+    if (layananVis && layananVisInner && !IS_TOUCH) {
       layananVis.addEventListener("mousemove", (e) => {
         const rect = layananVis.getBoundingClientRect();
         // Calculate mouse position relative to center (-0.5 to +0.5)

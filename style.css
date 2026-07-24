@@ -378,14 +378,27 @@ section {
 #layanan-visual .visual-bg { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; filter: contrast(1.15) saturate(0.85) brightness(0.9); z-index: 0; transform: translateZ(-100px) scale(1.1); }
 #layanan-visual .visual-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) translateZ(80px); font-family: 'Inter', sans-serif !important; font-weight: 900 !important; letter-spacing: -0.05em !important; font-size: 8vw; color: rgba(255,255,255,0.9); z-index: 2; white-space: nowrap; text-shadow: 0 20px 40px rgba(0,0,0,0.8); }
 
-/* ANDROID FIX: Di perangkat sentuh, konteks 3D (perspective + preserve-3d + translateZ)
-   yang dikombinasikan dengan SVG mask bikin section ini blank/gagal ke-composite di
-   Android Chrome/WebView. Efek 3D-tilt hanya dipicu mousemove (desktop), jadi
-   men-datarkan-nya di perangkat sentuh TIDAK mengubah tampilan sama sekali — hanya
-   memperbaiki agar gambar + teks "LAYANAN KOLABORASI" muncul. Desktop tetap 3D penuh. */
+/* ANDROID FIX: Di perangkat sentuh, konteks 3D (perspective + preserve-3d + translateZ
+   + will-change) yang dipakai untuk efek tilt-mengikuti-mouse bikin Android harus
+   re-composite layer 3D + mask + light-rays tiap frame -> section ini glitch/nyangkut.
+   Tilt hanya relevan untuk mouse (desktop), jadi di perangkat sentuh section ini
+   di-datarkan total supaya berperilaku seperti #visual-showcase (yang mulus di Android).
+   Diterapkan via class .is-touch (di-set JS, lebih andal dari media query) DAN media
+   query sebagai cadangan. Tidak mengubah tampilan: translateZ tanpa perspective = inert,
+   scale & posisi tetap. Desktop tetap 3D penuh. */
+html.is-touch #layanan-visual { perspective: none !important; }
+html.is-touch .layanan-visual-inner {
+  transform-style: flat !important;
+  will-change: auto !important;
+}
+html.is-touch #layanan-visual .visual-bg { transform: scale(1.1) !important; }
+html.is-touch #layanan-visual .visual-text { transform: translate(-50%, -50%) !important; }
+
 @media (hover: none) and (pointer: coarse) {
   #layanan-visual { perspective: none !important; }
-  .layanan-visual-inner { transform-style: flat !important; }
+  .layanan-visual-inner { transform-style: flat !important; will-change: auto !important; }
+  #layanan-visual .visual-bg { transform: scale(1.1) !important; }
+  #layanan-visual .visual-text { transform: translate(-50%, -50%) !important; }
 
   /* ANDROID FIX (glitch/banding saat scroll): gambar slide full-screen digeser
      oleh GSAP; Android sering gagal ngecat seluruh tile-nya saat bergerak cepat
