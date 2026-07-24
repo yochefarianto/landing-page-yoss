@@ -13,6 +13,13 @@ window.scrollTo(0, 0);
 var IS_TOUCH = (window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse)').matches) || ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 if (IS_TOUCH) {
   document.documentElement.classList.add('is-touch');
+  // Di perangkat sentuh, .light-rays (mix-blend-mode:screen + rotasi) dimatikan karena
+  // bikin Android glitch. Sinar emasnya sudah "di-bake" ke versi gambar ini, jadi
+  // tampilannya identik tapi tanpa layer/blend/animasi apa pun (zero-cost).
+  document.addEventListener('DOMContentLoaded', function () {
+    var lvBg = document.querySelector('#layanan-visual .visual-bg');
+    if (lvBg) lvBg.src = 'assets/adams_creation_layanan_rays.webp';
+  });
 }
 
 const i18n = {
