@@ -386,10 +386,14 @@ window.addEventListener('DOMContentLoaded', () => {
     masterTl.fromTo(".bust-center", { y: "15vh" }, { y: "10vh", ease: "none", duration: 2 }, 13);
     masterTl.fromTo(".bust-right", { y: "40vh" }, { y: "-15vh", ease: "none", duration: 2 }, 13);
 
-    // STAGE 14: Footer Ink Drop (14 to 15)
+    // STAGE 14: Footer Ink Drop (14 to 14.5), lalu HOLD fully-revealed sampai ujung (15).
+    // Footer sengaja selesai reveal lebih awal supaya ~40% scroll terakhir semuanya
+    // menampilkan footer penuh -> saat mentok bawah / momentum-bounce di Android, footer
+    // tidak ikut un-reveal (dulu flicker & "ilang" karena baru penuh persis di pixel akhir).
+    // Panjang timeline tetap 15 karena tween busts testimonial berakhir di 15.
     masterTl.set("#footer", { autoAlpha: 1 }, 14);
-    masterTl.fromTo("#footer", { maskSize: "0% 0%", webkitMaskSize: "0% 0%" }, { maskSize: "450% 450%", webkitMaskSize: "450% 450%", ease: "power2.inOut", duration: 1 }, 14);
-    masterTl.fromTo("#footer .footer-hand", { y: "15vh", scale: 0.9 }, { y: "-5vh", scale: 1, ease: "power1.out", duration: 1 }, 14);
+    masterTl.fromTo("#footer", { maskSize: "0% 0%", webkitMaskSize: "0% 0%" }, { maskSize: "450% 450%", webkitMaskSize: "450% 450%", ease: "power2.inOut", duration: 0.5 }, 14);
+    masterTl.fromTo("#footer .footer-hand", { y: "15vh", scale: 0.9 }, { y: "-5vh", scale: 1, ease: "power1.out", duration: 0.5 }, 14);
 
     ScrollTrigger.refresh();
   }
