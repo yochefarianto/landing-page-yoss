@@ -393,12 +393,18 @@ html.is-touch .layanan-visual-inner {
 }
 html.is-touch #layanan-visual .visual-bg { transform: scale(1.1) !important; }
 html.is-touch #layanan-visual .visual-text { transform: translate(-50%, -50%) !important; }
+/* DIAGNOSTIK (touch): .light-rays pakai mix-blend-mode:screen + conic-gradient +
+   rotasi infinite -> maksa Android re-composite & re-blend tiap frame saat section
+   di-reveal/scroll. Dimatikan sementara di HP untuk memastikan ini penyebab glitch.
+   Jika benar, glow ray akan di-bake ke gambar background agar tampil identik tanpa biaya. */
+html.is-touch #layanan-visual .light-rays { display: none !important; }
 
 @media (hover: none) and (pointer: coarse) {
   #layanan-visual { perspective: none !important; }
   .layanan-visual-inner { transform-style: flat !important; will-change: auto !important; }
   #layanan-visual .visual-bg { transform: scale(1.1) !important; }
   #layanan-visual .visual-text { transform: translate(-50%, -50%) !important; }
+  #layanan-visual .light-rays { display: none !important; }
 
   /* ANDROID FIX (glitch/banding saat scroll): gambar slide full-screen digeser
      oleh GSAP; Android sering gagal ngecat seluruh tile-nya saat bergerak cepat
