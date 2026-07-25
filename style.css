@@ -1048,6 +1048,31 @@ canvas {
   }
 }
 
+/* PERF: begitu hero ketutup penuh oleh section di atasnya (di-set via .hero-covered
+   dari onUpdate ScrollTrigger), bekukan sun-flare. Elemen ini pakai filter:blur(8px)
+   + repeating-conic-gradient + 2 mix-blend-mode + animasi scale/opacity, jadi kalau
+   dibiarkan jalan ia re-raster full tiap frame padahal SUDAH TAK KELIHATAN. Membekukan
+   = layer statis yang tinggal di-cache (nol repaint). Tampilan tak berubah: pas hero
+   kelihatan lagi (scroll balik ke atas) animasinya lanjut. */
+html.hero-covered #hero .sun-flare,
+html.hero-covered #hero .sun-flare::before {
+  animation-play-state: paused !important;
+}
+
+/* PERF: pola sama seperti sun-flare. Marquee brands (2 track transform infinite) dan
+   light-rays layanan (conic-gradient + mix-blend:screen + spin) tetap animasi walau
+   section-nya sudah ketutup penuh section di atasnya. Bekukan saat ketutup (invisible)
+   -> stop compositing per-frame yang percuma. Di-toggle dari onUpdate ScrollTrigger.
+   Saat section-nya kelihatan lagi, animasi lanjut mulus (tampilan tak berubah). */
+html.brands-idle .track-left .marquee-content,
+html.brands-idle .track-right .marquee-content {
+  animation-play-state: paused !important;
+}
+
+html.rays-idle #layanan-visual .light-rays {
+  animation-play-state: paused !important;
+}
+
 #hero .griffin {
   top: 10vh;
   left: 30vw;

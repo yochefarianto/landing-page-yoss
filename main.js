@@ -211,6 +211,15 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
 
+  // Gate bersama untuk mematikan efek ambient yang MASIH ter-paint walau section-nya
+  // sudah ketutup section opaque di atasnya (section yang sudah di-reveal tak pernah
+  // di-hidden lagi -> browser tetap paint mereka di belakang). Di-set oleh onUpdate
+  // master timeline (lihat di bawah), dibaca oleh loop dust. Default = kondisi di atas.
+  let heroAmbientCovered = false; // true = hero (sun-flare blur+conic+blend) ketutup
+  let dustStageActive = false;    // true = #visual-showcase sedang jadi lapisan teratas
+  let brandsAnimIdle = false;     // true = marquee brands ketutup penuh -> bekukan
+  let raysAnimIdle = false;       // true = light-rays layanan ketutup penuh -> bekukan
+
   // 3. GSAP SCROLLTRIGGER MASTER ARCHITECTURE (DATA URI TEXTURED MASK ENGINE)
   let animInitialized = false;
   function initScrollAnimations() {
@@ -318,7 +327,45 @@ window.addEventListener('DOMContentLoaded', () => {
         end: "+=1200%",
         scrub: 0.3,
         pin: true,
-        invalidateOnRefresh: true
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          // Timeline dipetakan 0..15 (15 stage). Konversi progress -> posisi stage.
+          const stage = self.progress * 15;
+          const root = document.documentElement;
+
+          // Section yang sudah di-reveal TAK PERNAH di-hidden lagi, jadi browser tetap
+          // paint + composite animasi ambient-nya walau sudah ketutup section opaque di
+          // atasnya. Bekukan tiap animasi ini saat section-nya ketutup penuh: invisible
+          // (tampilan identik) tapi menghentikan repaint/compositing mahal per-frame.
+
+          // HERO sun-flare: filter:blur(8px) + conic-gradient + 2 mix-blend + animasi
+          // scale/opacity. Ketutup #visual-showcase lalu #stats sejak ~stage 2.
+          const heroCov = stage > 3;
+          if (heroCov !== heroAmbientCovered) {
+            heroAmbientCovered = heroCov;
+            root.classList.toggle('hero-covered', heroCov);
+          }
+
+          // BRANDS marquee: 2 track transform infinite. Ketutup penuh oleh #works stage 5+.
+          const brandsIdle = stage > 5.5;
+          if (brandsIdle !== brandsAnimIdle) {
+            brandsAnimIdle = brandsIdle;
+            root.classList.toggle('brands-idle', brandsIdle);
+          }
+
+          // LAYANAN light-rays: conic-gradient + mix-blend:screen + spin infinite.
+          // Ketutup slide-1 dst sejak ~stage 9.5.
+          const raysIdle = stage > 9.5;
+          if (raysIdle !== raysAnimIdle) {
+            raysAnimIdle = raysIdle;
+            root.classList.toggle('rays-idle', raysIdle);
+          }
+
+          // DUST: 75x shadowBlur/frame. #visual-showcase tetap visibility:visible setelah
+          // di-reveal, jadi debu lanjut dirender walau sudah ketutup #stats dst. Hanya
+          // aktifkan saat section ini benar-benar jadi lapisan teratas (~stage 1..3.6).
+          dustStageActive = stage > 0.8 && stage < 3.6;
+        }
       }
     });
 
@@ -405,49 +452,92 @@ window.addEventListener('DOMContentLoaded', () => {
     ScrollTrigger.refresh();
   }
 
-  // High-Performance Smart Video Engine for Mobile & Desktop (plays visible videos, pauses offscreen videos)
-  const allVideos = document.querySelectorAll('video');
+  // ---------------------------------------------------------------------------
+  // SMART VIDEO ENGINE (visibility-gated)
+  // DULU: semua 11 klip (~52MB) ikut `autoplay` + ter-decode saat page load, walau
+  // section-nya masih tersembunyi. Karena semua section ditumpuk (absolute inset:0),
+  // IntersectionObserver menganggap SEMUA video "terlihat" secara geometri -> semua
+  // main bareng. Itu bikin spike berat di awal (desktop nge-lag dari detik pertama)
+  // dan video di section yang ketutup tetap decode tiap frame.
+  // SEKARANG: <video> tak lagi autoplay + preload="none", jadi nol sampai dibutuhkan.
+  // Video hanya play kalau section-nya BENAR-BENAR terlihat (bukan visibility:hidden)
+  // DAN masuk viewport. Section video berikutnya di-buffer lebih awal (lookahead)
+  // supaya tak ada frame hitam saat reveal. Tampilan identik.
+  // ---------------------------------------------------------------------------
+  const allVideos = Array.from(document.querySelectorAll('video'));
   allVideos.forEach(vid => {
     vid.muted = true;
     vid.playsInline = true;
     vid.setAttribute('muted', '');
     vid.setAttribute('playsinline', 'true');
     vid.setAttribute('webkit-playsinline', 'true');
+    vid._inView = false;
   });
+
+  // GSAP autoAlpha meng-inline `visibility:hidden` saat section disembunyikan.
+  const sectionIsVisible = (sec) => !!sec && sec.style.visibility !== 'hidden';
+
+  const preparedVideos = new WeakSet();
+  const prepareVideo = (vid) => {
+    if (preparedVideos.has(vid)) return;
+    preparedVideos.add(vid);
+    try { vid.preload = 'auto'; vid.load(); } catch (e) { }
+  };
+
+  const updateVideo = (vid) => {
+    const shouldPlay = vid._inView && sectionIsVisible(vid.closest('section'));
+    if (shouldPlay) {
+      prepareVideo(vid);
+      if (vid.paused) { vid.muted = true; const p = vid.play(); if (p) p.catch(() => { }); }
+    } else if (!vid.paused) {
+      vid.pause();
+    }
+  };
 
   if ('IntersectionObserver' in window) {
     const videoObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        const vid = entry.target;
-        if (entry.isIntersecting) {
-          vid.muted = true;
-          const promise = vid.play();
-          if (promise !== undefined) {
-            promise.catch(() => { });
-          }
-        } else {
-          vid.pause();
-        }
+        entry.target._inView = entry.isIntersecting;
+        updateVideo(entry.target);
       });
     }, { threshold: 0.1 });
-
     allVideos.forEach(vid => videoObserver.observe(vid));
+
+    // Lookahead: buffer video section berikutnya SEBELUM di-reveal biar mulus.
+    const videoSectionsInOrder = ['works', 'events'];
+    let nextPrepIdx = 0;
+    const prepareNextVideoSection = () => {
+      if (nextPrepIdx >= videoSectionsInOrder.length) return;
+      const sec = document.getElementById(videoSectionsInOrder[nextPrepIdx++]);
+      if (sec) sec.querySelectorAll('video').forEach(prepareVideo);
+    };
+
+    // Pantau perubahan visibility tiap section. GSAP menulis inline transform/mask
+    // tiap frame, jadi handler ini WAJIB murah: langsung keluar kalau status
+    // visibility tak berubah (cuma satu perbandingan string) -> nol biaya per-frame.
+    document.querySelectorAll('section').forEach(sec => {
+      sec._lastVisible = sectionIsVisible(sec);
+      const mo = new MutationObserver(() => {
+        const visible = sectionIsVisible(sec);
+        if (visible === sec._lastVisible) return;
+        sec._lastVisible = visible;
+        sec.querySelectorAll('video').forEach(updateVideo);
+        if (visible && sec.id !== 'hero') prepareNextVideoSection();
+      });
+      mo.observe(sec, { attributes: true, attributeFilter: ['style', 'class'] });
+    });
   } else {
-    allVideos.forEach(vid => vid.play().catch(() => { }));
+    allVideos.forEach(vid => { vid.preload = 'auto'; const p = vid.play(); if (p) p.catch(() => { }); });
   }
 
-  // One-time gesture handler to unlock media autoplay policy on strict mobile browsers
+  // Satu kali gesture untuk unlock kebijakan autoplay di browser mobile ketat.
   const unlockAutoplay = () => {
     allVideos.forEach(vid => {
-      const rect = vid.getBoundingClientRect();
-      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-      if (isVisible && vid.paused) {
-        vid.muted = true;
-        vid.play().catch(() => { });
+      if (vid._inView && vid.paused && sectionIsVisible(vid.closest('section'))) {
+        vid.muted = true; const p = vid.play(); if (p) p.catch(() => { });
       }
     });
   };
-
   ['touchstart', 'click'].forEach(evt => {
     window.addEventListener(evt, unlockAutoplay, { once: true, passive: true });
   });
@@ -903,9 +993,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     let dustAnimId = null;
     function animateDust() {
-      // Lewati kerja berat selama section debu masih disembunyikan (dari awal page
-      // sampai section-nya di-reveal). Loop tetap hidup agar otomatis lanjut saat terlihat.
-      if (dustSection && dustSection.style.visibility === 'hidden') {
+      // Lewati kerja berat (75x shadowBlur) saat debu tak benar-benar terlihat, yaitu:
+      // (a) section masih disembunyikan sebelum di-reveal, ATAU (b) sudah ketutup section
+      // opaque di atasnya (dustStageActive=false). Loop tetap hidup supaya otomatis
+      // lanjut saat terlihat lagi. Tampilan tak berubah — hanya berhenti saat tak kelihatan.
+      if (!dustStageActive || (dustSection && dustSection.style.visibility === 'hidden')) {
         dustAnimId = requestAnimationFrame(animateDust);
         return;
       }
